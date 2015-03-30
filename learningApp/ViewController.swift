@@ -12,6 +12,17 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        /* PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
+        testObject[@"foo"] = @"bar";
+        [testObject saveInBackground];
+*/
+        var testObject:PFObject = PFObject(className: "TestObject")
+        testObject["foo"] = "bar"
+        testObject.save()
+        
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
