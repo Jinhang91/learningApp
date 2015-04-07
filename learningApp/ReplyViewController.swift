@@ -19,12 +19,22 @@ class ReplyViewController: UIViewController {
     @IBOutlet weak var replyTextView: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
+
+        UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
+
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        
+       // navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
         replyTextView.becomeFirstResponder()
         
           }
 
+    override func viewDidAppear(animated: Bool) {
+        
+      //  navigationController?.navigationBar.topItem?.title = "Reply"
+      //  navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
+    }
+    
     @IBAction func cancelButtonDidTouch(sender: AnyObject) {
 dismissViewControllerAnimated(true, completion: nil)
     }

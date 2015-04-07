@@ -38,11 +38,19 @@ class LoginViewController: UIViewController
                     self.view.hidden = true
                    self.dismissViewControllerAnimated(true, completion: nil)
 
+                    let alert1 = UIAlertView()
+                    alert1.title = "Search your group"
+                    alert1.message = self.matricTextField.text + " user, enter your group name to join"
+                    alert1.addButtonWithTitle("OK")
+                    alert1.show()
+                    
                     let alert = UIAlertView()
                     alert.title = "Successful"
                     alert.message = "Welcome, " + self.matricTextField.text + " user"
                     alert.addButtonWithTitle("OK")
                     alert.show()
+                    
+                    
                     self.view.hideLoading()
                 }
                 else

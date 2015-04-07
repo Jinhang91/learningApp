@@ -17,8 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         //linking to the parse databse
-        
+    
         Parse.setApplicationId("clqZKCErTst9J8NUK19S9yi1f7xdudbFomxFxl1J", clientKey:"ecXf2kiNojdUObC5A0g5FsV2W8cK5RVZa4HW1jCh")
+       // UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
+        
+        var addStatusBar = UIView()
+        addStatusBar.frame = CGRectMake(0, 0, 1000, 20);
+        
+        addStatusBar.backgroundColor = UIColorFromRGB(0x3FB8AF)
+        self.window?.rootViewController?.view .addSubview(addStatusBar)
         
         return true
     }

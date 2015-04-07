@@ -9,15 +9,16 @@
 import UIKit
 
 class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate {
+    
 
     var groupCreated : PFObject?
     var groupList:NSMutableArray = NSMutableArray()
     var searchActive:Bool = false
     
+    
     @IBOutlet weak var signOut: UIBarButtonItem!
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         
         PFUser.logOut()
@@ -72,47 +73,66 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         if !name.isEmpty{
          searchGroup.whereKey("name", containsString: name)
         }
-        
+        searchGroup.orderByDescending("createdAt")
         searchGroup.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!) -> Void in
             if error == nil{
                 self.groupList = NSMutableArray(array: objects)
                 self.tableView.reloadData()
+         
             }
-            
+        
         })
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         loadGroup(searchText)
+        searchActive = true
         
+        tableView.reloadData()
+        
+    }
+    
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if groupList.count == 0{
             searchActive = false
+            let alert = UIAlertView()
+            alert.title = "Sorry"
+            alert.message = "No matching group to display"
+            alert.addButtonWithTitle("OK")
+            alert.show()
         }
-        
+            
         else{
             searchActive = true
         }
         
-        self.tableView.reloadData()
+        searchBar.resignFirstResponder()
+        loadObjects()
     }
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchActive = true;
+
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        searchActive = true
         searchBar.setShowsCancelButton(true, animated: true)
-    
+        return true
     }
     
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
-        searchActive = true;
-        searchBar.setShowsCancelButton(false, animated: true)
-        
+    func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
+        searchActive = true
+        return true
     }
 
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         loadGroup("")
         searchActive = false
-       searchBar.setShowsCancelButton(false, animated: true)
+    
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
     }
     
     var timelineGroupData:NSMutableArray = NSMutableArray()
@@ -144,47 +164,110 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-        //loadData()
         if PFUser.currentUser() == nil{
             performSegueWithIdentifier("loginSegue", sender: self)
         }
 
+        
         if isFirstTime {
             self.view.showLoading()
             self.tableView.setNeedsDisplay()
             self.tableView.layoutIfNeeded()
-            self.tableView.reloadData()
             self.loadData()
-            
+           // pullToRefresh()
             isFirstTime = false
         }
         
-        
+        navigationController?.hidesBarsOnSwipe = true
+        navigationController?.navigationBar.topItem?.title = "Groups"
+        navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
+    
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        tableView.estimatedRowHeight = 140
+        searchBar.becomeFirstResponder()
+        for subView in searchBar.subviews  {
+            for subsubView in subView.subviews  {
+                if let textField = subsubView as? UITextField {
+                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search your group to join", comment:""),
+                        attributes:[NSForegroundColorAttributeName: UIColorFromRGB(0x9F9C9C), NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 16)!])
+                }
+            }
+        }
+        
+        let cancelButtonAttributes:NSDictionary = [NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 17)!, NSForegroundColorAttributeName:UIColorFromRGB(0x37B8B0)]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
+        
+        var refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = UIColorFromRGB(0x413D3D)
+        refreshControl.tintColor = UIColor.whiteColor()
+        
+        var refreshTitle:NSMutableAttributedString = NSMutableAttributedString(string: "Refreshing Groups...")
+        refreshTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.whiteColor(), range: NSMakeRange(0, refreshTitle.length))
+        refreshTitle.addAttribute(NSFontAttributeName, value: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!, range: NSMakeRange(0, refreshTitle.length))
+        refreshControl.attributedTitle = refreshTitle
+        
+
+        refreshControl.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshControl
+        
+        tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.rowHeight = 120
+        
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
-        // UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
-           }
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+      // navigationItem.backBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        
+        
+        let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        backButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        navigationItem.backBarButtonItem = backButton
+
+        
+      /*  let fontFamilyNames = UIFont.familyNames()
+        for familyName in fontFamilyNames {
+            println("Font Family Name = [\(familyName)]")
+            let names = UIFont.fontNamesForFamilyName(familyName as String)
+            println("Font Names = [\(names)]") */
+        
+       
+       //  UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+        
+        
+               }
 
     func pullToRefresh(){
         view.showLoading()
-        self.loadData()
+        loadData()
+        tableView.reloadData()
         refreshControl?.endRefreshing()
-        self.tableView.reloadData()
+        
         println("reload finised")
-        view.hideLoading()
     }
-
+/*
+      override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        if searchActive == true{
+            searchBar = UISearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, 44))
+            searchBar?.delegate = self
+            searchBar?.backgroundColor = UIColor(hex: "#EBF0F5")
+            searchBar?.searchBarStyle = UISearchBarStyle.Minimal
+        }
+        
+        return searchBar
+    }
    
-
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        if searchActive == true {
+            
+        }
+        return 45
+    }
+*/
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
@@ -320,6 +403,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             if let indexPath = self.tableView.indexPathForSelectedRow() {
                 let row:AnyObject = timelineGroupData[indexPath.row]
                 toView.groupCreated = row as? PFObject
+                 // navigationController?.navigationBar.topItem?.title = groupCreated["name"] as NSString
                 }
             }
 }

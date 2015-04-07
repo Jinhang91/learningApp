@@ -46,6 +46,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
     
 
+    func popToRoot(sender:UIBarButtonItem){
+        self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+  
+
     override init!(style: UITableViewStyle, className: String!) {
         super.init(style: style, className: "Topics")
     }
@@ -93,28 +98,49 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-       // loadData()
+     
         if isFirstTime {
         self.view.showLoading()
         self.tableView.setNeedsDisplay()
         self.tableView.layoutIfNeeded()
-        self.tableView.reloadData()
         self.loadData()
+        self.tableView.reloadData()
             
        // loginSystem()
         isFirstTime = false
     }
-    }
+        
+        let title = groupCreated?["name"] as String
+        
+        navigationController?.navigationBar.topItem?.title = "\(title)"
+        navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
+
+            }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         println(groupCreated)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
-        tableView.estimatedRowHeight = 120
+
+        tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
+       
+        self.navigationItem.hidesBackButton = true
+        //let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        //backButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        //navigationItem.backBarButtonItem = backButton
+        
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
+        myBackButton.setTitle("", forState: UIControlState.Normal)
+        myBackButton.setImage(UIImage(named: "back"), forState: UIControlState.Normal)
+        // myBackButton.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+        myBackButton.sizeToFit()
+        var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
+        self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
+        
+        
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     }
     
@@ -226,12 +252,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         
         let topic:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
         cell.titleLabel.text = topic.objectForKey("title") as? String
-        cell.contentLabel.text = topic.objectForKey("content") as? String
+       // cell.contentLabel.text = topic.objectForKey("content") as? String
        // cell.content2Label.text = topic.objectForKey("content") as String
         
         //Initial animation
         cell.timestampLabel.alpha = 0
-        cell.contentLabel.alpha = 0
+       // cell.contentLabel.alpha = 0
         cell.titleLabel.alpha = 0
         cell.usernameLabel.alpha = 0
         
@@ -254,7 +280,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 //final animation
                 spring(1.0){
                 cell.timestampLabel.alpha = 1
-                cell.contentLabel.alpha = 1
+              //  cell.contentLabel.alpha = 1
                 cell.titleLabel.alpha = 1
                 cell.usernameLabel.alpha = 1
                 }
@@ -314,6 +340,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     let indexPath = tableView.indexPathForCell(sender as UITableViewCell)!
             let topic: AnyObject = timelineTopicData[indexPath.row]
             toView.topic = topic as? PFObject
+            toView.groupCreated = groupCreated as PFObject?
         
         }
         

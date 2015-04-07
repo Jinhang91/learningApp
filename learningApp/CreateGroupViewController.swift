@@ -59,7 +59,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         groupNameLabel2.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
 
-}
+    }
     
   
    
@@ -74,18 +74,17 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBAction func createGroupButtonDidTouch(sender: AnyObject) {
                // loadingIndicator.hidden = false
-        
-        if groupNameTextField.text != "" && avatarGroup.image != nil {
-        if let data = imageData  {
-        let imageFile:PFFile = PFFile(data: imageData)
-            self.view.showLoading()
+            view.showLoading()
+            if groupNameTextField.text != "" && avatarGroup.image != nil {
+            if let data = imageData  {
+            let imageFile:PFFile = PFFile(data: imageData)
 
-           var groupCreated:PFObject = PFObject(className: "Groups")
-           groupCreated.setObject(imageFile, forKey: "groupAvatar")
-           groupCreated["name"] = groupNameTextField.text
-           groupCreated["userer"] = PFUser.currentUser()
+            var groupCreated:PFObject = PFObject(className: "Groups")
+            groupCreated.setObject(imageFile, forKey: "groupAvatar")
+            groupCreated["name"] = groupNameTextField.text
+            groupCreated["userer"] = PFUser.currentUser()
             
-           groupCreated.save()
+            groupCreated.save()
             createGroupButton.hidden = true
             println("Successful to create!")
             let alert = UIAlertView()
@@ -93,10 +92,12 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             alert.message = "Your " + self.groupNameTextField.text + " group is created"
             alert.addButtonWithTitle("OK")
             alert.show()
-            self.view.hideLoading()
+            
            // self.loadingIndicator.hidden = true
             self.dismissViewControllerAnimated(true, completion: nil)
             }
+            
+            view.hideLoading()
       }
     
         else {

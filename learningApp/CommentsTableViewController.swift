@@ -10,21 +10,39 @@ import UIKit
 
 class CommentsTableViewController: PFQueryTableViewController, CommentsTableViewCellDelegate, TopicTableViewCellDelegate {
 
-
+    var groupCreated : PFObject?
    var topic :PFObject?
     var comment :PFObject?
     
- 
+    func popToRoot(sender:UIBarButtonItem){
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         println(topic)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "Gill Sans", size: 19)!], forState: UIControlState.Normal)
-        tableView.estimatedRowHeight = 120
+        
+        tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
+ 
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     
-        //  tableView.rowHeight = 125
+        self.navigationItem.hidesBackButton = true
+        
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        let title = groupCreated?["name"] as String
+        myBackButton.setTitle("  \(title)", forState: UIControlState.Normal)
+        myBackButton.setImage(UIImage(named: "back"), forState: UIControlState.Normal)
+        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
+
+        myBackButton.sizeToFit()
+        
+        var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
+        self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
+
     
     }
     func pullToRefresh(){
@@ -48,6 +66,9 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             self.loadData()
             isFirstTime = false
         }
+        
+        navigationController?.navigationBar.topItem?.title = "Comments"
+        navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
     
     override init!(style: UITableViewStyle, className: String!) {
