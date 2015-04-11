@@ -8,11 +8,18 @@
 
 import UIKit
 
-class CommentsTableViewController: PFQueryTableViewController, CommentsTableViewCellDelegate, TopicTableViewCellDelegate {
+class CommentsTableViewController: PFQueryTableViewController, CommentsTableViewCellDelegate, TopicTableViewCellDelegate,ReplyViewControllerDelegate,UITextViewDelegate {
 
     var groupCreated : PFObject?
-   var topic :PFObject?
+    var topic :PFObject?
     var comment :PFObject?
+    var urlTest: String?
+    
+    let transitionManager = TransitionManager()
+    var timelineTopicData:NSMutableArray = NSMutableArray()
+    
+   
+  //  @IBOutlet weak var textView: AutoTextView!
     
     func popToRoot(sender:UIBarButtonItem){
         self.navigationController?.popViewControllerAnimated(true)
@@ -21,6 +28,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func viewDidLoad() {
         super.viewDidLoad()
         println(topic)
+  
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.estimatedRowHeight = 104
@@ -30,12 +38,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
         self.navigationItem.hidesBackButton = true
         
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         
         let title = groupCreated?["name"] as String
         myBackButton.setTitle("  \(title)", forState: UIControlState.Normal)
-        myBackButton.setImage(UIImage(named: "back"), forState: UIControlState.Normal)
+        myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
         myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
 
         myBackButton.sizeToFit()
@@ -147,7 +155,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         if let topicCell = cell as? TopicTableViewCell{
          topicCell.titleLabel.text = topic?.objectForKey("title") as? String
-         topicCell.contentLabel.text = topic?.objectForKey("content") as? String
+       //  topicCell.contentLabel.text = topic?.objectForKey("content") as? String
+            topicCell.contentTextView.text = topic?.objectForKey("content") as? String
          topicCell.timestampLabel.text = timeAgoSinceDate(topic!.createdAt, true)
             
             var findUsererData:PFQuery = PFUser.query()
@@ -170,7 +179,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             })
-            
+        topicCell.contentTextView.delegate = self
         topicCell.delegate = self
         
         }
@@ -237,7 +246,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         return cell
     }
-  
+  // MARK: topic and comment table cell delegate
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
         performSegueWithIdentifier("replySegue", sender: cell)
         
@@ -256,6 +265,18 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
     }
 
+   // MARK: reply delegate
+    func sendReplyDidTouch(controller: ReplyViewController) {
+        view.showLoading()
+        loadData()
+    }
+/*
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        performSegueWithIdentifier("webSegue", sender: indexPath)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+    }
+*/
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -271,7 +292,42 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             if let cell = sender as? TopicTableViewCell {
                
                 toView.topic = topic as PFObject?
+                toView.delegate = self
             }
         }
-    }
+
+
+
+        if segue.identifier == "webSegue"{
+            let toView = segue.destinationViewController as WebViewController
+
+            if let data = urlTest {
+                let escapedString = data.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+                let webViewController = WebViewController()
+                
+                webViewController.urlString = escapedString
+                println(escapedString)
+                //if let escapedString = escapedString
+                toView.urlString = escapedString as String?
+                UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+                toView.transitioningDelegate = transitionManager
+                }
+        }
+        
+}
+    func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        println("Link Selected!")
+        
+        println(URL)
+        println(URL.absoluteString)
+        
+        urlTest = URL.absoluteString
+
+        performSegueWithIdentifier("webSegue", sender:self)
+        
+        return false
+
+     
+           }
+    
 }

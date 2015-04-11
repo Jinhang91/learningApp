@@ -68,6 +68,7 @@
 		3C852E581AB2DC46001F5FA1 /* GroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */; };
 		3C852E5A1AB30A04001F5FA1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C852E591AB30A04001F5FA1 /* LoginViewController.swift */; };
 		3C852E5C1AB30D36001F5FA1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */; };
+		3CC0097B1AD66F7900227326 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC0097A1AD66F7900227326 /* Reachability.m */; };
 		3CDD36721AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD365B1AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf */; };
 		3CDD36731AD0E55B00DFC79A /* SanFranciscoDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD365C1AD0E55B00DFC79A /* SanFranciscoDisplay-Bold.otf */; };
 		3CDD36741AD0E55B00DFC79A /* SanFranciscoDisplay-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD365D1AD0E55B00DFC79A /* SanFranciscoDisplay-Heavy.otf */; };
@@ -91,6 +92,8 @@
 		3CDD36861AD0E55B00DFC79A /* SanFranciscoText-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD366F1AD0E55B00DFC79A /* SanFranciscoText-SemiboldItalic.otf */; };
 		3CDD36871AD0E55B00DFC79A /* SanFranciscoText-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD36701AD0E55B00DFC79A /* SanFranciscoText-Thin.otf */; };
 		3CDD36881AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD36711AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf */; };
+		3CE840861AD7A33D006CE2B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840851AD7A33D006CE2B4 /* WebViewController.swift */; };
+		3CE840881AD93019006CE2B4 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840871AD93019006CE2B4 /* TestingViewController.swift */; };
 		3CE9D3711ABEFA9C00D08A7C /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -172,6 +175,8 @@
 		3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GroupsTableViewController.swift; path = ../GroupsTableViewController.swift; sourceTree = "<group>"; };
 		3C852E591AB30A04001F5FA1 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ../LoginViewController.swift; sourceTree = "<group>"; };
 		3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		3CC009791AD66F7900227326 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		3CC0097A1AD66F7900227326 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3CDD365B1AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoDisplay-Black.otf"; sourceTree = "<group>"; };
 		3CDD365C1AD0E55B00DFC79A /* SanFranciscoDisplay-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoDisplay-Bold.otf"; sourceTree = "<group>"; };
 		3CDD365D1AD0E55B00DFC79A /* SanFranciscoDisplay-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoDisplay-Heavy.otf"; sourceTree = "<group>"; };
@@ -195,6 +200,8 @@
 		3CDD366F1AD0E55B00DFC79A /* SanFranciscoText-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoText-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		3CDD36701AD0E55B00DFC79A /* SanFranciscoText-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoText-Thin.otf"; sourceTree = "<group>"; };
 		3CDD36711AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoText-ThinItalic.otf"; sourceTree = "<group>"; };
+		3CE840851AD7A33D006CE2B4 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		3CE840871AD93019006CE2B4 /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -266,9 +273,11 @@
 				3C56EEFD1AB9A991000BA5D0 /* ReplyViewController.swift */,
 				3C852E591AB30A04001F5FA1 /* LoginViewController.swift */,
 				3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */,
+				3CE840851AD7A33D006CE2B4 /* WebViewController.swift */,
 				3C809D321AAC388A007318D1 /* ViewController.swift */,
 				3CDD365A1AD0E55A00DFC79A /* Sans Francisco Fonts */,
 				3C809D341AAC388A007318D1 /* Main.storyboard */,
+				3CE840871AD93019006CE2B4 /* TestingViewController.swift */,
 				3C852E191AB2D7E9001F5FA1 /* Spring */,
 				3C809D371AAC388A007318D1 /* Images.xcassets */,
 				3C809D391AAC388A007318D1 /* LaunchScreen.xib */,
@@ -281,6 +290,8 @@
 		3C809D2E1AAC388A007318D1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3CC009791AD66F7900227326 /* Reachability.h */,
+				3CC0097A1AD66F7900227326 /* Reachability.m */,
 				3C809D2F1AAC388A007318D1 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -543,6 +554,7 @@
 				3C852E511AB2D7E9001F5FA1 /* SpringView.swift in Sources */,
 				3C852E4E1AB2D7E9001F5FA1 /* SpringLabel.swift in Sources */,
 				3C852E481AB2D7E9001F5FA1 /* Misc.swift in Sources */,
+				3CE840861AD7A33D006CE2B4 /* WebViewController.swift in Sources */,
 				3C852E3F1AB2D7E9001F5FA1 /* DesignableTabBarController.swift in Sources */,
 				3C852E3A1AB2D7E9001F5FA1 /* AutoTextView.swift in Sources */,
 				3C852E411AB2D7E9001F5FA1 /* DesignableTextView.swift in Sources */,
@@ -557,6 +569,8 @@
 				3C852E5A1AB30A04001F5FA1 /* LoginViewController.swift in Sources */,
 				3C852E461AB2D7E9001F5FA1 /* LoadingView.swift in Sources */,
 				3C852E501AB2D7E9001F5FA1 /* SpringTextView.swift in Sources */,
+				3CE840881AD93019006CE2B4 /* TestingViewController.swift in Sources */,
+				3CC0097B1AD66F7900227326 /* Reachability.m in Sources */,
 				3C852E391AB2D7E9001F5FA1 /* AsyncImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,9 +7,14 @@
 //
 
 import UIKit
+protocol LoginViewControllerDelegate: class{
+    func loginViewControllerDidLogin(controller:LoginViewController)
+}
 
 class LoginViewController: UIViewController
 {
+    
+    weak var delegate: LoginViewControllerDelegate?
     
     @IBOutlet weak var titleLabel: DesignableLabel!
     @IBOutlet weak var matricTextField: DesignableTextField!
@@ -24,8 +29,10 @@ class LoginViewController: UIViewController
         
         if matricTextField.text != "" && passwordTextField.text != ""
         {
-            view.showLoading()
+            //view.showLoading()
             var matricEntr = matricTextField.text
+            reachabbilityStatus == kReachableWithWifi
+            
             PFUser.logInWithUsernameInBackground(matricTextField.text, password:passwordTextField.text) {
                 (user: PFUser!, error: NSError!) -> Void in
                 if user != nil
@@ -37,7 +44,7 @@ class LoginViewController: UIViewController
                     self.loginDialogView.hidden = true
                     self.view.hidden = true
                    self.dismissViewControllerAnimated(true, completion: nil)
-
+/*
                     let alert1 = UIAlertView()
                     alert1.title = "Search your group"
                     alert1.message = self.matricTextField.text + " user, enter your group name to join"
@@ -50,9 +57,19 @@ class LoginViewController: UIViewController
                     alert.addButtonWithTitle("OK")
                     alert.show()
                     
+  */                  
+                
+                }
                     
+                else if reachabbilityStatus == kNotReachableWithWifi {
+                    let alert = UIAlertView()
+                    alert.title = "No Internet!"
+                    alert.message = "Network is not found"
+                    alert.addButtonWithTitle("OK")
+                    alert.show()
                     self.view.hideLoading()
                 }
+                    
                 else
                 {
                     println("\(matricEntr), please try again!")
@@ -67,7 +84,8 @@ class LoginViewController: UIViewController
                     alert.show()
                 }
             }
-         
+        
+        
         }
         
         else {
@@ -92,11 +110,9 @@ class LoginViewController: UIViewController
                 
                 self.titleLabel.alpha = 0
             })
-            
-    
-            
-            
         }
+       delegate?.loginViewControllerDidLogin(self)
+    
     }
     
     @IBAction func closeButtonDidPress(sender: AnyObject) {
@@ -120,12 +136,17 @@ class LoginViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-        // Do any additional setup after loading the view.
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityStatusChanged", name: "ReachStatusChanged", object: nil)
+    
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         view.endEditing(true)
     }
 
-    
+    func reachabilityStatusChanged(){
+        if reachabbilityStatus == kReachableWithWifi{
+            
+        }
+    }
 }

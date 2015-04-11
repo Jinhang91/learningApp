@@ -10,7 +10,7 @@ import UIKit
 
 
 
-class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDelegate {
+class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDelegate, LoginViewControllerDelegate, ComposeTopicViewControllerDelegate {
     var groupCreated:PFObject?
    
    // @IBOutlet weak var signOutButton: UIBarButtonItem!
@@ -122,7 +122,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         super.viewDidLoad()
         println(groupCreated)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-
+    
         tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
        
@@ -131,11 +131,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         //backButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
         //navigationItem.backBarButtonItem = backButton
         
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
-        myBackButton.setTitle("", forState: UIControlState.Normal)
-        myBackButton.setImage(UIImage(named: "back"), forState: UIControlState.Normal)
-        // myBackButton.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal)
+        myBackButton.setTitle("  Groups", forState: UIControlState.Normal)
+        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
+        myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
+       
         myBackButton.sizeToFit()
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
@@ -310,7 +311,18 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
    println("You select cell #\(indexPath.row)!")
     }
+    
+    // MARK: Compose Topic Delegate
+    func submitTopicDidTouch(controller: ComposeTopicViewController) {
+        view.showLoading()
+        loadData()
+    }
 
+    // MARK: LoginViewControllerDelegate
+    func loginViewControllerDidLogin(controller: LoginViewController) {
+        view.showLoading()
+        loadData()
+    }
     
   
     // MARK: TopicTableViewCellDelegate
@@ -341,12 +353,13 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             let topic: AnyObject = timelineTopicData[indexPath.row]
             toView.topic = topic as? PFObject
             toView.groupCreated = groupCreated as PFObject?
-        
+           
         }
         
         if (segue.identifier == "composeSegue"){
             let toView = segue.destinationViewController as ComposeTopicViewController
             toView.groupCreated = groupCreated as PFObject?
+            toView.delegate = self
         }
     }
  }

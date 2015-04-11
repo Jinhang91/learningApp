@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate {
+class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate, LoginViewControllerDelegate, CreateGroupViewControllerDelegate {
     
 
     var groupCreated : PFObject?
@@ -84,6 +84,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         
         })
     }
+    
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         loadGroup(searchText)
@@ -188,7 +189,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        searchBar.becomeFirstResponder()
+      // searchBar.becomeFirstResponder()
         for subView in searchBar.subviews  {
             for subsubView in subView.subviews  {
                 if let textField = subsubView as? UITextField {
@@ -202,7 +203,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
         
         var refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColorFromRGB(0x413D3D)
+        refreshControl.backgroundColor = UIColorFromRGB(0x4FD7CE)
         refreshControl.tintColor = UIColor.whiteColor()
         
         var refreshTitle:NSMutableAttributedString = NSMutableAttributedString(string: "Refreshing Groups...")
@@ -233,12 +234,17 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             let names = UIFont.fontNamesForFamilyName(familyName as String)
             println("Font Names = [\(names)]") */
         
-       
-       //  UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
-        
-        
+    //  UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+    hideBottomBorder()
                }
 
+    func hideBottomBorder() {
+        for view in navigationController?.navigationBar.subviews.filter({ NSStringFromClass($0.dynamicType) == "_UINavigationBarBackground" }) as [UIView] {
+            if let imageView = view.subviews.filter({ $0 is UIImageView }).first as? UIImageView {
+                imageView.removeFromSuperview()
+            }
+        }
+    }
     func pullToRefresh(){
         view.showLoading()
         loadData()
@@ -268,6 +274,19 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         return 45
     }
 */
+    
+    //MARK: Log in delegate
+    func loginViewControllerDidLogin(controller: LoginViewController) {
+        view.showLoading()
+        loadData()
+    }
+    
+    //MARK: Create Group delegate
+    func createGroupViewControllerDidTouch(controller: CreateGroupViewController) {
+        view.showLoading()
+        loadData()
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
@@ -403,9 +422,17 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             if let indexPath = self.tableView.indexPathForSelectedRow() {
                 let row:AnyObject = timelineGroupData[indexPath.row]
                 toView.groupCreated = row as? PFObject
-                 // navigationController?.navigationBar.topItem?.title = groupCreated["name"] as NSString
-                }
+                                }
             }
 }
+        if (segue.identifier == "createGroupSegue"){
+            let toView = segue.destinationViewController as CreateGroupViewController
+            toView.delegate = self
+        }
+        
+        if (segue.identifier == "loginSegue"){
+            let toView = segue.destinationViewController as LoginViewController
+            toView.delegate = self
+        }
 }
 }

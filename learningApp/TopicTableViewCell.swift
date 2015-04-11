@@ -12,15 +12,17 @@ protocol TopicTableViewCellDelegate: class {
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject)
 }
 
-class TopicTableViewCell: PFTableViewCell {
+class TopicTableViewCell: PFTableViewCell,UITextViewDelegate {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var contentLabel: UILabel!
+    //@IBOutlet weak var contentLabel: UILabel!
+    
     @IBOutlet weak var upvoteButton: SpringButton!
     @IBOutlet weak var commentButton: SpringButton!
     
+    @IBOutlet weak var contentTextView: AutoTextView!
  //   @IBOutlet weak var content2Label: AutoTextView!
     
     weak var delegate: TopicTableViewCellDelegate?
@@ -41,22 +43,26 @@ class TopicTableViewCell: PFTableViewCell {
     
         delegate?.topicTableViewCellDidTouchComment(self, sender: sender)
     }
-/*
-    func configureTopic(PFObject){
-     
-        titleLabel.text = topic.objectForKey("title") as? String
-        contentLabel.text = topic.objectForKey("content") as? String
-    }
-  */
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    
+    func textView(textView: AutoTextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
+        println("Link Selected!")
+        
+        let webViewController = WebViewController()
+      
+        return false
     }
     
     

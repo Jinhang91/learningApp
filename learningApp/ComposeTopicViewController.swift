@@ -8,7 +8,9 @@
 
 import UIKit
 
-
+protocol ComposeTopicViewControllerDelegate: class{
+    func submitTopicDidTouch(controller:ComposeTopicViewController)
+}
 
 class ComposeTopicViewController: UIViewController {
     var groupCreated:PFObject?
@@ -25,6 +27,8 @@ class ComposeTopicViewController: UIViewController {
     @IBOutlet weak var submitTopicButton: UIBarButtonItem!
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    weak var delegate: ComposeTopicViewControllerDelegate?
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +59,6 @@ class ComposeTopicViewController: UIViewController {
 
     @IBAction func submitTopic(sender: AnyObject) {
     
-        view.showLoading()
         var topic: PFObject = PFObject(className: "Topics")
         
         if titleText.text != "" && contentText.text != "" {
@@ -89,9 +92,9 @@ class ComposeTopicViewController: UIViewController {
             alert.show()
 
         }
-   view.hideLoading()
+   
   self.dismissViewControllerAnimated(true, completion: nil)
-        
+  delegate?.submitTopicDidTouch(self)
         
 //self.navigationController?.popToRootViewControllerAnimated(true)
     }

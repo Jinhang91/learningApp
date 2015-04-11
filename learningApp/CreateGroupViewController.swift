@@ -8,10 +8,15 @@
 
 import UIKit
 
+protocol CreateGroupViewControllerDelegate : class{
+    func createGroupViewControllerDidTouch(controller:CreateGroupViewController)
+}
 
 class CreateGroupViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var imageData: NSData?
+    weak var delegate: CreateGroupViewControllerDelegate?
+    
     @IBOutlet weak var groupDialogView: DesignableView!
     @IBOutlet weak var avatarGroup: DesignableImageView!
     @IBOutlet weak var groupNameLabel: DesignableLabel!
@@ -54,7 +59,6 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         //Scale down image
         
         imageData = UIImagePNGRepresentation(scaledImage)
-    
         avatarGroup.image = scaledImage
         groupNameLabel2.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -74,7 +78,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBAction func createGroupButtonDidTouch(sender: AnyObject) {
                // loadingIndicator.hidden = false
-            view.showLoading()
+        
             if groupNameTextField.text != "" && avatarGroup.image != nil {
             if let data = imageData  {
             let imageFile:PFFile = PFFile(data: imageData)
@@ -97,7 +101,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             self.dismissViewControllerAnimated(true, completion: nil)
             }
             
-            view.hideLoading()
+           
       }
     
         else {
@@ -128,6 +132,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             
     
     }
+        delegate?.createGroupViewControllerDidTouch(self)
     }
     
     override func viewDidLoad() {

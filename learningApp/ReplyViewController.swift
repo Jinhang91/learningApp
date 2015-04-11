@@ -8,12 +8,16 @@
 
 import UIKit
 
+protocol ReplyViewControllerDelegate: class{
+    func sendReplyDidTouch(controller:ReplyViewController)
+}
+
 class ReplyViewController: UIViewController {
     
     var comment:PFObject?
     var topic:PFObject?
     
-    
+    weak var delegate: ReplyViewControllerDelegate?
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var sendReplyButton: UIBarButtonItem!
     @IBOutlet weak var replyTextView: UITextView!
@@ -41,7 +45,7 @@ dismissViewControllerAnimated(true, completion: nil)
     
 
     @IBAction func replyButtonDidTouch(sender: AnyObject) {
-        view.showLoading()
+        
         var comment:PFObject = PFObject(className: "Comment")
         
         
@@ -57,7 +61,7 @@ dismissViewControllerAnimated(true, completion: nil)
                 (post: PFObject!, error: NSError!) -> Void in
                 let title = post["title"] as NSString
                 println("\(title)")    // do something with your title variable
-                self.view.hideLoading()
+                
             }
            
             
@@ -72,7 +76,7 @@ dismissViewControllerAnimated(true, completion: nil)
             
         }
         self.dismissViewControllerAnimated(true, completion: nil)
-
+        delegate?.sendReplyDidTouch(self)
 
 }
     
