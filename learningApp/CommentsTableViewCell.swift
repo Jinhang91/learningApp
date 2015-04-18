@@ -28,7 +28,8 @@ class CommentsTableViewCell: PFTableViewCell {
         upvoteButton.animation = "pop"
         upvoteButton.force = 3
         upvoteButton.animate()
-        
+        SoundPlayer.play("upvote.wav")
+
         delegate?.commentsTableViewCellDidTouchUpvote(self , sender: sender)
     }
 

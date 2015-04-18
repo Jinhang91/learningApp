@@ -18,10 +18,14 @@ class GroupTableViewCell: UITableViewCell {
     
     @IBOutlet weak var timeLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    @IBOutlet weak var topicNumber: UILabel!
+    
+    @IBOutlet weak var timeLabelSign: UIImageView!
+    
+    @IBOutlet weak var authorSign: UIImageView!
+    
+    @IBOutlet weak var topicSign: UIImageView!
+
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

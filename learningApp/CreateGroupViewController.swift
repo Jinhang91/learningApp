@@ -15,6 +15,7 @@ protocol CreateGroupViewControllerDelegate : class{
 class CreateGroupViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var imageData: NSData?
+    var imageDefaultData: NSData?
     weak var delegate: CreateGroupViewControllerDelegate?
     
     @IBOutlet weak var groupDialogView: DesignableView!
@@ -38,6 +39,8 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         avatarGroup.animate()
         groupDialogView.animateNext{
         self.dismissViewControllerAnimated(true, completion: nil)
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
         }
     }
     
@@ -54,9 +57,9 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
         
         let pickedImage:UIImage = info.objectForKey(UIImagePickerControllerOriginalImage) as UIImage
-        
+    
         let scaledImage = self.scaleImageWith(pickedImage, and: CGSizeMake(70, 70))
-        //Scale down image
+               //Scale down image
         
         imageData = UIImagePNGRepresentation(scaledImage)
         avatarGroup.image = scaledImage
@@ -65,6 +68,11 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
 
     }
     
+    func imageDefault(){
+        let pickedDefaultImage:UIImage = UIImage(named: "avatarDefault")!
+        imageDefaultData = UIImagePNGRepresentation(pickedDefaultImage)
+
+    }
   
    
     func scaleImageWith(image:UIImage, and newSize:CGSize) ->UIImage{
@@ -77,7 +85,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     @IBAction func createGroupButtonDidTouch(sender: AnyObject) {
-               // loadingIndicator.hidden = false
+        
         
             if groupNameTextField.text != "" && avatarGroup.image != nil {
             if let data = imageData  {
@@ -89,7 +97,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             groupCreated["userer"] = PFUser.currentUser()
             
             groupCreated.save()
-            createGroupButton.hidden = true
+            
             println("Successful to create!")
             let alert = UIAlertView()
             alert.title = "Successful!"
@@ -97,17 +105,40 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             alert.addButtonWithTitle("OK")
             alert.show()
             
-           // self.loadingIndicator.hidden = true
-            self.dismissViewControllerAnimated(true, completion: nil)
-            }
-            
            
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            }
       }
+            if groupNameTextField.text != "" && avatarGroup.image != nil {
+                self.imageDefault()
+                if let data = imageDefaultData  {
+                let imageFile:PFFile = PFFile(data: imageDefaultData)
+                
+                var groupCreated:PFObject = PFObject(className: "Groups")
+                groupCreated.setObject(imageFile, forKey: "groupAvatar")
+                groupCreated["name"] = groupNameTextField.text
+                groupCreated["userer"] = PFUser.currentUser()
+                
+                groupCreated.save()
+                
+                println("Successful to create!")
+                let alert = UIAlertView()
+                alert.title = "Successful!"
+                alert.message = "Your " + self.groupNameTextField.text + " group is created"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                
+                
+                self.dismissViewControllerAnimated(true, completion: nil)
+                    
+            }
+        }
     
-        else {
+        if groupNameTextField.text == "" {
             println("Unsuccessful to create!")
             self.groupNameLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-            self.groupNameLabel.text = "All the fields are necessary!"
+            self.groupNameLabel.text = "Group name is necessary!"
             self.groupNameLabel.textAlignment = NSTextAlignment.Left
             self.groupNameLabel.textColor = UIColor.redColor()
             
@@ -130,7 +161,6 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             })
             
             
-    
     }
         delegate?.createGroupViewControllerDidTouch(self)
     }

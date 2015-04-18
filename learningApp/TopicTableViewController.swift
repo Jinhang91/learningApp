@@ -11,25 +11,13 @@ import UIKit
 
 
 class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDelegate, LoginViewControllerDelegate, ComposeTopicViewControllerDelegate {
-    var groupCreated:PFObject?
-   
-   // @IBOutlet weak var signOutButton: UIBarButtonItem!
-    @IBOutlet weak var composeButton: UIBarButtonItem!
-  /*
-    @IBAction func signOutButtonDidPress(sender: AnyObject) {
-   
-    PFUser.logOut()
-        var currentUser = PFUser.currentUser()
-        if currentUser == nil {
-        println("Log out successful")
-        }
-       else{
-        println("Log out failed")
-        }
-    loginSystem()
     
-    }
-    */
+    var groupCreated:PFObject?
+    var topic:PFObject?
+    var likeCount:NSArray!
+    
+    @IBOutlet weak var composeButton: UIBarButtonItem!
+
     @IBAction func composeButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() == nil{
             let alert = UIAlertView()
@@ -69,10 +57,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
 
    func loadData(){
         timelineTopicData.removeAllObjects()
-    
+        SoundPlayer.play("refresh.wav")
         var findTopicData:PFQuery = PFQuery(className: "Topics")
     
         findTopicData.whereKey("parent", equalTo: groupCreated!)
+        findTopicData.orderByAscending("createdAt")
         findTopicData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
             
@@ -87,6 +76,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
+           
             }
         
             else{
@@ -105,6 +95,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         self.tableView.layoutIfNeeded()
         self.loadData()
         self.tableView.reloadData()
+     
             
        // loginSystem()
         isFirstTime = false
@@ -123,7 +114,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         println(groupCreated)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
     
-        tableView.estimatedRowHeight = 104
+        tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
        
         self.navigationItem.hidesBackButton = true
@@ -131,27 +122,31 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         //backButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
         //navigationItem.backBarButtonItem = backButton
         
+        backButton()
+        
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+    }
+    
+    func backButton(){
         var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         myBackButton.setTitle("  Groups", forState: UIControlState.Normal)
         myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
         myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
-       
+        
         myBackButton.sizeToFit()
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
-        
-        
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
     }
     
     func pullToRefresh(){
-        view.showLoading()
+     //   view.showLoading()
         self.loadData()
         refreshControl?.endRefreshing()
         self.tableView.reloadData()
         println("reload finised")
-        view.hideLoading()
+      //  view.hideLoading()
     }
     
     /*
@@ -227,46 +222,83 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     */
 
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        //// change to one, only have one section
+
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
+
         return timelineTopicData.count
     }
 
+   
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:TopicTableViewCell = tableView.dequeueReusableCellWithIdentifier("topicCell", forIndexPath: indexPath) as TopicTableViewCell
 
         
         let topic:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
         cell.titleLabel.text = topic.objectForKey("title") as? String
-       // cell.contentLabel.text = topic.objectForKey("content") as? String
-       // cell.content2Label.text = topic.objectForKey("content") as String
+        
+      
         
         //Initial animation
         cell.timestampLabel.alpha = 0
-       // cell.contentLabel.alpha = 0
         cell.titleLabel.alpha = 0
         cell.usernameLabel.alpha = 0
+        cell.upvoteButton.alpha = 0
+        cell.commentButton.alpha = 0
+        cell.timeSign.alpha = 0
+        cell.authorSign.alpha = 0
+        
+      
         
         //Time setting
         cell.timestampLabel.text = timeAgoSinceDate(topic.createdAt, true)
         
-        //Username
+        //Show comment number
+        var showCommentNo = PFQuery(className: "Comment")
+        showCommentNo.whereKey("parent", equalTo: topic)
+        showCommentNo.countObjectsInBackgroundWithBlock{
+            (count: Int32, error: NSError!) -> Void in
+            if error == nil {
+            cell.commentButton.setTitle("\(count)", forState: UIControlState.Normal)
+            }
+        }
         
+        //Show upvote 
+       var showTopicLikeNumber = PFUser.query()
+        showTopicLikeNumber.whereKey("liked", equalTo: topic.objectId)
+        
+        showTopicLikeNumber.findObjectsInBackgroundWithBlock({
+            (objects:[AnyObject]!,error:NSError!)->Void in
+            
+            if (error == nil){
+                //let liked:NSArray = objects as NSArray
+                self.likeCount = objects as NSArray
+               cell.upvoteButton.setTitle(toString(self.likeCount.count), forState: UIControlState.Normal)
+                              }
+            
+            })
+     
+        var objectTo = topic.objectForKey("whoLiked") as [String]
+        if contains(objectTo, PFUser.currentUser().objectId){
+                    
+          cell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
+                        }
+        else{
+            cell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
+                        }
+        
+        
+       
+        cell.upvoteButton.tag = indexPath.row
+      
+        //cell.upvoteButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        //Username
         var findUsererData:PFQuery = PFUser.query()
         findUsererData.whereKey("objectId", equalTo: topic.objectForKey("userer").objectId)
         
@@ -281,9 +313,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 //final animation
                 spring(1.0){
                 cell.timestampLabel.alpha = 1
-              //  cell.contentLabel.alpha = 1
                 cell.titleLabel.alpha = 1
                 cell.usernameLabel.alpha = 1
+                cell.commentButton.alpha = 1
+                cell.upvoteButton.alpha = 1
+                cell.timeSign.alpha = 1
+                cell.authorSign.alpha = 1
                 }
               }
         })
@@ -300,17 +335,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 println("No group is identifed")
             }
         }
-
+        
         cell.delegate = self
         return cell
     }
 
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // performSegueWithIdentifier("webSegue", sender: self)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-   println("You select cell #\(indexPath.row)!")
-    }
     
     // MARK: Compose Topic Delegate
     func submitTopicDidTouch(controller: ComposeTopicViewController) {
@@ -324,11 +353,50 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         loadData()
     }
     
-  
+    
     // MARK: TopicTableViewCellDelegate
    
+    var _currentIndexPath:NSIndexPath?
+    
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
+        if PFUser.currentUser() != nil{
+            
+        let senderButton:SpringButton = sender as SpringButton
+   
+        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        println(topicLiked.objectId)
         
+           var objectTo = topicLiked.objectForKey("whoLiked") as [String]
+           if !contains(objectTo, PFUser.currentUser().objectId){
+            
+                PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
+                PFUser.currentUser().save()
+                topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+                topicLiked.save()
+            
+                senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
+                senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
+            println("new")
+
+            }
+           else{
+                PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
+                PFUser.currentUser().save()
+                topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+                topicLiked.save()
+            senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
+            senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
+          println("remove")
+
+            }
+          
+        }
+        else{
+            performSegueWithIdentifier("loginTopicSegue", sender: self)
+        }
+        if let indexPath = _currentIndexPath {
+self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+    }
     }
 
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
@@ -345,6 +413,13 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         }
     }
 
+    // MARK: Prepare for segue
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+       
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        println("You select cell #\(indexPath.row)!")
+        
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "CommentsSegue"){
@@ -353,7 +428,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             let topic: AnyObject = timelineTopicData[indexPath.row]
             toView.topic = topic as? PFObject
             toView.groupCreated = groupCreated as PFObject?
-           
+            toView.timelineTopicData = timelineTopicData as NSMutableArray!
         }
         
         if (segue.identifier == "composeSegue"){
@@ -361,5 +436,13 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             toView.groupCreated = groupCreated as PFObject?
             toView.delegate = self
         }
+    }
+    
+    //MARK: roll editing
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        UIView.animateWithDuration(0.25, animations: {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        })
     }
  }

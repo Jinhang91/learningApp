@@ -38,6 +38,13 @@ class ComposeTopicViewController: UIViewController {
          UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
         
           UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        
+        if titleText.text == nil {
+            submitTopicButton.enabled = false
+        }
+        else{
+            submitTopicButton.enabled = true
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -66,6 +73,8 @@ class ComposeTopicViewController: UIViewController {
         topic["content"] = contentText.text
         topic["userer"] = PFUser.currentUser()
         topic["parent"] = groupCreated
+        topic["whoLiked"] = []
+        
         topic.save()
         
             var mama = topic["parent"] as PFObject

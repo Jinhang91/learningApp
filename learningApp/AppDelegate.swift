@@ -36,13 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.statusChangedWithReachability(internetReach!)
         }
         
-        
+        /*
         var addStatusBar = UIView()
         addStatusBar.frame = CGRectMake(0, 0, 1000, 20);
         
         addStatusBar.backgroundColor = UIColorFromRGB(0x4FD7CE)
         self.window?.rootViewController?.view .addSubview(addStatusBar)
-        
+        */
         return true
     }
 

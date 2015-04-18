@@ -53,6 +53,7 @@ dismissViewControllerAnimated(true, completion: nil)
             comment["commentContent"] = replyTextView.text
             comment["userer"] = PFUser.currentUser()
             comment["parent"] = topic
+            comment["whoLiked"] = []
             comment.save()
             
             var post = comment["parent"] as PFObject

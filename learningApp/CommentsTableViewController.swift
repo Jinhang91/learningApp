@@ -14,9 +14,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     var topic :PFObject?
     var comment :PFObject?
     var urlTest: String?
-    
+    var realURL:NSURL!
+    var likeButton: UIButton!
+    var likeCommentButton: UIButton!
+    var likeCount: NSArray!
     let transitionManager = TransitionManager()
-    var timelineTopicData:NSMutableArray = NSMutableArray()
+    var timelineTopicData:NSMutableArray! = NSMutableArray()
     
    
   //  @IBOutlet weak var textView: AutoTextView!
@@ -28,7 +31,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func viewDidLoad() {
         super.viewDidLoad()
         println(topic)
-  
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.estimatedRowHeight = 104
@@ -70,8 +72,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         if isFirstTime {
             self.tableView.setNeedsDisplay()
             self.tableView.layoutIfNeeded()
-            self.tableView.reloadData()
             self.loadData()
+            self.tableView.reloadData()
             isFirstTime = false
         }
         
@@ -103,7 +105,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
        //findCommentData.whereKey("parent", equalTo:PFObject(withoutDataWithClassName: "Topics", objectId: "bOX43RTnLW"))
        
         findCommentData.whereKey("parent", equalTo: topic!)
-
+        findCommentData.orderByAscending("createdAt")
 
         findCommentData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
@@ -127,8 +129,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
+      
         return 1
     }
 
@@ -155,9 +156,54 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         if let topicCell = cell as? TopicTableViewCell{
          topicCell.titleLabel.text = topic?.objectForKey("title") as? String
-       //  topicCell.contentLabel.text = topic?.objectForKey("content") as? String
-            topicCell.contentTextView.text = topic?.objectForKey("content") as? String
+         topicCell.contentTextView.text = topic?.objectForKey("content") as? String
          topicCell.timestampLabel.text = timeAgoSinceDate(topic!.createdAt, true)
+            
+         //Initial animation
+         topicCell.titleLabel.alpha = 0
+         topicCell.contentTextView.alpha = 0
+         topicCell.timestampLabel.alpha = 0
+         topicCell.usernameLabel.alpha = 0
+         topicCell.commentButton.alpha = 0
+         topicCell.upvoteButton.alpha = 0
+         topicCell.authorSign.alpha = 0
+         topicCell.timeSign.alpha = 0
+            
+         var commentNo = PFQuery(className: "Comment")
+            commentNo.whereKey("parent", equalTo: topic)
+            commentNo.countObjectsInBackgroundWithBlock{
+                (count:Int32, error:NSError!) -> Void in
+                if (error == nil){
+                    topicCell.commentButton.setTitle("\(count)", forState: UIControlState.Normal)
+                }
+            }
+            
+            //Show upvote
+            var showTopicLikeNumber = PFUser.query()
+            showTopicLikeNumber.whereKey("liked", equalTo: topic?.objectId)
+            
+            showTopicLikeNumber.findObjectsInBackgroundWithBlock({
+                (objects:[AnyObject]!,error:NSError!)->Void in
+                
+                if (error == nil){
+                    self.likeCount = objects as NSArray
+                    topicCell.upvoteButton.setTitle("\(self.likeCount.count)", forState: UIControlState.Normal)
+                }
+                
+            })
+            
+            likeButton = topicCell.upvoteButton
+            var objectTo = topic?.objectForKey("whoLiked") as [String]
+            if contains(objectTo, PFUser.currentUser().objectId){
+                
+                topicCell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
+            }
+            else{
+                topicCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
+            }
+            
+            topicCell.upvoteButton.tag = indexPath.row
+ 
             
             var findUsererData:PFQuery = PFUser.query()
             findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
@@ -171,6 +217,17 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             let user:PFUser! = (objects as NSArray).lastObject as? PFUser!
             
             topicCell.usernameLabel.text = user.username
+                  
+                    spring(1.0){
+                        topicCell.titleLabel.alpha = 1
+                        topicCell.contentTextView.alpha = 1
+                        topicCell.timestampLabel.alpha = 1
+                        topicCell.usernameLabel.alpha = 1
+                        topicCell.commentButton.alpha = 1
+                        topicCell.upvoteButton.alpha = 1
+                        topicCell.timeSign.alpha = 1
+                        topicCell.authorSign.alpha = 1
+                    }
             
             
     }
@@ -205,7 +262,40 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
             commentCell.commentLabel.text = comment.objectForKey("commentContent") as? String
             commentCell.timeLabel.text = timeAgoSinceDate(comment.createdAt, true)
-                    
+            
+            //Initial Animation
+            commentCell.commentLabel.alpha = 0
+            commentCell.timeLabel.alpha = 0
+            commentCell.upvoteButton.alpha = 0
+            commentCell.authorLabel.alpha = 0
+            commentCell.replyButton.alpha = 0
+            
+            //Show upvote
+            var showTopicLikeNumber = PFUser.query()
+            showTopicLikeNumber.whereKey("liked", equalTo: comment.objectId)
+            
+            showTopicLikeNumber.findObjectsInBackgroundWithBlock({
+                (objects:[AnyObject]!,error:NSError!)->Void in
+                
+                if (error == nil){
+                    self.likeCount = objects as NSArray
+                    commentCell.upvoteButton.setTitle("\(self.likeCount.count)", forState: UIControlState.Normal)
+                }
+                
+            })
+            
+            //likeCommentButton = commentCell.upvoteButton
+            var objectTo = comment.objectForKey("whoLiked") as [String]
+            if contains(objectTo, PFUser.currentUser().objectId){
+                
+                commentCell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
+            }
+            else{
+                commentCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
+            }
+            
+            commentCell.upvoteButton.tag = (indexPath.row - 1)
+            
             var findUsererData:PFQuery = PFUser.query()
             findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
             
@@ -219,6 +309,13 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     
                     commentCell.authorLabel.text = user.username
                     
+                    spring(1.0){
+                        commentCell.commentLabel.alpha = 1
+                        commentCell.timeLabel.alpha = 1
+                        commentCell.upvoteButton.alpha = 1
+                        commentCell.replyButton.alpha = 1
+                        commentCell.authorLabel.alpha = 1
+                    }
                     
                 }
                     
@@ -253,12 +350,70 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
     
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
-    
+        let senderButton:SpringButton = sender as SpringButton
+        //   senderButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
+        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        println(topicLiked.objectId)
+        
+        var objectTo = topicLiked.objectForKey("whoLiked") as [String]
+        if !contains(objectTo, PFUser.currentUser().objectId){
+            
+            PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
+            PFUser.currentUser().save()
+            topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+            topicLiked.save()
+            
+            senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
+            senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
+            
+            
+        }
+        else{
+            PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
+            PFUser.currentUser().save()
+            topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+            topicLiked.save()
+            senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
+            senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
+            
+            
+        }
+
     }
     
     func commentsTableViewCellDidTouchUpvote(cell: CommentsTableViewCell, sender: AnyObject) {
+        let senderButton:SpringButton = sender as SpringButton
+        //   senderButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
+        var commentLiked:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as PFObject
+        println(commentLiked.objectId)
+        
+        var objectTo = commentLiked.objectForKey("whoLiked") as [String]
+        if !contains(objectTo, PFUser.currentUser().objectId){
+            
+            PFUser.currentUser().addUniqueObject(commentLiked.objectId, forKey: "liked")
+            PFUser.currentUser().save()
+            commentLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+            commentLiked.save()
+            
+            senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
+            senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
+            
+            
+        }
+        else{
+            PFUser.currentUser().removeObject(commentLiked.objectId, forKey: "liked")
+            PFUser.currentUser().save()
+            commentLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
+            commentLiked.save()
+            senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
+            senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
+            
+            
+        }
         
     }
+
+    
     
     func commentsTableViewCellDidTouchReply(cell: CommentsTableViewCell, sender: AnyObject ){
         performSegueWithIdentifier("replySegue", sender: cell)
@@ -270,13 +425,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         view.showLoading()
         loadData()
     }
-/*
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("webSegue", sender: indexPath)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
-    }
-*/
+
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -306,10 +455,13 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 let webViewController = WebViewController()
                 
                 webViewController.urlString = escapedString
-                println(escapedString)
-                //if let escapedString = escapedString
+                //println(escapedString)
                 toView.urlString = escapedString as String?
+                toView.realURL = realURL as NSURL!
                 UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+               // UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+               
+                
                 toView.transitioningDelegate = transitionManager
                 }
         }
@@ -320,7 +472,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         println(URL)
         println(URL.absoluteString)
-        
+        realURL = URL
         urlTest = URL.absoluteString
 
         performSegueWithIdentifier("webSegue", sender:self)
@@ -329,5 +481,20 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
 
      
            }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        println("You select cell #\(indexPath.row)!")
+    }
+    
+    //MARK: roll editing
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 0.1)
+        UIView.animateWithDuration(0.25, animations: {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        })
+    }
+
+    
     
 }

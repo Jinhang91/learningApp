@@ -16,13 +16,20 @@ class TestingViewController: UIViewController, UITextViewDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         textingView.delegate = self
+    
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+      
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
         println("Link Selected!")
@@ -41,7 +48,7 @@ class TestingViewController: UIViewController, UITextViewDelegate{
              let toView = segue.destinationViewController as WebViewController
             if let data = urlTest {
             let escapedString = data.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-                let webViewController = WebViewController()
+                let webViewController = WebTestingViewController()
 
                     webViewController.urlString = escapedString
                     println(escapedString)

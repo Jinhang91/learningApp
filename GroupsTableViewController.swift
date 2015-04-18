@@ -116,6 +116,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         searchActive = true
+        loadGroup("0000000")
         searchBar.setShowsCancelButton(true, animated: true)
         return true
     }
@@ -140,7 +141,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     func loadData(){
         timelineGroupData.removeAllObjects()
-        
+        SoundPlayer.play("refresh.wav")
         var findGroupData:PFQuery = PFQuery(className: "Groups")
         
         findGroupData.findObjectsInBackgroundWithBlock({
@@ -175,11 +176,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             self.tableView.setNeedsDisplay()
             self.tableView.layoutIfNeeded()
             self.loadData()
-           // pullToRefresh()
             isFirstTime = false
         }
         
-        navigationController?.hidesBarsOnSwipe = true
+       // navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.topItem?.title = "Groups"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
@@ -189,7 +189,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-      // searchBar.becomeFirstResponder()
+     //  searchBar.becomeFirstResponder()
         for subView in searchBar.subviews  {
             for subsubView in subView.subviews  {
                 if let textField = subsubView as? UITextField {
@@ -215,12 +215,12 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         refreshControl.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
         
-        tableView.estimatedRowHeight = 104
+        tableView.estimatedRowHeight = 109
         tableView.rowHeight = UITableViewAutomaticDimension
         
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
-      // navigationItem.backBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+   //      navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
         
         
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
@@ -237,7 +237,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     //  UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
     hideBottomBorder()
                }
-
+    
+  
     func hideBottomBorder() {
         for view in navigationController?.navigationBar.subviews.filter({ NSStringFromClass($0.dynamicType) == "_UINavigationBarBackground" }) as [UIView] {
             if let imageView = view.subviews.filter({ $0 is UIImageView }).first as? UIImageView {
@@ -253,27 +254,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         
         println("reload finised")
     }
-/*
-      override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        if searchActive == true{
-            searchBar = UISearchBar(frame: CGRectMake(0, 0, tableView.frame.size.width, 44))
-            searchBar?.delegate = self
-            searchBar?.backgroundColor = UIColor(hex: "#EBF0F5")
-            searchBar?.searchBarStyle = UISearchBarStyle.Minimal
-        }
-        
-        return searchBar
-    }
-   
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        if searchActive == true {
-            
-        }
-        return 45
-    }
-*/
+
     
     //MARK: Log in delegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
@@ -308,14 +289,22 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
        // let groupCreated:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
        if searchActive == true {
-            
+        
             let groupCreated:PFObject = self.groupList.objectAtIndex(indexPath.row) as PFObject
             cell.groupName.text = groupCreated.objectForKey("name") as? String
             cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true) + " ago"
 
         cell.groupName.alpha = 0
+        
         cell.timeLabel.alpha = 0
+        cell.timeLabelSign.alpha = 0
+        
         cell.authorName.alpha = 0
+        cell.authorSign.alpha = 0
+        cell.avatarGroup.alpha = 0
+        
+        cell.topicNumber.alpha = 0
+        cell.topicSign.alpha = 0
         
         let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
         
@@ -325,6 +314,20 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             if error == nil{
                 let image:UIImage = UIImage(data: imageData)!
                 cell.avatarGroup.image = image
+            }
+        }
+        
+        var showTopicNo = PFQuery(className: "Topics")
+        showTopicNo.whereKey("parent", equalTo: groupCreated)
+        showTopicNo.countObjectsInBackgroundWithBlock{
+            (count: Int32, error: NSError!) -> Void in
+            if error == nil {
+                if count == 0 {
+                cell.topicNumber.text = "\(count) topic"
+                }
+                else{
+                    cell.topicNumber.text = "\(count) topics"
+                }
             }
         }
         
@@ -342,8 +345,16 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 //final animation
                 spring(1.0){
                     cell.timeLabel.alpha = 1
+                    cell.timeLabelSign.alpha = 1
+                    
                     cell.groupName.alpha = 1
+                    
                     cell.authorName.alpha = 1
+                    cell.authorSign.alpha = 1
+                    cell.avatarGroup.alpha = 1
+                    
+                    cell.topicNumber.alpha = 1
+                    cell.topicSign.alpha = 1
                 }
                 
             }
@@ -356,7 +367,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             
         let groupCreated:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
         cell.groupName.text = groupCreated.objectForKey("name") as? String
-        cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true) + " ago"
+        cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true)
         
         cell.groupName.alpha = 0
         cell.timeLabel.alpha = 0
@@ -373,6 +384,20 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
         }
         
+        var showTopicNo = PFQuery(className: "Topics")
+        showTopicNo.whereKey("parent", equalTo: groupCreated)
+        showTopicNo.countObjectsInBackgroundWithBlock{
+            (count: Int32, error: NSError!) -> Void in
+            if error == nil {
+                if count <= 1 {
+                    cell.topicNumber.text = "\(count) topic"
+                }
+                else{
+                    cell.topicNumber.text = "\(count) topics"
+                }
+            }
+        }
+        
         var findUsererData:PFQuery = PFUser.query()
         findUsererData.whereKey("objectId", equalTo: groupCreated.objectForKey("userer").objectId)
         
@@ -389,6 +414,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     cell.timeLabel.alpha = 1
                     cell.groupName.alpha = 1
                     cell.authorName.alpha = 1
+                
                 }
                 
             }
@@ -398,6 +424,36 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         return cell
     }
     
+    // MARK: Row Editing
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+      //  var groupDisplay:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+        
+        if editingStyle == UITableViewCellEditingStyle.Delete{
+        
+                        var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+                        groupDisplay.deleteInBackground()
+                        self.timelineGroupData.removeObjectAtIndex(indexPath.row)
+                        groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("deleted")
+                            } else {
+                                println(error)
+                            }
+            }
+            
+        }
+
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    }
+        
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        UIView.animateWithDuration(0.25, animations: {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        })
+    }
+
+    // MARK: Prepare for segue
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier("topicSegue", sender: indexPath)
       //  var groupInitial = groupData[indexPath.row]

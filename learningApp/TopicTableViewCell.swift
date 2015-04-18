@@ -17,13 +17,16 @@ class TopicTableViewCell: PFTableViewCell,UITextViewDelegate {
     @IBOutlet weak var timestampLabel: UILabel!
 
     @IBOutlet weak var titleLabel: UILabel!
-    //@IBOutlet weak var contentLabel: UILabel!
     
     @IBOutlet weak var upvoteButton: SpringButton!
     @IBOutlet weak var commentButton: SpringButton!
     
     @IBOutlet weak var contentTextView: AutoTextView!
- //   @IBOutlet weak var content2Label: AutoTextView!
+    
+    @IBOutlet weak var authorSign: UIImageView!
+    @IBOutlet weak var timeSign: UIImageView!
+    
+    var likeCount = 0
     
     weak var delegate: TopicTableViewCellDelegate?
     
@@ -31,7 +34,9 @@ class TopicTableViewCell: PFTableViewCell,UITextViewDelegate {
         upvoteButton.animation = "pop"
         upvoteButton.force = 3
         upvoteButton.animate()
-        
+        SoundPlayer.play("upvote.wav")
+       
+
         delegate?.topicTableViewCellDidTouchUpvote(self , sender: sender)
     }
     
