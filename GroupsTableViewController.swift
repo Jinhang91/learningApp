@@ -179,7 +179,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             isFirstTime = false
         }
         
-       // navigationController?.hidesBarsOnSwipe = true
+        //navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.topItem?.title = "Groups"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
@@ -322,7 +322,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         showTopicNo.countObjectsInBackgroundWithBlock{
             (count: Int32, error: NSError!) -> Void in
             if error == nil {
-                if count == 0 {
+                if count <= 1 {
                 cell.topicNumber.text = "\(count) topic"
                 }
                 else{
@@ -426,8 +426,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     // MARK: Row Editing
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-      //  var groupDisplay:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as PFObject
-        
+     /*
         if editingStyle == UITableViewCellEditingStyle.Delete{
         
                         var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
@@ -440,12 +439,62 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                                 println(error)
                             }
             }
-            
+
         }
 
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic) */
                     }
-        
+   
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
+            
+            let deleteMenu = UIAlertController(title: nil, message: "Delete this group?", preferredStyle: .ActionSheet)
+            
+            let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
+                { action -> Void in
+                    var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+                    groupDisplay.deleteInBackground()
+                    self.timelineGroupData.removeObjectAtIndex(indexPath.row)
+                    groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("deleted")
+                        } else {
+                            println(error)
+                        }
+   
+            }
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                { action -> Void in
+            
+            }
+            
+            deleteMenu.addAction(deleteIt)
+            deleteMenu.addAction(cancelIt)
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+            })
+        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        return[deleteAction]
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+   
+        var groupObject:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+        if PFUser.currentUser() != nil{
+        if groupObject.objectForKey("userer").objectId == (PFUser.currentUser().objectId){
+       
+        return true
+    }
+        else if groupObject.objectForKey("userer").objectId != (PFUser.currentUser().objectId){
+            return false
+        }
+        }
+        else {
+            return false
+        }
+    return false
+    }
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
         UIView.animateWithDuration(0.25, animations: {
@@ -455,8 +504,18 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
     // MARK: Prepare for segue
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if PFUser.currentUser() == nil{
+            let alert = UIAlertView()
+            alert.title = "No user is found"
+            alert.message = "Log in or sign up an account to browse into groups"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+            performSegueWithIdentifier("loginSegue", sender: self)
+
+        }
+        else{
         performSegueWithIdentifier("topicSegue", sender: indexPath)
-      //  var groupInitial = groupData[indexPath.row]
+        }
          tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
     }

@@ -16,6 +16,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     
     var imageData: NSData?
     var imageDefaultData: NSData?
+    var scaledImage:UIImage?
     weak var delegate: CreateGroupViewControllerDelegate?
     
     @IBOutlet weak var groupDialogView: DesignableView!
@@ -52,19 +53,22 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         
          groupNameLabel2.hidden = true
          self.presentViewController(imagePicker, animated: true, completion: nil)
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+
     }
     
  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
         
         let pickedImage:UIImage = info.objectForKey(UIImagePickerControllerOriginalImage) as UIImage
     
-        let scaledImage = self.scaleImageWith(pickedImage, and: CGSizeMake(70, 70))
+        scaledImage = self.scaleImageWith(pickedImage, and: CGSizeMake(70, 70))
                //Scale down image
         
         imageData = UIImagePNGRepresentation(scaledImage)
         avatarGroup.image = scaledImage
         groupNameLabel2.hidden = true
         self.dismissViewControllerAnimated(true, completion: nil)
+    
 
     }
     
@@ -87,7 +91,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     @IBAction func createGroupButtonDidTouch(sender: AnyObject) {
         
         
-            if groupNameTextField.text != "" && avatarGroup.image != nil {
+            if groupNameTextField.text != "" && avatarGroup.image == scaledImage {
             if let data = imageData  {
             let imageFile:PFFile = PFFile(data: imageData)
 
@@ -96,7 +100,15 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             groupCreated["name"] = groupNameTextField.text
             groupCreated["userer"] = PFUser.currentUser()
             
-            groupCreated.save()
+                groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("\(self.groupNameTextField.text) group created")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+
             
             println("Successful to create!")
             let alert = UIAlertView()
@@ -107,10 +119,11 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             
            
             self.dismissViewControllerAnimated(true, completion: nil)
-            
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
             }
       }
-            if groupNameTextField.text != "" && avatarGroup.image != nil {
+            else if (groupNameTextField.text != "" && avatarGroup.image != nil) {
                 self.imageDefault()
                 if let data = imageDefaultData  {
                 let imageFile:PFFile = PFFile(data: imageDefaultData)
@@ -120,7 +133,15 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                 groupCreated["name"] = groupNameTextField.text
                 groupCreated["userer"] = PFUser.currentUser()
                 
-                groupCreated.save()
+                    groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("\(self.groupNameTextField.text) group created")
+                        } else {
+                            println(error)
+                        }
+                        
+                    }
+
                 
                 println("Successful to create!")
                 let alert = UIAlertView()
@@ -131,11 +152,12 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                 
                 
                 self.dismissViewControllerAnimated(true, completion: nil)
-                    
+                UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+    
             }
         }
     
-        if groupNameTextField.text == "" {
+        else if groupNameTextField.text == "" {
             println("Unsuccessful to create!")
             self.groupNameLabel.transform = CGAffineTransformMakeTranslation(0, 0)
             self.groupNameLabel.text = "Group name is necessary!"

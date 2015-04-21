@@ -65,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="topicCell" rowHeight="96" id="b6x-0e-Hi5" userLabel="Topic Table View Cell" customClass="TopicTableViewCell" customModule="learningApp" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="topicCell" rowHeight="96" id="b6x-0e-Hi5" userLabel="Topic Table View Cell" customClass="TopicTableViewCell" customModule="learningApp" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b6x-0e-Hi5" id="8Vt-gL-YbB">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -96,7 +96,7 @@
                                                 <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
-                                                <action selector="commentButtonDidTouch:" destination="b6x-0e-Hi5" eventType="touchUpInside" id="3Py-SN-jgs"/>
+                                                <action selector="commentButtonDidTouch:" destination="b6x-0e-Hi5" eventType="touchUpInside" id="var-RV-20X"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFk-hq-0Ku" customClass="SpringButton" customModule="learningApp" customModuleProvider="target">
@@ -160,7 +160,7 @@
                                 <inset key="separatorInset" minX="23" minY="0.0" maxX="23" maxY="0.0"/>
                                 <connections>
                                     <outlet property="authorSign" destination="Wee-4w-V40" id="DzW-Em-Yk3"/>
-                                    <outlet property="commentButton" destination="WPe-kh-sWd" id="j36-hs-zLM"/>
+                                    <outlet property="commentButton" destination="WPe-kh-sWd" id="d75-uk-Zga"/>
                                     <outlet property="timeSign" destination="gJZ-R7-NYu" id="psa-Jm-XQP"/>
                                     <outlet property="timestampLabel" destination="0Kj-aH-lJn" id="Jyo-q5-Aej"/>
                                     <outlet property="titleLabel" destination="d97-OP-cau" id="hvb-S0-ncN"/>
@@ -443,8 +443,17 @@
                         <subviews>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wu3-p5-hnD">
                                 <rect key="frame" x="0.0" y="19" width="320" height="549"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </webView>
+                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9A-P4-a7h">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NFu-vi-vG5">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="UFA-Ax-k4b">
                                 <rect key="frame" x="0.0" y="64" width="320" height="2.5"/>
                                 <color key="progressTintColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -458,19 +467,23 @@
                                 </state>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.30791938304901123" green="0.84330391883850098" blue="0.80606621503829956" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wu3-p5-hnD" firstAttribute="leading" secondItem="a71-Rw-E08" secondAttribute="leading" id="1Lp-SW-Z1l"/>
                             <constraint firstItem="JXo-LZ-Bym" firstAttribute="top" secondItem="ieK-cB-A8T" secondAttribute="bottom" id="4wC-7l-DvW"/>
                             <constraint firstItem="ieK-cB-A8T" firstAttribute="top" secondItem="wBO-UX-g2d" secondAttribute="bottom" id="64b-Q6-pSE"/>
                             <constraint firstItem="UFA-Ax-k4b" firstAttribute="top" secondItem="wBO-UX-g2d" secondAttribute="bottom" id="6Vz-vQ-EEN"/>
+                            <constraint firstItem="JXo-LZ-Bym" firstAttribute="top" secondItem="Z9A-P4-a7h" secondAttribute="bottom" id="BPZ-jD-97O"/>
+                            <constraint firstItem="Z9A-P4-a7h" firstAttribute="leading" secondItem="a71-Rw-E08" secondAttribute="leading" id="C6i-WV-FUa"/>
                             <constraint firstAttribute="trailing" secondItem="ieK-cB-A8T" secondAttribute="trailing" id="OJ7-ab-X46"/>
                             <constraint firstItem="JXo-LZ-Bym" firstAttribute="top" secondItem="wu3-p5-hnD" secondAttribute="bottom" id="OPM-qD-4B8"/>
                             <constraint firstItem="UFA-Ax-k4b" firstAttribute="leading" secondItem="a71-Rw-E08" secondAttribute="leading" id="TNF-Xa-hsd"/>
+                            <constraint firstAttribute="trailing" secondItem="Z9A-P4-a7h" secondAttribute="trailing" id="VVW-Ih-6r5"/>
                             <constraint firstAttribute="trailing" secondItem="wu3-p5-hnD" secondAttribute="trailing" id="b4Y-yA-4kE"/>
                             <constraint firstAttribute="trailing" secondItem="UFA-Ax-k4b" secondAttribute="trailing" id="fQF-5d-Fof"/>
                             <constraint firstItem="wu3-p5-hnD" firstAttribute="top" secondItem="wBO-UX-g2d" secondAttribute="bottom" constant="-45" id="luV-yn-lXb"/>
+                            <constraint firstItem="Z9A-P4-a7h" firstAttribute="top" secondItem="wBO-UX-g2d" secondAttribute="bottom" id="mJz-ZA-zkL"/>
                             <constraint firstItem="ieK-cB-A8T" firstAttribute="leading" secondItem="a71-Rw-E08" secondAttribute="leading" id="oST-jB-asN"/>
                         </constraints>
                     </view>
@@ -478,6 +491,7 @@
                     <connections>
                         <outlet property="maskButton" destination="ieK-cB-A8T" id="Ag5-3f-c2D"/>
                         <outlet property="progressView" destination="UFA-Ax-k4b" id="a1N-1Q-kcC"/>
+                        <outlet property="visualBlur" destination="Z9A-P4-a7h" id="Hmn-oA-ax6"/>
                         <outlet property="webView" destination="wu3-p5-hnD" id="CaU-rR-BnD"/>
                     </connections>
                 </viewController>
@@ -1562,7 +1576,7 @@
         <image name="topicNo" width="14" height="14"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XVr-ow-e8L"/>
-        <segue reference="caJ-OY-tYv"/>
+        <segue reference="lfw-qO-gEX"/>
+        <segue reference="2MX-wi-CQG"/>
     </inferredMetricsTieBreakers>
 </document>

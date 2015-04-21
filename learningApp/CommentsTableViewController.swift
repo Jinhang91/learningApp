@@ -202,6 +202,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 topicCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
             }
             
+            //topic Cell tag for indexPath
             topicCell.upvoteButton.tag = indexPath.row
  
             
@@ -294,10 +295,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 commentCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
             }
             
+            //Comment cell tag for index path
             commentCell.upvoteButton.tag = (indexPath.row - 1)
             
             var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
+            findUsererData.whereKey("objectId", equalTo: comment.objectForKey("userer").objectId)
             
             findUsererData.findObjectsInBackgroundWithBlock({
                 (objects:[AnyObject]!,error:NSError!)->Void in
@@ -359,9 +361,25 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         if !contains(objectTo, PFUser.currentUser().objectId){
             
             PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
-            PFUser.currentUser().save()
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            topicLiked.save()
+            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             
             senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
@@ -370,9 +388,25 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         }
         else{
             PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
-            PFUser.currentUser().save()
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("like removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            topicLiked.save()
+            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
             
@@ -391,9 +425,25 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         if !contains(objectTo, PFUser.currentUser().objectId){
             
             PFUser.currentUser().addUniqueObject(commentLiked.objectId, forKey: "liked")
-            PFUser.currentUser().save()
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             commentLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            commentLiked.save()
+            commentLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             
             senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
@@ -402,9 +452,25 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         }
         else{
             PFUser.currentUser().removeObject(commentLiked.objectId, forKey: "liked")
-            PFUser.currentUser().save()
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             commentLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            commentLiked.save()
+            commentLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
             
@@ -459,7 +525,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 toView.urlString = escapedString as String?
                 toView.realURL = realURL as NSURL!
                 UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
-               // UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+                
+                //UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
                
                 
                 toView.transitioningDelegate = transitionManager
@@ -494,7 +561,107 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
         })
     }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        tableView.editing = false
+    }
+    
+    deinit
+    {
+     tableView.editing = false
+        // perform the deinitialization
+        
+    }
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
 
+        var rateAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Rate", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
+            
+            let rateMenu = UIAlertController(title: nil, message: "Rate this comment", preferredStyle: .ActionSheet)
+            
+            let lowRating = UIAlertAction(title: "Bad", style: .Default)
+                { action -> Void in
+                
+            }
+            
+            let averageRating = UIAlertAction(title: "Average", style: .Default)
+                { action -> Void in
+            
+            }
+            
+            let highRating = UIAlertAction(title: "Good", style: .Default)
+                { action -> Void in
+            
+            }
+            
+            let cancelRating = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            
+            rateMenu.addAction(lowRating)
+            rateMenu.addAction(averageRating)
+            rateMenu.addAction(highRating)
+            rateMenu.addAction(cancelRating)
+            
+            self.presentViewController(rateMenu, animated: true, completion: nil)
+            })
+        
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete", handler:
+            {(action: UITableViewRowAction!,indexPath: NSIndexPath!) -> Void in
+                
+                let deleteMenu = UIAlertController(title: nil, message: "Delete this comment?", preferredStyle: .ActionSheet)
+                
+                let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
+                    { action -> Void in
+                        var commentDisplay:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
+                        commentDisplay.deleteInBackground()
+                        self.timelineCommentData.removeObjectAtIndex(indexPath.row - 1)
+                        commentDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("deleted")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                    { action -> Void in
+                        
+                }
+                
+                deleteMenu.addAction(deleteIt)
+                deleteMenu.addAction(cancelIt)
+                self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        
+        rateAction.backgroundColor = UIColorFromRGB(0x4FD7CE)
+        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        return[deleteAction,rateAction]
+            
+    }
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+  
+        if indexPath.row == 0{
+            return false
+        }
     
-    
+        else {
+        if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+            return true
+        }
+        
+        else if topic?.objectForKey("userer").objectId != PFUser.currentUser().objectId{
+            return false
+        }
+        
+       
+            
+        }
+       return true
+}
+
 }

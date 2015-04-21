@@ -22,6 +22,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     var backwardButton:UIButton!
     var forwardButton:UIButton!
     
+    @IBOutlet weak var visualBlur: UIVisualEffectView!
     @IBOutlet weak var maskButton: UIButton!
     
     override func viewDidLoad() {
@@ -45,12 +46,19 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     override func viewDidAppear(animated: Bool) {
 
         navigationController?.navigationBar.topItem?.title = "Loading..."
-        
-       navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xECECEC)
-       navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!,  NSForegroundColorAttributeName: UIColorFromRGB(0x7B7B7B)]
+    
+     //  navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xECECEC)
+       navigationController?.navigationBar.barTintColor = UIColor(red: 236, green: 236, blue: 236, alpha: 0.1)
+       navigationController?.navigationBar.translucent = true
+       navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Medium", size: 18)!,  NSForegroundColorAttributeName: UIColorFromRGB(0x7B7B7B)]
 
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        
+        return false
+    }
+
 
     
     func addLeftNavItemOnView()
@@ -60,7 +68,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         backwardButton.frame = CGRectMake(-50, 0, 40, 40)
         backwardButton.tintColor = UIColorFromRGB(0x4FD7CE)
         backwardButton.setImage(UIImage(named:"perfect"), forState: UIControlState.Normal)
-        backwardButton.setTitle(" ", forState: UIControlState.Normal)
+        backwardButton.setTitle("", forState: UIControlState.Normal)
         backwardButton.addTarget(self, action: "leftNavItemBack:", forControlEvents: UIControlEvents.TouchUpInside)
         var leftBarButtonItemBackward: UIBarButtonItem = UIBarButtonItem(customView: backwardButton)
         
@@ -76,27 +84,27 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         self.navigationItem.setLeftBarButtonItems([leftBarButtonItemBackward, leftBarButtonItemForward],animated: true)
         
         
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        myBackButton.addTarget(self, action: "closeButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        //myBackButton.setTitle("  Back", forState: UIControlState.Normal)
-        myBackButton.tintColor = UIColorFromRGB(0x4FD7CE)
-        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
-        myBackButton.setImage(UIImage(named: "icon-close"), forState: UIControlState.Normal)
+        var closeButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        closeButton.frame = CGRectMake(0,0,40,40)
+        closeButton.addTarget(self, action: "closeButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        closeButton.tintColor = UIColorFromRGB(0x4FD7CE)
+        //closeButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
+        closeButton.setImage(UIImage(named: "close"), forState: UIControlState.Normal)
         
-        myBackButton.sizeToFit()
-        var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
-        self.navigationItem.rightBarButtonItem  = myCustomBackButtonItem
+        var rightBarButtonClose:UIBarButtonItem = UIBarButtonItem(customView: closeButton)
+       
      
-        /*
-        let buttonClose: UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        buttonClose.frame = CGRectMake(0,0,40,40)
-        buttonClose.setImage(UIImage(named:"action-share"), forState: UIControlState.Normal)
-        buttonClose.addTarget(self, action: "closeButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        buttonClose.sizeToFit()
-        var rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(customView: buttonClose)
         
-        self.navigationItem.setRightBarButtonItem(rightBarButtonItem, animated: true)
-*/
+        var refreshButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        refreshButton.frame = CGRectMake(0,0,40,40)
+        refreshButton.tintColor = UIColorFromRGB(0x4FD7CE)
+        refreshButton.setImage(UIImage(named:"refresh"), forState: UIControlState.Normal)
+        refreshButton.addTarget(self, action: "refreshButton:", forControlEvents: UIControlEvents.TouchUpInside)
+    
+        var rightBarButtonRefresh: UIBarButtonItem = UIBarButtonItem(customView: refreshButton)
+        
+        self.navigationItem.setRightBarButtonItems([rightBarButtonClose,rightBarButtonRefresh], animated: true)
+
     }
 
     func leftNavItemBack(sender:UIButton!){
@@ -109,15 +117,28 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         println("goforward")
     }
     
+    func refreshButton(sender:UIButton!){
+        webView.reload()
+        println("reload")
+    }
+    
     func closeButton(sender:UIButton!){
-        // dismissViewControllerAnimated(true, completion: nil)
-        //UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+      //  UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationController?.popViewControllerAnimated(true)
         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0x4FD7CE)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
     }
     
 
+    /*
+    func maskButtonDoesUse(){
+        maskButton.hidden = false
+        maskButton.alpha = 0
+        spring(1){
+            self.maskButton.alpha = 1
+        }
+    }
+    
     func maskButtonDidUse(){
         maskButton.hidden = true
         maskButton.alpha = 1
@@ -125,7 +146,22 @@ class WebViewController: UIViewController,UIWebViewDelegate {
             self.maskButton.alpha = 0
         }
     }
+    */
+    func maskButtonDoesUse(){
+        visualBlur.hidden = false
+        visualBlur.alpha = 0
+        spring(1){
+            self.visualBlur.alpha = 1
+        }
+    }
 
+    func maskButtonDidUse(){
+        visualBlur.hidden = true
+        visualBlur.alpha = 1
+        spring(1){
+            self.visualBlur.alpha = 0
+        }
+    }
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         updateProgress()
@@ -137,7 +173,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         hasFinishedLoading = false
         updateProgress()
         view.showLoading()
-        maskButton.hidden = false
+        maskButtonDoesUse()
     }
     
     
@@ -145,17 +181,19 @@ class WebViewController: UIViewController,UIWebViewDelegate {
        shareTitle = webView.stringByEvaluatingJavaScriptFromString("document.title")
       //  navigationController?.navigationBar.topItem?.title = "\(shareTitle)"
         
-        var headerWebView = UIView(frame: CGRectMake(0, 0, 190, 50))
-        var linkTitle = UILabel(frame: CGRectMake(0, 5, 190, 22))
+        var headerWebView = UIView(frame: CGRectMake(0, 0, 150, 50))
+        headerWebView.center = self.view.center
+        view.addSubview(headerWebView)
+        var linkTitle = UILabel(frame: CGRectMake(0, 5, 150, 22))
  
         linkTitle.text = shareTitle
-        linkTitle.numberOfLines = 2
-        linkTitle.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 18)
+        linkTitle.numberOfLines = 0
+        linkTitle.font = UIFont(name: "SanFranciscoDisplay-Light", size: 18)
         linkTitle.textColor = UIColorFromRGB(0x7B7B7B)
         linkTitle.textAlignment = NSTextAlignment.Center
         headerWebView.addSubview(linkTitle)
      
-        var linkurl = UILabel(frame: CGRectMake(0, 22, 190, 20))
+        var linkurl = UILabel(frame: CGRectMake(0, 25, 150, 20))
         linkurl.text = "\(realURL)"
         linkurl.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 14)
         linkurl.textColor = UIColorFromRGB(0x7B7B7B)

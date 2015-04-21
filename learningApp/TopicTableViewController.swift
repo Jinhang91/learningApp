@@ -53,7 +53,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         self.objectsPerPage = 50
     }
     
-   var timelineTopicData:NSMutableArray = NSMutableArray()
+   var timelineTopicData:NSMutableArray! = NSMutableArray()
 
    func loadData(){
         timelineTopicData.removeAllObjects()
@@ -293,10 +293,26 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                         }
         
         
-       
+        //show comment enabled 
+      /*
+        var commentEnabled:PFQuery = PFQuery(className: "Comment")
+        commentEnabled.whereKey("userer", equalTo: PFUser.currentUser())
+        
+        var commentUser:PFQuery = PFQuery(className: "Comment")
+        commentUser.whereKey("parent", matchesKey: , inQuery: commentEnabled)
+   
+        commentUser.findObjectsInBackgroundWithBlock{
+            (objects:[AnyObject]!,error:NSError!) ->Void in
+            if error == nil{
+                cell.commentButton.setImage(UIImage(named: "commentActive"), forState: UIControlState.Normal)
+            }
+            else{
+                cell.commentButton.setImage(UIImage(named: "icon-comment"), forState: UIControlState.Normal)
+            }
+        }
+       */
         cell.upvoteButton.tag = indexPath.row
-      
-        //cell.upvoteButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.commentButton.tag = indexPath.row
         
         //Username
         var findUsererData:PFQuery = PFUser.query()
@@ -361,32 +377,62 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
         if PFUser.currentUser() != nil{
             
-        let senderButton:SpringButton = sender as SpringButton
+        let senderButton:UIButton = sender as UIButton
    
         var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
-        println(topicLiked.objectId)
+            println(topicLiked.objectId)
         
            var objectTo = topicLiked.objectForKey("whoLiked") as [String]
            if !contains(objectTo, PFUser.currentUser().objectId){
             
                 PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
-                PFUser.currentUser().save()
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+                
+            }
+
                 topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-                topicLiked.save()
-            
+                topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("liked")
+                } else {
+                    println(error)
+                }
+
+            }
                 senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
                 senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
-            println("new")
+          
 
             }
            else{
                 PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
-                PFUser.currentUser().save()
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("like removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
                 topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-                topicLiked.save()
+            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("like removed")
+                } else {
+                    println(error)
+                }
+                
+            }
+
             senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
-          println("remove")
+         
 
             }
           
@@ -400,17 +446,9 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
     }
 
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
-        if PFUser.currentUser() == nil {
-            let alert = UIAlertView()
-            alert.title = "No user is detected"
-            alert.message = "Log in with your account to make comments"
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            performSegueWithIdentifier("loginTopicSegue", sender: self)
-        }
-        else {
+       
             performSegueWithIdentifier("CommentsSegue", sender: cell)
-        }
+        
     }
 
     // MARK: Prepare for segue
@@ -445,4 +483,52 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
             cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
         })
     }
- }
+ 
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        let deleteAction = UITableViewRowAction(style: .Default, title: "Delete", handler:
+            {(action: UITableViewRowAction!,indexPath: NSIndexPath!) -> Void in
+            
+                let deleteMenu = UIAlertController(title: nil, message: "Delete this topic?", preferredStyle: .ActionSheet)
+                
+                let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
+                    { action -> Void in
+                        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
+                        topicDisplay.deleteInBackground()
+                        self.timelineTopicData.removeObjectAtIndex(indexPath.row)
+                        topicDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("deleted")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                    { action -> Void in
+                        
+                }
+                
+                deleteMenu.addAction(deleteIt)
+                deleteMenu.addAction(cancelIt)
+                self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        return[deleteAction]
+    }
+ 
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
+        if topicDisplay.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+        return true
+        }
+    
+        return false
+    }
+
+}

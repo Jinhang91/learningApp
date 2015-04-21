@@ -75,7 +75,17 @@ class ComposeTopicViewController: UIViewController {
         topic["parent"] = groupCreated
         topic["whoLiked"] = []
         
-        topic.save()
+            
+        
+            topic.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("\(self.titleText.text) topic created")
+                } else {
+                    println(error)
+                }
+                
+            }
+
         
             var mama = topic["parent"] as PFObject
             

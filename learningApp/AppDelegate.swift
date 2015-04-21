@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         addStatusBar.backgroundColor = UIColorFromRGB(0x4FD7CE)
         self.window?.rootViewController?.view .addSubview(addStatusBar)
         */
+        self.window?.tintColor = UIColorFromRGB(0x4FD7CE)
         return true
     }
 
@@ -101,6 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     NSNotificationCenter.defaultCenter().removeObserver(self, name: kReachabilityChangedNotification, object: nil)
     }
+    
+
 
 
 }
