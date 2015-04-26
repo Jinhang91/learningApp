@@ -114,7 +114,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         println(groupCreated)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
     
-        tableView.estimatedRowHeight = tableView.rowHeight
+        tableView.estimatedRowHeight = 96
         tableView.rowHeight = UITableViewAutomaticDimension
        
         self.navigationItem.hidesBackButton = true

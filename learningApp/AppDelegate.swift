@@ -35,7 +35,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          
             self.statusChangedWithReachability(internetReach!)
         }
+        /*
+        if reachabbilityStatus == kNotReachableWithWifi{
+            var addStatus = UILabel()
+            addStatus.frame = CGRectMake(0, 64, 1000, 20)
+            addStatus.backgroundColor = UIColorFromRGB(0xD83A31)
+            addStatus.text = "No Internet Connection"
+            addStatus.textColor = UIColorFromRGB(0xFFFFFF)
+            addStatus.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 15)
+            
+        }
         
+        else if reachabbilityStatus == kReachableWithWifi{
+            var addStatus = UILabel()
+            addStatus.alpha = 1
+            addStatus.frame = CGRectMake(0, 114, 1000, 30)
+            addStatus.backgroundColor = UIColorFromRGB(0x69D2E7)
+            addStatus.text = "Connected to Internet"
+            addStatus.textAlignment = NSTextAlignment.Center
+            addStatus.textColor = UIColorFromRGB(0xFFFFFF)
+            addStatus.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 18)
+            self.window?.rootViewController?.view.addSubview(addStatus)
+            springWithDelay(20, 6, {
+            addStatus.alpha = 0
+                
+            })
+
+        }*/
         /*
         var addStatusBar = UIView()
         addStatusBar.frame = CGRectMake(0, 0, 1000, 20);

@@ -31,6 +31,7 @@ class LoginViewController: UIViewController
         {
             //view.showLoading()
             var matricEntr = matricTextField.text
+        
             reachabbilityStatus == kReachableWithWifi
             
             PFUser.logInWithUsernameInBackground(matricTextField.text, password:passwordTextField.text) {
@@ -50,14 +51,14 @@ class LoginViewController: UIViewController
                     alert1.message = self.matricTextField.text + " user, enter your group name to join"
                     alert1.addButtonWithTitle("OK")
                     alert1.show()
-                    
+              */
                     let alert = UIAlertView()
                     alert.title = "Successful"
                     alert.message = "Welcome, " + self.matricTextField.text + " user"
                     alert.addButtonWithTitle("OK")
                     alert.show()
                     
-  */                  
+                    
                 
                 }
                     
@@ -130,11 +131,12 @@ class LoginViewController: UIViewController
     }
     
     override func viewDidAppear(animated: Bool) {
-       
+        PFUser.logOut()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        PFUser.logOut()
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityStatusChanged", name: "ReachStatusChanged", object: nil)
     

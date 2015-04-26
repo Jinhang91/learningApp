@@ -54,6 +54,7 @@ dismissViewControllerAnimated(true, completion: nil)
             comment["userer"] = PFUser.currentUser()
             comment["parent"] = topic
             comment["whoLiked"] = []
+            comment["rating"] = ""
             comment.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                 if success == true {
                     println(" your comment is posted")

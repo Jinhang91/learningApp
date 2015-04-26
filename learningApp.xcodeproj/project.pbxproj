@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C307E711AE2004800C7FDB8 /* WebTestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */; };
+		3C4A34821AED36D200B73F6D /* EvaluationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */; };
 		3C4C5FBA1AB4644A00371FAB /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */; };
 		3C4C5FBC1AB6B5F000371FAB /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */; };
 		3C4C5FC01AB6D93100371FAB /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4C5FBF1AB6D93100371FAB /* ParseUI.framework */; };
@@ -112,6 +113,7 @@
 
 /* Begin PBXFileReference section */
 		3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTestingViewController.swift; sourceTree = "<group>"; };
+		3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewController.swift; sourceTree = "<group>"; };
 		3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
 		3C4C5FBF1AB6D93100371FAB /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				3C809D321AAC388A007318D1 /* ViewController.swift */,
 				3CDD365A1AD0E55A00DFC79A /* Sans Francisco Fonts */,
 				3C809D341AAC388A007318D1 /* Main.storyboard */,
+				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
 				3CE840871AD93019006CE2B4 /* TestingViewController.swift */,
 				3C852E191AB2D7E9001F5FA1 /* Spring */,
 				3C809D371AAC388A007318D1 /* Images.xcassets */,
@@ -559,6 +562,7 @@
 				3C852E381AB2D7E9001F5FA1 /* AsyncButton.swift in Sources */,
 				3C4C5FC61AB7C10D00371FAB /* CommentsTableViewCell.swift in Sources */,
 				3CE9D3711ABEFA9C00D08A7C /* CreateGroupViewController.swift in Sources */,
+				3C4A34821AED36D200B73F6D /* EvaluationTableViewController.swift in Sources */,
 				3C852E451AB2D7E9001F5FA1 /* KeyboardLayoutConstraint.swift in Sources */,
 				3C307E711AE2004800C7FDB8 /* WebTestingViewController.swift in Sources */,
 				3C852E3C1AB2D7E9001F5FA1 /* DesignableButton.swift in Sources */,

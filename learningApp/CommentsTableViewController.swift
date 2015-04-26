@@ -52,9 +52,21 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
-
+        
+        var evaluateButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        evaluateButton.addTarget(self, action: "evaluateLink:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        evaluateButton.setImage(UIImage(named: "evaluate"), forState: UIControlState.Normal)
+        evaluateButton.sizeToFit()
+        var myCustomRightButtonItem:UIBarButtonItem = UIBarButtonItem(customView: evaluateButton)
+        self.navigationItem.rightBarButtonItem  = myCustomRightButtonItem
     
     }
+    
+    func evaluateLink(){
+        performSegueWithIdentifier("evaluateSegue", sender: self)
+    }
+    
     func pullToRefresh(){
         view.showLoading()
         self.loadData()
@@ -192,7 +204,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
             })
             
-            likeButton = topicCell.upvoteButton
+            //likeButton = topicCell.upvoteButton
             var objectTo = topic?.objectForKey("whoLiked") as [String]
             if contains(objectTo, PFUser.currentUser().objectId){
                 
@@ -202,7 +214,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 topicCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
             }
             
-            //topic Cell tag for indexPath
+            //MARK: topic Cell tag for indexPath
             topicCell.upvoteButton.tag = indexPath.row
  
             
@@ -269,7 +281,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             commentCell.timeLabel.alpha = 0
             commentCell.upvoteButton.alpha = 0
             commentCell.authorLabel.alpha = 0
-            commentCell.replyButton.alpha = 0
+            commentCell.evaluateButton.alpha = 0
             
             //Show upvote
             var showTopicLikeNumber = PFUser.query()
@@ -295,8 +307,38 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 commentCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
             }
             
-            //Comment cell tag for index path
+            // MARK: evaluateComment
+            
+            
+             var rating = comment.objectForKey("rating") as String?
+             if rating == "lowRating" {
+                
+                commentCell.evaluateButton.setImage(UIImage(named:"ratingActive"), forState: UIControlState.Normal)
+                
+            }
+            
+            
+            else if rating == "averageRating" {
+                
+                commentCell.evaluateButton.setImage(UIImage(named: "rating2"), forState: UIControlState.Normal)
+               
+            }
+            
+            
+            else if rating == "goodRating" {
+                
+                commentCell.evaluateButton.setImage(UIImage(named: "rating3"), forState: UIControlState.Normal)
+                
+            }
+            
+            else {
+                
+                commentCell.evaluateButton.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+            }
+            
+            //MARK: Comment cell tag for index path
             commentCell.upvoteButton.tag = (indexPath.row - 1)
+            commentCell.evaluateButton.tag = (indexPath.row - 1)
             
             var findUsererData:PFQuery = PFUser.query()
             findUsererData.whereKey("objectId", equalTo: comment.objectForKey("userer").objectId)
@@ -315,7 +357,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                         commentCell.commentLabel.alpha = 1
                         commentCell.timeLabel.alpha = 1
                         commentCell.upvoteButton.alpha = 1
-                        commentCell.replyButton.alpha = 1
+                        commentCell.evaluateButton.alpha = 1
                         commentCell.authorLabel.alpha = 1
                     }
                     
@@ -480,12 +522,100 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
 
     
-    
-    func commentsTableViewCellDidTouchReply(cell: CommentsTableViewCell, sender: AnyObject ){
-        performSegueWithIdentifier("replySegue", sender: cell)
+   
+    func commentsTableViewCellDidTouchEvaluate(cell: CommentsTableViewCell, sender: AnyObject ){
+        let senderButton:SpringButton = sender as SpringButton
+        var commentEvaluated:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as PFObject
+        var objectTo = commentEvaluated.objectForKey("rating") as String?
+       
+         if objectTo == "lowRating"{
+            PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
+            
+            commentEvaluated["rating"] = ""
+            commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
         
-    }
+            senderButton.setImage(UIImage(named:"rating"), forState: UIControlState.Normal)
+            senderButton.setTitle("", forState: UIControlState.Normal)
+        }
+            
+       
+        else if objectTo == "averageRating" {
+        PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
+            
+            commentEvaluated["rating"] = ""
+            commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
 
+            senderButton.setImage(UIImage(named:"rating"), forState: UIControlState.Normal)
+            senderButton.setTitle("", forState: UIControlState.Normal)
+
+        }
+            
+        
+        else if objectTo == "goodRating"{
+        PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
+            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
+            
+            commentEvaluated["rating"] = ""
+            commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                if success == true {
+                    println("remove rating")
+                } else {
+                    println(error)
+                }
+                
+            }
+            senderButton.setImage(UIImage(named:"rating"), forState: UIControlState.Normal)
+            senderButton.setTitle("", forState: UIControlState.Normal)
+
+        }
+            
+            
+        else{
+            let alert = UIAlertView()
+            alert.title = "The comment is not evaluated yet"
+            alert.message = "Please swipe the comment to the left for evaluation"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
+    }
+    
    // MARK: reply delegate
     func sendReplyDidTouch(controller: ReplyViewController) {
         view.showLoading()
@@ -512,7 +642,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         }
 
 
-
         if segue.identifier == "webSegue"{
             let toView = segue.destinationViewController as WebViewController
 
@@ -524,9 +653,9 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 //println(escapedString)
                 toView.urlString = escapedString as String?
                 toView.realURL = realURL as NSURL!
-                UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+                //UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
                 
-                //UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+                UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
                
                 
                 toView.transitioningDelegate = transitionManager
@@ -582,19 +711,116 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             
             let rateMenu = UIAlertController(title: nil, message: "Rate this comment", preferredStyle: .ActionSheet)
             
+            var commentEvaluated:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
+            var rating = commentEvaluated.objectForKey("rating") as String?
             let lowRating = UIAlertAction(title: "Bad", style: .Default)
                 { action -> Void in
-                
+                  if rating == ""  {
+                    
+                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
+                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("evaluated")
+                        } else {
+                            println(error)
+                        }
+                        
+                    }
+                    
+                    commentEvaluated["rating"] = "lowRating"
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("evaluated")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                   
+                    self.tableView.reloadData()
+                    }
+                    
+                    else {
+                        let alert = UIAlertView()
+                        alert.title = "The comment was evaluated"
+                        alert.message = "Please disable STAR button to evaluate again"
+                        alert.addButtonWithTitle("OK")
+                        alert.show()
+                    }
             }
             
             let averageRating = UIAlertAction(title: "Average", style: .Default)
                 { action -> Void in
-            
+                  
+                     if rating == ""  {
+                        
+                        PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
+                        PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("evaluated")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        
+                        commentEvaluated["rating"] = "averageRating"
+                        commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("evaluated")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        self.tableView.reloadData()
+                    }
+                    
+                        
+                    else {
+                        let alert = UIAlertView()
+                        alert.title = "The comment was evaluated"
+                        alert.message = "Please disable STAR button to evaluate again"
+                        alert.addButtonWithTitle("OK")
+                        alert.show()
+                    }
             }
+
+
             
             let highRating = UIAlertAction(title: "Good", style: .Default)
                 { action -> Void in
-            
+                    if rating == ""  {
+                        
+                     PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
+                        PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("evaluated")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        
+                        commentEvaluated["rating"] = "goodRating"
+                        commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                            if success == true {
+                                println("evaluated")
+                            } else {
+                                println(error)
+                            }
+                            
+                        }
+                        self.tableView.reloadData()
+                    }
+                        
+                    else {
+                        let alert = UIAlertView()
+                        alert.title = "The comment was evaluated"
+                        alert.message = "Please disable STAR button to evaluate again"
+                        alert.addButtonWithTitle("OK")
+                        alert.show()
+                    }
             }
             
             let cancelRating = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -661,7 +887,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
        
             
         }
-       return true
+       return false
 }
 
 }

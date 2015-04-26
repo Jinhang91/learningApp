@@ -10,7 +10,7 @@ import UIKit
 
 protocol CommentsTableViewCellDelegate: class {
     func commentsTableViewCellDidTouchUpvote(cell: CommentsTableViewCell, sender: AnyObject)
-    func commentsTableViewCellDidTouchReply(cell: CommentsTableViewCell, sender:AnyObject)
+    func commentsTableViewCellDidTouchEvaluate(cell: CommentsTableViewCell, sender:AnyObject)
 }
 
 class CommentsTableViewCell: PFTableViewCell {
@@ -20,7 +20,7 @@ class CommentsTableViewCell: PFTableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var upvoteButton: SpringButton!
 
-    @IBOutlet weak var replyButton: SpringButton!
+    @IBOutlet weak var evaluateButton: SpringButton!
 
     weak var delegate: CommentsTableViewCellDelegate?
 
@@ -34,13 +34,13 @@ class CommentsTableViewCell: PFTableViewCell {
     }
 
 
-    @IBAction func replyButtonDidTouch(sender: AnyObject) {
+    @IBAction func evaluateButtonDidTouch(sender: AnyObject) {
     
-        upvoteButton.animation = "pop"
-        upvoteButton.force = 3
-        upvoteButton.animate()
+        evaluateButton.animation = "pop"
+        evaluateButton.force = 3
+        evaluateButton.animate()
         
-        delegate?.commentsTableViewCellDidTouchReply(self , sender: sender)
+        delegate?.commentsTableViewCellDidTouchEvaluate(self , sender: sender)
     }
 
     }

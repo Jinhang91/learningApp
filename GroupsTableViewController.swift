@@ -20,18 +20,19 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
-        
+        if PFUser.currentUser() != nil {
         PFUser.logOut()
-        var currentUser = PFUser.currentUser()
-        
-        
-        if currentUser == nil {
-            println("Log out successful")
-            performSegueWithIdentifier("loginSegue", sender: self)
+        loadData()
+            let alert = UIAlertView()
+            alert.title = ""
+            alert.message = "Sign out successfully"
+            alert.addButtonWithTitle("OK")
+            alert.show()
 
         }
-        else{
-            println("Log out failed")
+            
+        else {
+                performSegueWithIdentifier("loginSegue", sender: self)
         }
     }
     @IBOutlet weak var createGroupDidTouch: UIBarButtonItem!
@@ -125,7 +126,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         searchActive = true
         return true
     }
-
+    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         loadGroup("")
         searchActive = false
@@ -133,6 +134,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         searchBar.resignFirstResponder()
     }
     
+
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
     }
@@ -140,6 +142,12 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var timelineGroupData:NSMutableArray = NSMutableArray()
     
     func loadData(){
+        if PFUser.currentUser() == nil{
+            signOut.title = "Log in"
+        }
+        else{
+            signOut.title = PFUser.currentUser().username
+        }
         timelineGroupData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         var findGroupData:PFQuery = PFQuery(className: "Groups")
@@ -167,9 +175,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     override func viewDidAppear(animated: Bool) {
         if PFUser.currentUser() == nil{
-            performSegueWithIdentifier("loginSegue", sender: self)
+            signOut.title = "Log in"
         }
-
+        else{
+            signOut.title = PFUser.currentUser().username
+        }
         
         if isFirstTime {
             self.view.showLoading()
@@ -184,6 +194,14 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if PFUser.currentUser() == nil{
+            signOut.title = "Log in"
+        }
+        else{
+            signOut.title = PFUser.currentUser().username
+        }
+    }
   
     
     override func viewDidLoad() {
@@ -220,7 +238,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
-   //      navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
         
         
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
@@ -246,6 +264,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
         }
     }
+    
     func pullToRefresh(){
         view.showLoading()
         loadData()
@@ -260,6 +279,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
         view.showLoading()
         loadData()
+        
     }
     
     //MARK: Create Group delegate
@@ -287,13 +307,13 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupTableViewCell
 
-       // let groupCreated:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+       
        if searchActive == true {
         
             let groupCreated:PFObject = self.groupList.objectAtIndex(indexPath.row) as PFObject
             cell.groupName.text = groupCreated.objectForKey("name") as? String
             cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true) + " ago"
-
+        
         cell.groupName.alpha = 0
         
         cell.timeLabel.alpha = 0
@@ -369,9 +389,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         cell.groupName.text = groupCreated.objectForKey("name") as? String
         cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true)
         
-        cell.groupName.alpha = 0
-        cell.timeLabel.alpha = 0
-        cell.authorName.alpha = 0
+      //  cell.groupName.alpha = 0
+      //  cell.timeLabel.alpha = 0
+      //  cell.authorName.alpha = 0
       
         let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
         
@@ -411,9 +431,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 
                 //final animation
                 spring(1.0){
-                    cell.timeLabel.alpha = 1
-                    cell.groupName.alpha = 1
-                    cell.authorName.alpha = 1
+             //       cell.timeLabel.alpha = 1
+             //       cell.groupName.alpha = 1
+             //       cell.authorName.alpha = 1
                 
                 }
                 
@@ -426,24 +446,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     // MARK: Row Editing
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-     /*
-        if editingStyle == UITableViewCellEditingStyle.Delete{
-        
-                        var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
-                        groupDisplay.deleteInBackground()
-                        self.timelineGroupData.removeObjectAtIndex(indexPath.row)
-                        groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
-                            if success == true {
-                                println("deleted")
-                            } else {
-                                println(error)
-                            }
-            }
-
-        }
-
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic) */
-                    }
+    
+    }
    
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
@@ -495,6 +499,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
     return false
     }
+    
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
         UIView.animateWithDuration(0.25, animations: {

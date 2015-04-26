@@ -47,10 +47,10 @@ class WebViewController: UIViewController,UIWebViewDelegate {
 
         navigationController?.navigationBar.topItem?.title = "Loading..."
     
-     //  navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xECECEC)
-       navigationController?.navigationBar.barTintColor = UIColor(red: 236, green: 236, blue: 236, alpha: 0.1)
+         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xECECEC)
+   //    navigationController?.navigationBar.barTintColor = UIColor(red: 236, green: 236, blue: 236, alpha: 0.1)
        navigationController?.navigationBar.translucent = true
-       navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Medium", size: 18)!,  NSForegroundColorAttributeName: UIColorFromRGB(0x7B7B7B)]
+       navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!,  NSForegroundColorAttributeName: UIColorFromRGB(0x7B7B7B)]
 
     }
     
@@ -58,6 +58,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         
         return false
     }
+
 
 
     
@@ -123,10 +124,10 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     }
     
     func closeButton(sender:UIButton!){
-      //  UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationController?.popViewControllerAnimated(true)
         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0x4FD7CE)
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+        //UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
     }
     
 
@@ -181,21 +182,21 @@ class WebViewController: UIViewController,UIWebViewDelegate {
        shareTitle = webView.stringByEvaluatingJavaScriptFromString("document.title")
       //  navigationController?.navigationBar.topItem?.title = "\(shareTitle)"
         
-        var headerWebView = UIView(frame: CGRectMake(0, 0, 150, 50))
+        var headerWebView = UIView(frame: CGRectMake(0, 0, 100, 50))
         headerWebView.center = self.view.center
         view.addSubview(headerWebView)
-        var linkTitle = UILabel(frame: CGRectMake(0, 5, 150, 22))
+        var linkTitle = UILabel(frame: CGRectMake(0, 5, 100, 22))
  
         linkTitle.text = shareTitle
         linkTitle.numberOfLines = 0
-        linkTitle.font = UIFont(name: "SanFranciscoDisplay-Light", size: 18)
-        linkTitle.textColor = UIColorFromRGB(0x7B7B7B)
+        linkTitle.font = UIFont(name: "SanFranciscoDisplay-Light", size: 16)
+        linkTitle.textColor = UIColorFromRGB(0x000000)
         linkTitle.textAlignment = NSTextAlignment.Center
         headerWebView.addSubview(linkTitle)
      
-        var linkurl = UILabel(frame: CGRectMake(0, 25, 150, 20))
+        var linkurl = UILabel(frame: CGRectMake(0, 23, 100, 20))
         linkurl.text = "\(realURL)"
-        linkurl.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 14)
+        linkurl.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 13)
         linkurl.textColor = UIColorFromRGB(0x7B7B7B)
         linkurl.textAlignment = NSTextAlignment.Center
         headerWebView.addSubview(linkurl)
@@ -218,7 +219,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
 
     func updateProgress() {
         if progressView.progress >= 1 {
-           progressView.hidden = false
+           progressView.hidden = true
         } else {
             
             if hasFinishedLoading {
