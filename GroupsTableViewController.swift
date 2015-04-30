@@ -237,8 +237,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         tableView.rowHeight = UITableViewAutomaticDimension
         
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
         
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
@@ -267,6 +267,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     func pullToRefresh(){
         view.showLoading()
+        searchActive = false
         loadData()
         tableView.reloadData()
         refreshControl?.endRefreshing()
@@ -486,11 +487,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
    
         var groupObject:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as PFObject
         if PFUser.currentUser() != nil{
-        if groupObject.objectForKey("userer").objectId == (PFUser.currentUser().objectId){
+        if groupObject.objectForKey("userer").objectId == PFUser.currentUser().objectId {
        
         return true
     }
-        else if groupObject.objectForKey("userer").objectId != (PFUser.currentUser().objectId){
+        else if groupObject.objectForKey("userer").objectId != PFUser.currentUser().objectId {
             return false
         }
         }

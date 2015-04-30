@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          
             self.statusChangedWithReachability(internetReach!)
         }
-        /*
+       /*
         if reachabbilityStatus == kNotReachableWithWifi{
             var addStatus = UILabel()
             addStatus.frame = CGRectMake(0, 64, 1000, 20)
@@ -49,9 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else if reachabbilityStatus == kReachableWithWifi{
             var addStatus = UILabel()
             addStatus.alpha = 1
-            addStatus.frame = CGRectMake(0, 114, 1000, 30)
-            addStatus.backgroundColor = UIColorFromRGB(0x69D2E7)
+            addStatus.frame = CGRectMake(0, 64, 1000, 50)
             addStatus.text = "Connected to Internet"
+            addStatus.backgroundColor = UIColorFromRGB(0x69D2E7)
             addStatus.textAlignment = NSTextAlignment.Center
             addStatus.textColor = UIColorFromRGB(0xFFFFFF)
             addStatus.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 18)

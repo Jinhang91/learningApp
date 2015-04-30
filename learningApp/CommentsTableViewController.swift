@@ -44,9 +44,9 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         
         let title = groupCreated?["name"] as String
-        myBackButton.setTitle("  \(title)", forState: UIControlState.Normal)
+        myBackButton.setTitle(" \(title)", forState: UIControlState.Normal)
         myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
-        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
+        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 18)
 
         myBackButton.sizeToFit()
         
@@ -63,7 +63,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
     }
     
-    func evaluateLink(){
+    func evaluateLink(sender:UIBarButtonItem){
         performSegueWithIdentifier("evaluateSegue", sender: self)
     }
     
@@ -660,6 +660,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
                 toView.transitioningDelegate = transitionManager
                 }
+        }
+        
+        if segue.identifier == "evaluateSegue"{
+            let toView = segue.destinationViewController as EvaluationTableViewController
+            toView.topic = topic as PFObject?
         }
         
 }

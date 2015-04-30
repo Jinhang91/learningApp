@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C2F3B8D1AF1FE87006B1784 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */; };
 		3C307E711AE2004800C7FDB8 /* WebTestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */; };
 		3C4A34821AED36D200B73F6D /* EvaluationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */; };
 		3C4C5FBA1AB4644A00371FAB /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */; };
@@ -112,6 +113,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewCell.swift; sourceTree = "<group>"; };
 		3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTestingViewController.swift; sourceTree = "<group>"; };
 		3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewController.swift; sourceTree = "<group>"; };
 		3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
@@ -270,8 +272,9 @@
 			isa = PBXGroup;
 			children = (
 				3C809D301AAC388A007318D1 /* AppDelegate.swift */,
-				3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */,
+				3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */,
 				3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */,
+				3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */,
 				3C809D701AAC879D007318D1 /* TopicTableViewController.swift */,
 				3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */,
 				3C809D741AAC8AE7007318D1 /* TopicTableViewCell.swift */,
@@ -283,9 +286,9 @@
 				3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */,
 				3CE840851AD7A33D006CE2B4 /* WebViewController.swift */,
 				3C809D321AAC388A007318D1 /* ViewController.swift */,
+				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
 				3CDD365A1AD0E55A00DFC79A /* Sans Francisco Fonts */,
 				3C809D341AAC388A007318D1 /* Main.storyboard */,
-				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
 				3CE840871AD93019006CE2B4 /* TestingViewController.swift */,
 				3C852E191AB2D7E9001F5FA1 /* Spring */,
 				3C809D371AAC388A007318D1 /* Images.xcassets */,
@@ -576,6 +579,7 @@
 				3C809D311AAC388A007318D1 /* AppDelegate.swift in Sources */,
 				3C852E431AB2D7E9001F5FA1 /* ImageLoader.swift in Sources */,
 				3C852E511AB2D7E9001F5FA1 /* SpringView.swift in Sources */,
+				3C2F3B8D1AF1FE87006B1784 /* EvaluationTableViewCell.swift in Sources */,
 				3C852E4E1AB2D7E9001F5FA1 /* SpringLabel.swift in Sources */,
 				3C852E481AB2D7E9001F5FA1 /* Misc.swift in Sources */,
 				3CE840861AD7A33D006CE2B4 /* WebViewController.swift in Sources */,

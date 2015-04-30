@@ -131,7 +131,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         myBackButton.setTitle("  Groups", forState: UIControlState.Normal)
-        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 20)
+        myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 18)
         myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
         
         myBackButton.sizeToFit()
@@ -294,14 +294,14 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         
         
         //show comment enabled 
-      /*
+      
         var commentEnabled:PFQuery = PFQuery(className: "Comment")
-        commentEnabled.whereKey("userer", equalTo: PFUser.currentUser())
+        commentEnabled.whereKey("parent", equalTo: topic)
         
-        var commentUser:PFQuery = PFQuery(className: "Comment")
-        commentUser.whereKey("parent", matchesKey: , inQuery: commentEnabled)
+      //  var commentUser:PFQuery = PFQuery(className: "Comment")
+        commentEnabled.whereKey("userer", equalTo: PFUser.currentUser().objectId)
    
-        commentUser.findObjectsInBackgroundWithBlock{
+        commentEnabled.findObjectsInBackgroundWithBlock{
             (objects:[AnyObject]!,error:NSError!) ->Void in
             if error == nil{
                 cell.commentButton.setImage(UIImage(named: "commentActive"), forState: UIControlState.Normal)
@@ -310,7 +310,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 cell.commentButton.setImage(UIImage(named: "icon-comment"), forState: UIControlState.Normal)
             }
         }
-       */
+      
         cell.upvoteButton.tag = indexPath.row
         cell.commentButton.tag = indexPath.row
         
