@@ -123,7 +123,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         //navigationItem.backBarButtonItem = backButton
         
         backButton()
-        
+
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     }
     
@@ -225,14 +225,34 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-
-        return 1
+        if timelineTopicData.count != 0{
+            tableView.backgroundView = nil
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+            return 1
+        }
+        else {
+            var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
+            view.addSubview(imageView)
+            
+            
+            var imageChosen = UIImage(named: "emptyIconTopic")
+            imageView.image = imageChosen
+            
+            tableView.backgroundView = imageView
+           // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundView?.contentMode = UIViewContentMode.Center
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
+        
+    return 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        
         return timelineTopicData.count
-    }
+        
+        
+        }
 
    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -285,7 +305,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
      
         var objectTo = topic.objectForKey("whoLiked") as [String]
         if contains(objectTo, PFUser.currentUser().objectId){
-                    
+            
           cell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
                         }
         else{
@@ -294,12 +314,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         
         
         //show comment enabled 
-      
+      /*
         var commentEnabled:PFQuery = PFQuery(className: "Comment")
         commentEnabled.whereKey("parent", equalTo: topic)
-        
-      //  var commentUser:PFQuery = PFQuery(className: "Comment")
-        commentEnabled.whereKey("userer", equalTo: PFUser.currentUser().objectId)
+        commentEnabled.includeKey("parent")
+         commentEnabled.whereKey("userer", equalTo: PFUser.currentUser())
    
         commentEnabled.findObjectsInBackgroundWithBlock{
             (objects:[AnyObject]!,error:NSError!) ->Void in
@@ -310,7 +329,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 cell.commentButton.setImage(UIImage(named: "icon-comment"), forState: UIControlState.Normal)
             }
         }
-      
+      */
         cell.upvoteButton.tag = indexPath.row
         cell.commentButton.tag = indexPath.row
         
@@ -369,6 +388,9 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         loadData()
     }
     
+    func loginCloseViewControllerDidTouch(controller: LoginViewController) {
+        tabBarController?.tabBar.hidden = false
+    }
     
     // MARK: TopicTableViewCellDelegate
    
@@ -499,6 +521,7 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
                         var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
                         topicDisplay.deleteInBackground()
                         self.timelineTopicData.removeObjectAtIndex(indexPath.row)
+
                         topicDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                             if success == true {
                                 println("deleted")

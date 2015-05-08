@@ -9,6 +9,7 @@
 import UIKit
 protocol LoginViewControllerDelegate: class{
     func loginViewControllerDidLogin(controller:LoginViewController)
+    func loginCloseViewControllerDidTouch(controller:LoginViewController)
 }
 
 class LoginViewController: UIViewController
@@ -121,9 +122,9 @@ class LoginViewController: UIViewController
     
         loginDialogView.animation = "fall"
         loginDialogView.animate()
-
         dismissViewControllerAnimated(true, completion: nil)
 
+        delegate?.loginCloseViewControllerDidTouch(self)
     }
     
     @IBAction func createAccountButton(sender: AnyObject) {

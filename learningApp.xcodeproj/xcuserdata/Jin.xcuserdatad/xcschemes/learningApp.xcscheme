@@ -34,6 +34,34 @@
                ReferencedContainer = "container:learningApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C268B161AFBA3A1005FBF1B"
+               BuildableName = "learningApp Tests.xctest"
+               BlueprintName = "learningApp Tests"
+               ReferencedContainer = "container:learningApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C268B6E1AFBA914005FBF1B"
+               BuildableName = "learningApp NewTests.xctest"
+               BlueprintName = "learningApp NewTests"
+               ReferencedContainer = "container:learningApp.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +77,26 @@
                BlueprintIdentifier = "3C809D3F1AAC388A007318D1"
                BuildableName = "learningAppTests.xctest"
                BlueprintName = "learningAppTests"
+               ReferencedContainer = "container:learningApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C268B161AFBA3A1005FBF1B"
+               BuildableName = "learningApp Tests.xctest"
+               BlueprintName = "learningApp Tests"
+               ReferencedContainer = "container:learningApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3C268B6E1AFBA914005FBF1B"
+               BuildableName = "learningApp NewTests.xctest"
+               BlueprintName = "learningApp NewTests"
                ReferencedContainer = "container:learningApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -72,7 +120,8 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3C809D2A1AAC388A007318D1"
@@ -90,7 +139,8 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3C809D2A1AAC388A007318D1"

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate, LoginViewControllerDelegate, CreateGroupViewControllerDelegate {
+class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate, LoginViewControllerDelegate, CreateGroupViewControllerDelegate, GroupTableViewCellDelegate {
     
 
     var groupCreated : PFObject?
@@ -21,13 +21,30 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     @IBOutlet weak var searchBar: UISearchBar!
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() != nil {
-        PFUser.logOut()
-        loadData()
-            let alert = UIAlertView()
-            alert.title = ""
-            alert.message = "Sign out successfully"
-            alert.addButtonWithTitle("OK")
-            alert.show()
+        
+         let signOutDialog = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .Alert)
+            
+         let cancelIt = UIAlertAction(title: "Cancel", style: .Cancel)
+            {
+                action -> Void in
+            }
+            
+         let logOut = UIAlertAction(title: "Log out", style: .Default)
+            {
+                action -> Void in
+                PFUser.logOut()
+                self.loadData()
+                let alert = UIAlertView()
+                alert.title = ""
+                alert.message = "Sign out successfully"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
+     
+            signOutDialog.addAction(cancelIt)
+            signOutDialog.addAction(logOut)
+            self.presentViewController(signOutDialog, animated: true, completion: nil)
+       
 
         }
             
@@ -35,6 +52,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 performSegueWithIdentifier("loginSegue", sender: self)
         }
     }
+    
     @IBOutlet weak var createGroupDidTouch: UIBarButtonItem!
 
 
@@ -118,6 +136,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         searchActive = true
         loadGroup("0000000")
+        tableView.tableHeaderView = searchBar
         searchBar.setShowsCancelButton(true, animated: true)
         return true
     }
@@ -165,6 +184,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
+                self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
             }
         })
     }
@@ -174,6 +194,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
+        
         if PFUser.currentUser() == nil{
             signOut.title = "Log in"
         }
@@ -194,19 +215,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
     
-    override func viewWillAppear(animated: Bool) {
-        if PFUser.currentUser() == nil{
-            signOut.title = "Log in"
-        }
-        else{
-            signOut.title = PFUser.currentUser().username
-        }
-    }
-  
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
+     //  tableView.separatorColor = UIColorFromRGB(0x929292)
      //  searchBar.becomeFirstResponder()
         for subView in searchBar.subviews  {
             for subsubView in subView.subviews  {
@@ -274,26 +287,122 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         
         println("reload finised")
     }
+    
+    //MARK: Group favorite delegate
+    func groupTableViewCellFavoriteDidTouch(cell: GroupTableViewCell, sender: AnyObject) {
+        if PFUser.currentUser() != nil{
+            let senderButton:UIButton = sender as UIButton
+            var groupFav:PFObject = timelineGroupData.objectAtIndex(senderButton.tag) as PFObject
+            println(groupFav.objectId)
+            
+            var objectTo = groupFav.objectForKey("favorite") as Bool?
+            if objectTo == true{
+                PFUser.currentUser().removeObject(groupFav.objectId, forKey: "favorited")
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("remove favorite")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+                
+                groupFav["favorite"] = false
+                groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("remove favorite")
+                    } else {
+                        println(error)
+                    }
 
+            }
+                senderButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+                senderButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
+                senderButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
+                
+            }
+                
+            else{
+                PFUser.currentUser().addUniqueObject(groupFav.objectId, forKey: "favorited")
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("favorited")
+                    } else {
+                        println(error)
+                    }
+                    
+                    }
+                    
+                    groupFav["favorite"] = true
+                    groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("favorited")
+                        } else {
+                            println(error)
+                        }
+                        
+                    }
+                
+                senderButton.setTitle("Favorited", forState: UIControlState.Normal)
+               // senderButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
+                senderButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
+                senderButton.backgroundColor = UIColorFromRGB(0x56D7CD)
+                
+            }
+        }
+        
+        else {
+            performSegueWithIdentifier("loginSegue", sender: self)
+        }
+        }
     
     //MARK: Log in delegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
         view.showLoading()
         loadData()
+        tabBarController?.tabBar.hidden = false
         
     }
+    
+    func loginCloseViewControllerDidTouch(controller: LoginViewController) {
+        tabBarController?.tabBar.hidden = false
+    }
+    
     
     //MARK: Create Group delegate
     func createGroupViewControllerDidTouch(controller: CreateGroupViewController) {
         view.showLoading()
         loadData()
+        tabBarController?.tabBar.hidden = false
+    }
+    
+    func closeGroupViewControllerDidTouch(controller: CreateGroupViewController) {
+        tabBarController?.tabBar.hidden = false
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 1
+        if timelineGroupData.count != 0{
+            tableView.backgroundView = nil
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+            return 1
+        }
+        else {
+            var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
+            view.addSubview(imageView)
+            
+            
+            var imageChosen = UIImage(named: "emptyIconGroup")
+            imageView.image = imageChosen
+            
+            tableView.backgroundView = imageView
+            // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundView?.contentMode = UIViewContentMode.Center
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
+        
+        return 0
     }
+    
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive == true {
@@ -307,7 +416,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupTableViewCell
-
+        cell.favoriteButton.tag = indexPath.row
        
        if searchActive == true {
         
@@ -326,6 +435,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         
         cell.topicNumber.alpha = 0
         cell.topicSign.alpha = 0
+        cell.favoriteButton.alpha = 0
         
         let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
         
@@ -376,11 +486,27 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                     cell.topicNumber.alpha = 1
                     cell.topicSign.alpha = 1
+                    cell.favoriteButton.alpha = 1
                 }
                 
             }
             
         })
+        
+        var objectTo = groupCreated.objectForKey("favorite") as Bool?
+        if objectTo == true{
+            
+            cell.favoriteButton.setTitle("Favorited", forState: UIControlState.Normal)
+            //cell.favoriteButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
+            cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
+            cell.favoriteButton.backgroundColor = UIColorFromRGB(0x56D7CD)
+        }
+        else{
+            cell.favoriteButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+            cell.favoriteButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
+            cell.favoriteButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
+        }
+
 
        }
         else {
@@ -441,7 +567,22 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
 
             })
+        
+        var objectTo = groupCreated.objectForKey("favorite") as Bool?
+        if objectTo == true{
+            
+            cell.favoriteButton.setTitle("Favorited", forState: UIControlState.Normal)
+            //cell.favoriteButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
+            cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
+            cell.favoriteButton.backgroundColor = UIColorFromRGB(0x56D7CD)
         }
+        else{
+            cell.favoriteButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+            cell.favoriteButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
+            cell.favoriteButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
+        }
+        }
+        cell.delegate = self
         return cell
     }
     
@@ -531,6 +672,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         if (segue.identifier == "topicSegue"){
             
             var toView = segue.destinationViewController as TopicTableViewController
+            toView.hidesBottomBarWhenPushed = true
             if searchActive == true {
                 if let indexPath = self.tableView.indexPathForSelectedRow() {
                     let row:AnyObject = groupList[indexPath.row]
@@ -548,12 +690,16 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 }
         if (segue.identifier == "createGroupSegue"){
             let toView = segue.destinationViewController as CreateGroupViewController
+            tabBarController?.tabBar.hidden = true
             toView.delegate = self
+            
         }
         
         if (segue.identifier == "loginSegue"){
             let toView = segue.destinationViewController as LoginViewController
+            tabBarController?.tabBar.hidden = true
             toView.delegate = self
+            
         }
 }
 }

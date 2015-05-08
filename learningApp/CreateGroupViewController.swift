@@ -10,6 +10,7 @@ import UIKit
 
 protocol CreateGroupViewControllerDelegate : class{
     func createGroupViewControllerDidTouch(controller:CreateGroupViewController)
+    func closeGroupViewControllerDidTouch(controller: CreateGroupViewController)
 }
 
 class CreateGroupViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -34,15 +35,16 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     //@IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     @IBAction func closeButtonDidTouch(sender: AnyObject) {
-    
+        
         groupDialogView.animation = "fall"
         avatarGroup.animation = "fall"
         avatarGroup.animate()
         groupDialogView.animateNext{
         self.dismissViewControllerAnimated(true, completion: nil)
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-
+       
         }
+        delegate?.closeGroupViewControllerDidTouch(self)
     }
     
     @IBAction func pickPhotoButtonDidTouch(sender: AnyObject) {
@@ -56,6 +58,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
 
     }
+
     
  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
         
@@ -99,7 +102,8 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             groupCreated.setObject(imageFile, forKey: "groupAvatar")
             groupCreated["name"] = groupNameTextField.text
             groupCreated["userer"] = PFUser.currentUser()
-            
+            groupCreated["favorite"] = false
+                
                 groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                     if success == true {
                         println("\(self.groupNameTextField.text) group created")
@@ -132,7 +136,8 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                 groupCreated.setObject(imageFile, forKey: "groupAvatar")
                 groupCreated["name"] = groupNameTextField.text
                 groupCreated["userer"] = PFUser.currentUser()
-                
+                groupCreated["favorite"] = false
+                    
                     groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                         if success == true {
                             println("\(self.groupNameTextField.text) group created")
@@ -194,5 +199,4 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     }
     
 
-   
 }

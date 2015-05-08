@@ -16,9 +16,9 @@ class ComposeTopicViewController: UIViewController {
     var groupCreated:PFObject?
     
     
-    @IBOutlet weak var titleText: UITextView!
+    @IBOutlet weak var titleText: DesignableTextView!
 
-    @IBOutlet weak var contentText: UITextView!
+    @IBOutlet weak var contentText: DesignableTextView!
 
     @IBOutlet weak var viewBack: UIView!
     

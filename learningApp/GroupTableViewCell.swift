@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol GroupTableViewCellDelegate: class{
+    func groupTableViewCellFavoriteDidTouch(cell:GroupTableViewCell, sender: AnyObject)
+}
+
 class GroupTableViewCell: UITableViewCell {
 
+    weak var delegate: GroupTableViewCellDelegate?
+    
     @IBOutlet weak var avatarGroup: DesignableImageView!
 
     @IBOutlet weak var groupName: UILabel!
@@ -26,6 +32,18 @@ class GroupTableViewCell: UITableViewCell {
     
     @IBOutlet weak var topicSign: UIImageView!
 
+    @IBOutlet weak var favoriteButton: DesignableButton!
+    
+    @IBAction func favoriteButtonDidTouch(sender: AnyObject) {
+   
+     favoriteButton.animation = "pop"
+     favoriteButton.force = 3
+     favoriteButton.animate()
+        
+    delegate?.groupTableViewCellFavoriteDidTouch(self, sender: sender)
+    }
+    
+    
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

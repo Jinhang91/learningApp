@@ -267,7 +267,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     }
 
     deinit {
-      //  webView.stopLoading()
-      //  webView.delegate = nil
+        webView?.stopLoading()
+        webView?.delegate = nil
     }
 }

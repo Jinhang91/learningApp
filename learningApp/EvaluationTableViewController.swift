@@ -94,7 +94,7 @@ class EvaluationTableViewController: UITableViewController {
         var findEvaluatedData:PFQuery = PFQuery(className: "Comment")
         
        findEvaluatedData.whereKey("parent", equalTo: topic!)
-        findEvaluatedData.orderByAscending("createdAt")
+        findEvaluatedData.orderByDescending("createdAt")
         
         findEvaluatedData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
@@ -128,7 +128,7 @@ class EvaluationTableViewController: UITableViewController {
         
         findGoodEvaluatedData.whereKey("parent", equalTo: topic!)
         findGoodEvaluatedData.whereKey("rating", equalTo: "goodRating")
-        findGoodEvaluatedData.orderByAscending("createdAt")
+        findGoodEvaluatedData.orderByDescending("createdAt")
         
         findGoodEvaluatedData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
@@ -162,7 +162,7 @@ class EvaluationTableViewController: UITableViewController {
         
         findAveEvaluatedData.whereKey("parent", equalTo: topic!)
         findAveEvaluatedData.whereKey("rating", equalTo: "averageRating")
-        findAveEvaluatedData.orderByAscending("createdAt")
+        findAveEvaluatedData.orderByDescending("createdAt")
         
         findAveEvaluatedData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
@@ -196,7 +196,7 @@ class EvaluationTableViewController: UITableViewController {
         
         findBadEvaluatedData.whereKey("parent", equalTo: topic!)
         findBadEvaluatedData.whereKey("rating", equalTo: "lowRating")
-        findBadEvaluatedData.orderByAscending("createdAt")
+        findBadEvaluatedData.orderByDescending("createdAt")
         
         findBadEvaluatedData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
