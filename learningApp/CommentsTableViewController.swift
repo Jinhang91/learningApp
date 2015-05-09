@@ -32,7 +32,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         super.viewDidLoad()
         println(topic)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-        
+      
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
  
@@ -141,7 +142,25 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-      
+        if timelineCommentData.count != 0 && timelineTopicData.count != 0 {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+            return 1
+        }
+        else {
+            var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
+            view.addSubview(imageView)
+            
+            
+            var imageChosen = UIImage(named: "emptyIconComment")
+            imageView.image = imageChosen
+            
+            tableView.backgroundView = imageView
+            // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundView?.contentMode = UIViewContentMode.Center
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
+        
         return 1
     }
 

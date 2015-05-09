@@ -21,7 +21,7 @@ class EvaluationTableViewController: UITableViewController {
         println(topic)
 
         self.navigationItem.hidesBackButton = true
-        
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -33,6 +33,9 @@ class EvaluationTableViewController: UITableViewController {
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
         
+        tableView.estimatedRowHeight = 53
+        tableView.rowHeight = UITableViewAutomaticDimension
+
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
     }
     

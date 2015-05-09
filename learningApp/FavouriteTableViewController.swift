@@ -114,13 +114,13 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         }
         
         //navigationController?.hidesBarsOnSwipe = true
-        navigationController?.navigationBar.topItem?.title = "Favorites"
+        navigationController?.navigationBar.topItem?.title = "Groups"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
    
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         let cancelButtonAttributes:NSDictionary = [NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 17)!, NSForegroundColorAttributeName:UIColorFromRGB(0x37B8B0)]
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
         
@@ -189,16 +189,17 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
             tableView.backgroundView?.contentMode = UIViewContentMode.Center
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+            
         }
         
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       
-        return timelineFavData.count
-    }
 
+        return timelineFavData.count
+
+    }
     
     //MARK: Log in delegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
@@ -234,7 +235,6 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         cell.timeSign.alpha = 0
         cell.authorSign.alpha = 0
         cell.authorLabel.alpha = 0
-        cell.topicSign.alpha = 0
         cell.topicLabel.alpha = 0
         
         let favoriteGroup = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
@@ -258,10 +258,10 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                 (count: Int32, error: NSError!) -> Void in
                 if error == nil {
                     if count <= 1 {
-                        cell.topicLabel.text = "\(count) topic"
+                        cell.topicLabel.setTitle("\(count) topic", forState: UIControlState.Normal)
                     }
                     else{
-                        cell.topicLabel.text = "\(count) topics"
+                        cell.topicLabel.setTitle("\(count) topics", forState: UIControlState.Normal)
                     }
                 }
             }
@@ -285,7 +285,6 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                         cell.timeSign.alpha = 1
                         cell.authorSign.alpha = 1
                         cell.authorLabel.alpha = 1
-                        cell.topicSign.alpha = 1
                         cell.topicLabel.alpha = 1
                     }
 
@@ -297,50 +296,102 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if PFUser.currentUser() == nil{
+            let alert = UIAlertView()
+            alert.title = "No user is found"
+            alert.message = "Log in or sign up an account to browse into groups"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+            performSegueWithIdentifier("loginFavSegue", sender: self)
+            
+        }
+        else{
+            performSegueWithIdentifier("topicFavSegue", sender: indexPath)
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "topicFavSegue"{
+            let toView = segue.destinationViewController as TopicTableViewController
+            toView.hidesBottomBarWhenPushed = true
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            let row:AnyObject = timelineFavData[indexPath!.row]
+            toView.groupCreated = row as? PFObject
     }
-    */
+        if (segue.identifier == "createGroupFavSegue"){
+            let toView = segue.destinationViewController as CreateGroupViewController
+            tabBarController?.tabBar.hidden = true
+            toView.delegate = self
+            
+        }
+        
+        if (segue.identifier == "loginFavSegue"){
+            let toView = segue.destinationViewController as LoginViewController
+            tabBarController?.tabBar.hidden = true
+            toView.delegate = self
+            
+        }
+    }
 
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        UIView.animateWithDuration(0.25, animations: {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        })
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Remove", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
+            
+            let deleteMenu = UIAlertController(title: nil, message: "Remove this group?", preferredStyle: .ActionSheet)
+            
+            let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
+                { action -> Void in
+                    var groupDisplay:PFObject = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
+                   groupDisplay["favorite"] = false
+                   groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("removed")
+                        } else {
+                            println(error)
+                        }
+                    }
+                    PFUser.currentUser().removeObject(groupDisplay.objectId, forKey: "favorited")
+                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        if success == true {
+                            println("removed")
+                        } else {
+                            println(error)
+                        }
+                        
+                    }
+                    self.timelineFavData.removeObjectAtIndex(indexPath.row)
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                { action -> Void in
+                    
+            }
+            
+            deleteMenu.addAction(deleteIt)
+            deleteMenu.addAction(cancelIt)
+            self.presentViewController(deleteMenu, animated: true, completion: nil)
+        })
+        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        return[deleteAction]
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+       return true
+    }
 }
+

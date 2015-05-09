@@ -113,7 +113,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         super.viewDidLoad()
         println(groupCreated)
         refreshControl?.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
-    
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.estimatedRowHeight = 96
         tableView.rowHeight = UITableViewAutomaticDimension
        
@@ -244,7 +244,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
         
-    return 0
+    return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

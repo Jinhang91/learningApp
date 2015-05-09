@@ -19,8 +19,8 @@ class FavouriteTableViewCell: UITableViewCell {
     
     @IBOutlet weak var authorLabel: UILabel!
     
-    @IBOutlet weak var topicLabel: UILabel!
-    
+    @IBOutlet weak var topicLabel: DesignableButton!
+
     @IBOutlet weak var timeSign: UIImageView!
     
     @IBOutlet weak var authorSign: UIImageView!

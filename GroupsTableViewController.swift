@@ -170,7 +170,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         timelineGroupData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         var findGroupData:PFQuery = PFQuery(className: "Groups")
-        
+        findGroupData.orderByAscending("createdAt")
         findGroupData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
             
@@ -211,7 +211,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
         
         //navigationController?.hidesBarsOnSwipe = true
-        navigationController?.navigationBar.topItem?.title = "Groups"
+        navigationController?.navigationBar.topItem?.title = "Home"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
     
@@ -219,12 +219,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-     //  tableView.separatorColor = UIColorFromRGB(0x929292)
-     //  searchBar.becomeFirstResponder()
+        tableView.tableFooterView = UIView(frame: CGRectZero)
         for subView in searchBar.subviews  {
             for subsubView in subView.subviews  {
                 if let textField = subsubView as? UITextField {
-                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search your group to join", comment:""),
+                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search your group here", comment:""),
                         attributes:[NSForegroundColorAttributeName: UIColorFromRGB(0x9F9C9C), NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 16)!])
                 }
             }
@@ -316,7 +315,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     }
 
             }
-                senderButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+                senderButton.setTitle("+ join", forState: UIControlState.Normal)
                 senderButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
                 senderButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
                 
@@ -343,8 +342,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                         
                     }
                 
-                senderButton.setTitle("Favorited", forState: UIControlState.Normal)
-               // senderButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
+                senderButton.setTitle("Joined", forState: UIControlState.Normal)
                 senderButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
                 senderButton.backgroundColor = UIColorFromRGB(0x56D7CD)
                 
@@ -400,7 +398,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
         
-        return 0
+        return 1
     }
     
 
@@ -434,7 +432,6 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         cell.avatarGroup.alpha = 0
         
         cell.topicNumber.alpha = 0
-        cell.topicSign.alpha = 0
         cell.favoriteButton.alpha = 0
         
         let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
@@ -454,10 +451,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             (count: Int32, error: NSError!) -> Void in
             if error == nil {
                 if count <= 1 {
-                cell.topicNumber.text = "\(count) topic"
+                cell.topicNumber.setTitle("\(count) topic", forState: UIControlState.Normal)
                 }
                 else{
-                    cell.topicNumber.text = "\(count) topics"
+                cell.topicNumber.setTitle("\(count) topics", forState: UIControlState.Normal)
                 }
             }
         }
@@ -485,7 +482,6 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     cell.avatarGroup.alpha = 1
                     
                     cell.topicNumber.alpha = 1
-                    cell.topicSign.alpha = 1
                     cell.favoriteButton.alpha = 1
                 }
                 
@@ -496,13 +492,12 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         var objectTo = groupCreated.objectForKey("favorite") as Bool?
         if objectTo == true{
             
-            cell.favoriteButton.setTitle("Favorited", forState: UIControlState.Normal)
-            //cell.favoriteButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
+            cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
             cell.favoriteButton.backgroundColor = UIColorFromRGB(0x56D7CD)
         }
         else{
-            cell.favoriteButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+            cell.favoriteButton.setTitle("+ Join", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
             cell.favoriteButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
         }
@@ -537,10 +532,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             (count: Int32, error: NSError!) -> Void in
             if error == nil {
                 if count <= 1 {
-                    cell.topicNumber.text = "\(count) topic"
+                    cell.topicNumber.setTitle("\(count) topic", forState: UIControlState.Normal)
                 }
                 else{
-                    cell.topicNumber.text = "\(count) topics"
+                    cell.topicNumber.setTitle("\(count) topics", forState: UIControlState.Normal)
                 }
             }
         }
@@ -571,13 +566,13 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         var objectTo = groupCreated.objectForKey("favorite") as Bool?
         if objectTo == true{
             
-            cell.favoriteButton.setTitle("Favorited", forState: UIControlState.Normal)
+            cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
             //cell.favoriteButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
             cell.favoriteButton.backgroundColor = UIColorFromRGB(0x56D7CD)
         }
         else{
-            cell.favoriteButton.setTitle("+ Favorite", forState: UIControlState.Normal)
+            cell.favoriteButton.setTitle("+ Join", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
             cell.favoriteButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
         }

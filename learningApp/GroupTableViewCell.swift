@@ -24,13 +24,12 @@ class GroupTableViewCell: UITableViewCell {
     
     @IBOutlet weak var timeLabel: UILabel!
     
-    @IBOutlet weak var topicNumber: UILabel!
+    @IBOutlet weak var topicNumber: DesignableButton!
     
     @IBOutlet weak var timeLabelSign: UIImageView!
     
     @IBOutlet weak var authorSign: UIImageView!
     
-    @IBOutlet weak var topicSign: UIImageView!
 
     @IBOutlet weak var favoriteButton: DesignableButton!
     
