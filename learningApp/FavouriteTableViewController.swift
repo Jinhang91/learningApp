@@ -11,6 +11,7 @@ import UIKit
 class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateGroupViewControllerDelegate {
 
     @IBOutlet weak var signOut: UIBarButtonItem!
+    @IBOutlet weak var createGroupButton: UIBarButtonItem!
     
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() != nil {
@@ -28,10 +29,11 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                     PFUser.logOut()
                     self.loadData()
                     let alert = UIAlertView()
-                    alert.title = ""
-                    alert.message = "Sign out successfully"
+                    alert.title = "Log out successfully"
+                    alert.message = ""
                     alert.addButtonWithTitle("OK")
                     alert.show()
+                    self.createGroupButton.enabled = false
             }
             
             signOutDialog.addAction(cancelIt)
@@ -66,11 +68,21 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     var timelineFavData:NSMutableArray = NSMutableArray()
     
     func loadData(){
-        if PFUser.currentUser() == nil{
-            signOut.title = "Log in"
-        }
-        else{
+        if PFUser.currentUser() != nil{
+            var findLecturerUser = PFUser.currentUser()
+            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            if scope == true {
+                self.createGroupButton.enabled = true
+            }
+                
+            else {
+                self.createGroupButton.enabled = false
+            }
             signOut.title = PFUser.currentUser().username
+        }
+            
+        else{
+            signOut.title = "Log in"
         }
         timelineFavData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
@@ -98,11 +110,22 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
     override func viewDidAppear(animated: Bool) {
         
-        if PFUser.currentUser() == nil{
-            signOut.title = "Log in"
-        }
-        else{
+        if PFUser.currentUser() != nil{
+            var findLecturerUser = PFUser.currentUser()
+            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            if scope == true {
+                self.createGroupButton.enabled = true
+            }
+                
+            else {
+                self.createGroupButton.enabled = false
+            }
             signOut.title = PFUser.currentUser().username
+        }
+            
+        else{
+            signOut.title == "Log in"
+            
         }
         
         if isFirstTime {
@@ -205,6 +228,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     func loginViewControllerDidLogin(controller: LoginViewController) {
         view.showLoading()
         loadData()
+        tabBarController?.selectedIndex = 0
         tabBarController?.tabBar.hidden = false
         
     }

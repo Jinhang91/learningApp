@@ -35,10 +35,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 PFUser.logOut()
                 self.loadData()
                 let alert = UIAlertView()
-                alert.title = ""
-                alert.message = "Sign out successfully"
+                alert.title = "Logged out successfully"
+                alert.message = ""
                 alert.addButtonWithTitle("OK")
                 alert.show()
+                self.createGroupDidTouch.enabled = false
             }
      
             signOutDialog.addAction(cancelIt)
@@ -66,7 +67,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             alert.show()
         }
         else{
-        performSegueWithIdentifier("createGroupSegue", sender: self)
+            performSegueWithIdentifier("createGroupSegue", sender: self)
+            
         }
     }
     
@@ -161,12 +163,23 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var timelineGroupData:NSMutableArray = NSMutableArray()
     
     func loadData(){
-        if PFUser.currentUser() == nil{
-            signOut.title = "Log in"
-        }
-        else{
+        if PFUser.currentUser() != nil{
+            var findLecturerUser = PFUser.currentUser()
+            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            if scope == true {
+                self.createGroupDidTouch.enabled = true
+            }
+                
+            else {
+                self.createGroupDidTouch.enabled = false
+            }
             signOut.title = PFUser.currentUser().username
         }
+            
+        else{
+            signOut.title = "Log in"
+        }
+
         timelineGroupData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         var findGroupData:PFQuery = PFQuery(className: "Groups")
@@ -194,14 +207,24 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-        
-        if PFUser.currentUser() == nil{
-            signOut.title = "Log in"
+        if PFUser.currentUser() != nil{
+            var findLecturerUser = PFUser.currentUser()
+            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            if scope == true {
+                self.createGroupDidTouch.enabled = true
+            }
+                
+            else {
+                self.createGroupDidTouch.enabled = false
+            }
+           signOut.title = PFUser.currentUser().username
         }
+
         else{
-            signOut.title = PFUser.currentUser().username
+            signOut.title == "Log in"
+            
         }
-        
+
         if isFirstTime {
             self.view.showLoading()
             self.tableView.setNeedsDisplay()
@@ -209,12 +232,11 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             self.loadData()
             isFirstTime = false
         }
-        
+
         //navigationController?.hidesBarsOnSwipe = true
         navigationController?.navigationBar.topItem?.title = "Home"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -268,7 +290,6 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     hideBottomBorder()
                }
     
-  
     func hideBottomBorder() {
         for view in navigationController?.navigationBar.subviews.filter({ NSStringFromClass($0.dynamicType) == "_UINavigationBarBackground" }) as [UIView] {
             if let imageView = view.subviews.filter({ $0 is UIImageView }).first as? UIImageView {
@@ -358,8 +379,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
         view.showLoading()
         loadData()
+        tabBarController?.selectedIndex = 1
         tabBarController?.tabBar.hidden = false
-        
     }
     
     func loginCloseViewControllerDidTouch(controller: LoginViewController) {

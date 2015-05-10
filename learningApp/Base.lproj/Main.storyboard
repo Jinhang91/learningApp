@@ -18,6 +18,7 @@
             <string>SanFranciscoDisplay-Medium</string>
             <string>SanFranciscoDisplay-Medium</string>
             <string>SanFranciscoDisplay-Medium</string>
+            <string>SanFranciscoDisplay-Medium</string>
         </mutableArray>
         <mutableArray key="SanFranciscoDisplay-Regular.otf">
             <string>SanFranciscoDisplay-Regular</string>
@@ -728,19 +729,23 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="16321666" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgx-oa-8eK">
-                                            <rect key="frame" x="23" y="15" width="69" height="20.5"/>
+                                            <rect key="frame" x="11" y="15" width="100" height="20.5"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jun 21, 3:18 PM" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBs-9f-7FM">
-                                            <rect key="frame" x="202" y="17" width="95" height="18"/>
+                                            <rect key="frame" x="214" y="17" width="95" height="18"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="15"/>
                                             <color key="textColor" red="0.62376922369999999" green="0.61175626520000004" blue="0.61154913899999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJA-H9-8Sc" customClass="SpringButton" customModule="learningApp" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJA-H9-8Sc" customClass="SpringButton" customModule="learningApp" customModuleProvider="target">
                                             <rect key="frame" x="119" y="16" width="83" height="19"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="19" id="3SY-im-SH1"/>
+                                                <constraint firstAttribute="width" constant="83" id="7gq-t6-jiW"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="16"/>
                                             <inset key="contentEdgeInsets" minX="29" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             <inset key="imageEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -754,14 +759,20 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="wgx-oa-8eK" firstAttribute="top" secondItem="YXF-V5-H3u" secondAttribute="top" constant="15" id="TgW-Z7-nLC"/>
+                                        <constraint firstAttribute="centerX" secondItem="aJA-H9-8Sc" secondAttribute="centerX" id="2p7-lz-Ndr"/>
+                                        <constraint firstAttribute="bottom" secondItem="aJA-H9-8Sc" secondAttribute="bottom" constant="17.5" id="DgB-Lr-NrJ"/>
+                                        <constraint firstItem="wgx-oa-8eK" firstAttribute="top" secondItem="YXF-V5-H3u" secondAttribute="top" constant="15" id="JrW-bC-NS5"/>
+                                        <constraint firstItem="wgx-oa-8eK" firstAttribute="leading" secondItem="YXF-V5-H3u" secondAttribute="leading" constant="11" id="MeB-hZ-OUn"/>
                                         <constraint firstItem="tBs-9f-7FM" firstAttribute="top" secondItem="YXF-V5-H3u" secondAttribute="top" constant="17" id="ajm-P2-UPa"/>
-                                        <constraint firstAttribute="trailing" secondItem="tBs-9f-7FM" secondAttribute="trailing" constant="23" id="eyc-ax-1wD"/>
+                                        <constraint firstAttribute="trailing" secondItem="tBs-9f-7FM" secondAttribute="trailing" constant="11" id="eyc-ax-1wD"/>
+                                        <constraint firstAttribute="centerY" secondItem="aJA-H9-8Sc" secondAttribute="centerY" id="gsa-mA-wyR"/>
+                                        <constraint firstItem="aJA-H9-8Sc" firstAttribute="leading" secondItem="wgx-oa-8eK" secondAttribute="trailing" constant="8" id="hH7-F8-2Fn"/>
                                         <constraint firstAttribute="bottom" secondItem="tBs-9f-7FM" secondAttribute="bottom" constant="18" id="jK5-Mc-bvo"/>
-                                        <constraint firstItem="wgx-oa-8eK" firstAttribute="leading" secondItem="YXF-V5-H3u" secondAttribute="leading" constant="23" id="wt6-cv-jVb"/>
+                                        <constraint firstAttribute="bottom" secondItem="wgx-oa-8eK" secondAttribute="bottom" constant="17.5" id="lkU-bp-bz4"/>
+                                        <constraint firstItem="aJA-H9-8Sc" firstAttribute="top" secondItem="YXF-V5-H3u" secondAttribute="top" constant="16" id="tmf-r9-J0d"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <inset key="separatorInset" minX="23" minY="0.0" maxX="23" maxY="0.0"/>
+                                <inset key="separatorInset" minX="11" minY="0.0" maxX="11" maxY="0.0"/>
                                 <connections>
                                     <outlet property="ratingDisplayed" destination="aJA-H9-8Sc" id="VYL-2m-4gY"/>
                                     <outlet property="studentMatric" destination="wgx-oa-8eK" id="n20-ld-uL2"/>
@@ -792,6 +803,9 @@
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" image="action-share" id="N6R-cv-KO9">
                             <color key="tintColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="saveButtonDidTouch:" destination="whb-1S-ef1" id="Fr5-UU-5dC"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
@@ -973,7 +987,7 @@
                                 <action selector="signOutButtonDidTouch:" destination="eDa-TO-OQA" id="HBC-Ak-41d"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="X1A-hH-zdg">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Create" id="X1A-hH-zdg">
                             <connections>
                                 <action selector="cretateGroupButtonDidTouch:" destination="eDa-TO-OQA" id="GOY-hx-cgv"/>
                             </connections>
@@ -999,7 +1013,6 @@
                         <outlet property="createGroupDidTouch" destination="X1A-hH-zdg" id="D3m-Yu-CtF"/>
                         <outlet property="searchBar" destination="BvW-0X-OfS" id="y8D-Sw-XFu"/>
                         <outlet property="signOut" destination="kvo-YP-jd9" id="18B-5j-po5"/>
-                        <segue destination="vcV-r7-3JN" kind="presentation" identifier="backToHome" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="XVr-ow-e8L"/>
                         <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="lfw-qO-gEX"/>
                         <segue destination="dVO-1Q-ktY" kind="show" identifier="topicSegue" id="xjj-LN-1JA"/>
                         <segue destination="D0H-a1-ADH" kind="presentation" identifier="createGroupSegue" modalPresentationStyle="overCurrentContext" id="FXN-Yi-z0S"/>
@@ -1138,7 +1151,7 @@
                                 <action selector="signOutButtonDidTouch:" destination="X88-lJ-j57" id="Ts1-iE-hZr"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="5JU-wc-HXv">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Create" id="5JU-wc-HXv">
                             <connections>
                                 <action selector="createGroupDidTouch:" destination="X88-lJ-j57" id="EBa-c7-UOM"/>
                             </connections>
@@ -1146,6 +1159,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="createGroupButton" destination="5JU-wc-HXv" id="1E9-gg-oXL"/>
                         <outlet property="signOut" destination="xq7-ZY-e1R" id="fEQ-s9-WNp"/>
                         <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginFavSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="zqw-5d-Yqu"/>
                         <segue destination="D0H-a1-ADH" kind="presentation" identifier="createGroupFavSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="TIh-zm-MNR"/>
@@ -1447,7 +1461,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Matric No." textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fau-ZN-YcA" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Lecturer ID/ Matric No." textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fau-ZN-YcA" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
                                         <rect key="frame" x="15" y="79" width="250" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="xo5-N8-tUv"/>
@@ -1607,7 +1621,7 @@
                         <outlet property="passwordTextField" destination="Rwd-tn-U0D" id="Yu9-Uq-oxq"/>
                         <outlet property="titleLabel" destination="EkE-ai-kBY" id="nfH-z3-67A"/>
                         <outlet property="titleSecondLabel" destination="rn7-YF-M7z" id="eXd-Ne-fbM"/>
-                        <segue destination="vcV-r7-3JN" kind="presentation" identifier="signUpSegue" modalTransitionStyle="crossDissolve" id="2MX-wi-CQG"/>
+                        <segue destination="vcV-r7-3JN" kind="presentation" identifier="signUpSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="2MX-wi-CQG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AZ6-Np-f5u" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1645,10 +1659,10 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r6d-aA-bkP" customClass="DesignableView" customModule="learningApp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="144" width="280" height="280"/>
+                                <rect key="frame" x="20" y="139" width="280" height="290"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interactive Learning App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNw-jL-34i" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="47" y="28" width="187" height="22"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interactive Learning App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNw-jL-34i" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="21" y="28" width="238" height="21.5"/>
                                         <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
                                         <color key="textColor" red="0.62376922369999999" green="0.61175626520000004" blue="0.61154913899999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1661,10 +1675,11 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ita-0T-AIY" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="183" width="250" height="44"/>
+                                        <rect key="frame" x="15" y="222" width="250" height="44"/>
                                         <color key="backgroundColor" red="0.17925962805747986" green="0.71228760480880737" blue="0.72718203067779541" alpha="0.82950187663185382" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="Fta-fC-XSu"/>
+                                            <constraint firstAttribute="width" constant="250" id="gOR-Ft-K68"/>
+                                            <constraint firstAttribute="height" constant="44" id="iO2-1q-ZQD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SanFranciscoDisplay-Medium" family="San Francisco Display" pointSize="19"/>
                                         <state key="normal" title="SIGN UP">
@@ -1689,35 +1704,11 @@
                                             <action selector="signUpButtonDidPress:" destination="vcV-r7-3JN" eventType="touchUpInside" id="fbM-7O-XcV"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have an account? " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QrD-tB-F9O" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="49" y="244" width="117" height="18"/>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="15"/>
-                                        <color key="textColor" red="0.62376922369999999" green="0.61175626520000004" blue="0.61154913899999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="fadeIn"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZT-LG-Z5T" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="165" y="238" width="68" height="30"/>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="15"/>
-                                        <state key="normal" title="Login here">
-                                            <color key="titleColor" red="0.25098039220000001" green="0.64705882349999999" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="fadeIn"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="loginHereButton:" destination="vcV-r7-3JN" eventType="touchUpInside" id="gxF-6f-m32"/>
-                                        </connections>
-                                    </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Matric No." textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8eM-uF-PyG" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Lecturer ID/ Matric No." textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8eM-uF-PyG" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
                                         <rect key="frame" x="15" y="79" width="250" height="44"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="1Xz-QZ-vLo"/>
+                                            <constraint firstAttribute="width" constant="250" id="5N7-49-IBq"/>
+                                            <constraint firstAttribute="height" constant="44" id="Brh-4c-pFs"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="18"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -1735,10 +1726,11 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="a0c-Xp-8OE" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Password" textAlignment="center" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="a0c-Xp-8OE" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
                                         <rect key="frame" x="15" y="131" width="250" height="44"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="Yww-m3-bCX"/>
+                                            <constraint firstAttribute="width" constant="250" id="Gua-fW-phk"/>
+                                            <constraint firstAttribute="height" constant="44" id="PgA-jS-IjU"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -1757,33 +1749,98 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interactive Learning App" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O4L-zM-qFK" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="47" y="28" width="187" height="22"/>
+                                        <rect key="frame" x="47" y="28" width="187" height="21.5"/>
                                         <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vm1-pa-yuH" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="183" width="99.5" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="99.5" id="Ojq-d2-dAr"/>
+                                            <constraint firstAttribute="height" constant="31" id="ogU-qk-OHY"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="14"/>
+                                        <state key="normal" title="Lecturer">
+                                            <color key="titleColor" red="0.4431372549" green="0.50980392159999999" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" red="0.44081681966781616" green="0.50847893953323364" blue="0.59170931577682495" alpha="0.57344543150000005" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="lecturerButtonDidTouch:" destination="vcV-r7-3JN" eventType="touchUpInside" id="ZIF-OK-TPf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ius-Zn-icj" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="165" y="183" width="100" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="Nnq-qh-o8k"/>
+                                            <constraint firstAttribute="height" constant="31" id="puZ-UT-yjz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="14"/>
+                                        <state key="normal" title="Student">
+                                            <color key="titleColor" red="0.4431372549" green="0.50980392159999999" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" red="0.44081681966781616" green="0.50847893953323364" blue="0.59170931577682495" alpha="0.57344543150000005" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="studentButtonDidTouch:" destination="vcV-r7-3JN" eventType="touchUpInside" id="6aI-0Z-H4a"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vz5-3L-bgK">
+                                        <rect key="frame" x="132" y="189.5" width="16" height="19.5"/>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Medium" family="San Francisco Display" pointSize="16"/>
+                                        <color key="textColor" red="0.4431372549" green="0.50980392159999999" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.93690592050552368" green="0.94496798515319824" blue="0.95731931924819946" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="top" secondItem="a0c-Xp-8OE" secondAttribute="bottom" constant="8" id="5P1-ZX-zo6"/>
-                                    <constraint firstAttribute="trailing" secondItem="8eM-uF-PyG" secondAttribute="trailing" constant="15" id="9hY-hr-UN1"/>
-                                    <constraint firstAttribute="centerX" secondItem="O4L-zM-qFK" secondAttribute="centerX" constant="-0.5" id="9vf-WO-ega"/>
-                                    <constraint firstAttribute="height" constant="280" id="BSb-ap-ez1"/>
-                                    <constraint firstAttribute="bottom" secondItem="QrD-tB-F9O" secondAttribute="bottom" constant="18" id="C2G-ty-Oir"/>
-                                    <constraint firstItem="a0c-Xp-8OE" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="CFs-c1-nXq"/>
-                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="Dan-Qw-e7Y"/>
-                                    <constraint firstAttribute="centerX" secondItem="wNw-jL-34i" secondAttribute="centerX" constant="-0.5" id="KkI-GU-mYm"/>
-                                    <constraint firstItem="wNw-jL-34i" firstAttribute="top" secondItem="r6d-aA-bkP" secondAttribute="top" constant="28" id="LXv-zU-hTM"/>
-                                    <constraint firstItem="8eM-uF-PyG" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="Nwk-mQ-bB8"/>
-                                    <constraint firstAttribute="centerX" secondItem="QrD-tB-F9O" secondAttribute="centerX" constant="32.5" id="Qlk-TO-zSH"/>
-                                    <constraint firstAttribute="centerX" secondItem="gZT-LG-Z5T" secondAttribute="centerX" constant="-58.5" id="Xng-Xq-4S6"/>
-                                    <constraint firstItem="a0c-Xp-8OE" firstAttribute="top" secondItem="8eM-uF-PyG" secondAttribute="bottom" constant="8" id="h9R-uJ-uhh"/>
-                                    <constraint firstAttribute="bottom" secondItem="gZT-LG-Z5T" secondAttribute="bottom" constant="12" id="hAj-9A-rNZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ita-0T-AIY" secondAttribute="trailing" constant="15" id="kJH-qt-FxX"/>
-                                    <constraint firstItem="gZT-LG-Z5T" firstAttribute="top" secondItem="Ita-0T-AIY" secondAttribute="bottom" constant="11" id="mC7-64-dtD"/>
-                                    <constraint firstAttribute="width" constant="280" id="q01-qH-65X"/>
-                                    <constraint firstItem="O4L-zM-qFK" firstAttribute="top" secondItem="r6d-aA-bkP" secondAttribute="top" constant="28" id="xY4-F0-qhW"/>
-                                    <constraint firstAttribute="trailing" secondItem="a0c-Xp-8OE" secondAttribute="trailing" constant="15" id="xiK-gM-8zq"/>
+                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="top" secondItem="Vz5-3L-bgK" secondAttribute="bottom" constant="13" id="1Dw-VK-pig"/>
+                                    <constraint firstItem="8eM-uF-PyG" firstAttribute="top" secondItem="wNw-jL-34i" secondAttribute="bottom" constant="29.5" id="1tZ-9T-Gqu"/>
+                                    <constraint firstAttribute="trailing" secondItem="O4L-zM-qFK" secondAttribute="trailing" constant="46" id="3bd-li-hX7"/>
+                                    <constraint firstItem="Vm1-pa-yuH" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="5UG-nF-E3F"/>
+                                    <constraint firstItem="wNw-jL-34i" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="21" id="6sF-46-5Ew"/>
+                                    <constraint firstItem="O4L-zM-qFK" firstAttribute="top" secondItem="r6d-aA-bkP" secondAttribute="top" constant="28" id="7VT-nl-9ZN"/>
+                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="top" secondItem="Vm1-pa-yuH" secondAttribute="bottom" constant="8" id="8S8-1d-5Rc"/>
+                                    <constraint firstAttribute="width" constant="280" id="BbW-1z-qNd"/>
+                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="top" secondItem="Ius-Zn-icj" secondAttribute="bottom" constant="8" id="EMv-YG-EdV"/>
+                                    <constraint firstItem="Ius-Zn-icj" firstAttribute="leading" secondItem="Vz5-3L-bgK" secondAttribute="trailing" constant="17" id="FY1-UL-6D3"/>
+                                    <constraint firstItem="8eM-uF-PyG" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="NOm-4J-gvH"/>
+                                    <constraint firstItem="8eM-uF-PyG" firstAttribute="top" secondItem="O4L-zM-qFK" secondAttribute="bottom" constant="29.5" id="Nqd-E0-Lub"/>
+                                    <constraint firstAttribute="trailing" secondItem="wNw-jL-34i" secondAttribute="trailing" constant="21" id="PDG-zc-id5"/>
+                                    <constraint firstAttribute="trailing" secondItem="a0c-Xp-8OE" secondAttribute="trailing" constant="15" id="WAc-5b-r07"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ita-0T-AIY" secondAttribute="bottom" constant="24" id="YFa-C6-EPl"/>
+                                    <constraint firstAttribute="height" constant="290" id="ZVW-5B-BlM"/>
+                                    <constraint firstItem="Ius-Zn-icj" firstAttribute="top" secondItem="a0c-Xp-8OE" secondAttribute="bottom" constant="8" id="co2-Kt-wiE"/>
+                                    <constraint firstItem="a0c-Xp-8OE" firstAttribute="top" secondItem="8eM-uF-PyG" secondAttribute="bottom" constant="8" id="fQV-Oz-8RK"/>
+                                    <constraint firstItem="a0c-Xp-8OE" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="geu-Et-nfF"/>
+                                    <constraint firstItem="Ita-0T-AIY" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="15" id="ggk-zY-kdI"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ita-0T-AIY" secondAttribute="trailing" constant="15" id="jP5-Nz-2fC"/>
+                                    <constraint firstItem="Vz5-3L-bgK" firstAttribute="leading" secondItem="Vm1-pa-yuH" secondAttribute="trailing" constant="17.5" id="lIk-mb-r83"/>
+                                    <constraint firstItem="O4L-zM-qFK" firstAttribute="leading" secondItem="r6d-aA-bkP" secondAttribute="leading" constant="47" id="mYL-S6-cak"/>
+                                    <constraint firstAttribute="trailing" secondItem="8eM-uF-PyG" secondAttribute="trailing" constant="15" id="mlU-Se-bQk"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ius-Zn-icj" secondAttribute="trailing" constant="15" id="tEL-wM-m5w"/>
+                                    <constraint firstItem="wNw-jL-34i" firstAttribute="top" secondItem="r6d-aA-bkP" secondAttribute="top" constant="28" id="wju-hz-H1w"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1799,12 +1856,12 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="7mc-KW-6B3" secondAttribute="trailing" id="0qs-pQ-qdD"/>
                             <constraint firstItem="Bww-bi-Dek" firstAttribute="top" secondItem="7mc-KW-6B3" secondAttribute="bottom" id="7EO-tv-y1O"/>
+                            <constraint firstAttribute="centerX" secondItem="r6d-aA-bkP" secondAttribute="centerX" id="Dxi-hq-uZq"/>
                             <constraint firstItem="a9k-rv-ycp" firstAttribute="top" secondItem="jhj-NZ-ZCI" secondAttribute="top" id="Mcl-WL-jop"/>
                             <constraint firstItem="a9k-rv-ycp" firstAttribute="leading" secondItem="jhj-NZ-ZCI" secondAttribute="leading" id="Odi-eP-Iqq"/>
                             <constraint firstAttribute="trailing" secondItem="a9k-rv-ycp" secondAttribute="trailing" id="TQ1-9h-Tkx"/>
                             <constraint firstItem="Bww-bi-Dek" firstAttribute="top" secondItem="a9k-rv-ycp" secondAttribute="bottom" id="ZdT-ow-WnF"/>
-                            <constraint firstAttribute="centerX" secondItem="r6d-aA-bkP" secondAttribute="centerX" id="d0R-55-JL1"/>
-                            <constraint firstAttribute="centerY" secondItem="r6d-aA-bkP" secondAttribute="centerY" id="fg1-Zk-i6n"/>
+                            <constraint firstAttribute="centerY" secondItem="r6d-aA-bkP" secondAttribute="centerY" id="gNV-jl-tY8"/>
                             <constraint firstItem="7mc-KW-6B3" firstAttribute="leading" secondItem="jhj-NZ-ZCI" secondAttribute="leading" id="kf2-LO-HJP"/>
                             <constraint firstItem="7mc-KW-6B3" firstAttribute="top" secondItem="jhj-NZ-ZCI" secondAttribute="top" id="sTL-NU-pEU"/>
                         </constraints>
@@ -1812,18 +1869,20 @@
                     <navigationItem key="navigationItem" id="J2P-JS-Dre"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="lecturerButton" destination="Vm1-pa-yuH" id="MI1-xs-Mfc"/>
                         <outlet property="signUpDialogView" destination="r6d-aA-bkP" id="gGT-5X-Pwn"/>
                         <outlet property="signUpMatricTextField" destination="8eM-uF-PyG" id="PFY-UD-K1S"/>
                         <outlet property="signUpPassTextField" destination="a0c-Xp-8OE" id="6C9-DK-XCi"/>
+                        <outlet property="studentButton" destination="Ius-Zn-icj" id="b7r-Yd-Iif"/>
                         <outlet property="textLabel" destination="wNw-jL-34i" id="jxU-N5-Wky"/>
                         <outlet property="textSecondLabel" destination="O4L-zM-qFK" id="B6A-oW-JSM"/>
-                        <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginBoxSegue" modalTransitionStyle="crossDissolve" id="FlJ-aG-FIG"/>
+                        <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginBoxSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="FlJ-aG-FIG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="boI-7A-93h" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="i0N-eW-mCs" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1954" y="1151"/>
+            <point key="canvasLocation" x="1956" y="1162"/>
         </scene>
         <!--Home-->
         <scene sceneID="71g-vO-hAk">
@@ -1924,9 +1983,8 @@
         <image name="subgroup-avatar" width="208" height="208"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xjj-LN-1JA"/>
-        <segue reference="XVr-ow-e8L"/>
-        <segue reference="FXN-Yi-z0S"/>
-        <segue reference="lfw-qO-gEX"/>
+        <segue reference="TIh-zm-MNR"/>
+        <segue reference="OHQ-rh-s41"/>
+        <segue reference="caJ-OY-tYv"/>
     </inferredMetricsTieBreakers>
 </document>

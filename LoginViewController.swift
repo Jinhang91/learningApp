@@ -40,26 +40,15 @@ class LoginViewController: UIViewController
                 if user != nil
                 {
                     println("\(matricEntr), you're successfully logged in")
-                    self.titleLabel.text = "Welcome," + " " + self.matricTextField.text + " user"
-                    self.titleLabel.textAlignment = NSTextAlignment.Center
-                    self.titleLabel.textColor = UIColor.redColor()
-                    self.loginDialogView.hidden = true
-                    self.view.hidden = true
+                   
                    self.dismissViewControllerAnimated(true, completion: nil)
-/*
-                    let alert1 = UIAlertView()
-                    alert1.title = "Search your group"
-                    alert1.message = self.matricTextField.text + " user, enter your group name to join"
-                    alert1.addButtonWithTitle("OK")
-                    alert1.show()
-              */
                     let alert = UIAlertView()
                     alert.title = "Successful"
                     alert.message = "Welcome, " + self.matricTextField.text + " user"
                     alert.addButtonWithTitle("OK")
                     alert.show()
                     
-                    
+  
                 
                 }
                     
@@ -98,7 +87,7 @@ class LoginViewController: UIViewController
             
             self.titleLabel.alpha = 1
             self.titleSecondLabel.alpha = 0
-           
+            tabBarController?.tabBar.hidden = false
             
             loginDialogView.animation = "shake"
             loginDialogView.force = 3

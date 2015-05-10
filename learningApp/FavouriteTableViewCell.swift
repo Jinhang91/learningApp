@@ -25,7 +25,7 @@ class FavouriteTableViewCell: UITableViewCell {
     
     @IBOutlet weak var authorSign: UIImageView!
     
-    @IBOutlet weak var topicSign: UIImageView!
+ 
     
     
     
