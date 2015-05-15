@@ -13,6 +13,7 @@
 		3C268B7E1AFC6749005FBF1B /* FavouriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */; };
 		3C2F3B8D1AF1FE87006B1784 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */; };
 		3C307E711AE2004800C7FDB8 /* WebTestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */; };
+		3C3E26381B0503A7004157CE /* EditCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3E26371B0503A7004157CE /* EditCommentViewController.swift */; };
 		3C4A34821AED36D200B73F6D /* EvaluationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */; };
 		3C4C5FBA1AB4644A00371FAB /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */; };
 		3C4C5FBC1AB6B5F000371FAB /* CommentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */; };
@@ -101,6 +102,7 @@
 		3CE840861AD7A33D006CE2B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840851AD7A33D006CE2B4 /* WebViewController.swift */; };
 		3CE840881AD93019006CE2B4 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840871AD93019006CE2B4 /* TestingViewController.swift */; };
 		3CE9D3711ABEFA9C00D08A7C /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */; };
+		3CF4D5BE1B04ABFD00A6676D /* EditTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF4D5BD1B04ABFD00A6676D /* EditTopicViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +124,7 @@
 		3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteTableViewCell.swift; sourceTree = "<group>"; };
 		3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewCell.swift; sourceTree = "<group>"; };
 		3C307E701AE2004800C7FDB8 /* WebTestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebTestingViewController.swift; sourceTree = "<group>"; };
+		3C3E26371B0503A7004157CE /* EditCommentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditCommentViewController.swift; sourceTree = "<group>"; };
 		3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewController.swift; sourceTree = "<group>"; };
 		3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsTableViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +222,7 @@
 		3CE840851AD7A33D006CE2B4 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		3CE840871AD93019006CE2B4 /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
+		3CF4D5BD1B04ABFD00A6676D /* EditTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTopicViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,22 +318,24 @@
 			isa = PBXGroup;
 			children = (
 				3C809D301AAC388A007318D1 /* AppDelegate.swift */,
-				3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */,
-				3C268B7B1AFC519F005FBF1B /* FavouriteTableViewController.swift */,
-				3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */,
-				3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */,
-				3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */,
-				3C809D701AAC879D007318D1 /* TopicTableViewController.swift */,
 				3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */,
-				3C809D741AAC8AE7007318D1 /* TopicTableViewCell.swift */,
 				3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */,
 				3C4C5FC51AB7C10D00371FAB /* CommentsTableViewCell.swift */,
 				3C809D721AAC87E8007318D1 /* ComposeTopicViewController.swift */,
+				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
+				3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */,
+				3C3E26371B0503A7004157CE /* EditCommentViewController.swift */,
+				3CF4D5BD1B04ABFD00A6676D /* EditTopicViewController.swift */,
+				3C268B7B1AFC519F005FBF1B /* FavouriteTableViewController.swift */,
+				3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */,
+				3C852E571AB2DC46001F5FA1 /* GroupsTableViewController.swift */,
+				3C4C5FB91AB4644A00371FAB /* GroupTableViewCell.swift */,
+				3C809D701AAC879D007318D1 /* TopicTableViewController.swift */,
+				3C809D741AAC8AE7007318D1 /* TopicTableViewCell.swift */,
 				3C56EEFD1AB9A991000BA5D0 /* ReplyViewController.swift */,
 				3C852E591AB30A04001F5FA1 /* LoginViewController.swift */,
 				3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */,
 				3CE840851AD7A33D006CE2B4 /* WebViewController.swift */,
-				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
 				3CDD365A1AD0E55A00DFC79A /* Sans Francisco Fonts */,
 				3C809D341AAC388A007318D1 /* Main.storyboard */,
 				3CE840871AD93019006CE2B4 /* TestingViewController.swift */,
@@ -606,9 +612,11 @@
 				3C852E521AB2D7E9001F5FA1 /* TransitionManager.swift in Sources */,
 				3C852E4B1AB2D7E9001F5FA1 /* SpringAnimation.swift in Sources */,
 				3C852E381AB2D7E9001F5FA1 /* AsyncButton.swift in Sources */,
+				3C3E26381B0503A7004157CE /* EditCommentViewController.swift in Sources */,
 				3C4C5FC61AB7C10D00371FAB /* CommentsTableViewCell.swift in Sources */,
 				3CE9D3711ABEFA9C00D08A7C /* CreateGroupViewController.swift in Sources */,
 				3C4A34821AED36D200B73F6D /* EvaluationTableViewController.swift in Sources */,
+				3CF4D5BE1B04ABFD00A6676D /* EditTopicViewController.swift in Sources */,
 				3C852E451AB2D7E9001F5FA1 /* KeyboardLayoutConstraint.swift in Sources */,
 				3C307E711AE2004800C7FDB8 /* WebTestingViewController.swift in Sources */,
 				3C852E3C1AB2D7E9001F5FA1 /* DesignableButton.swift in Sources */,

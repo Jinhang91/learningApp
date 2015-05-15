@@ -136,12 +136,19 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
 
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
-        searchActive = true
-        loadGroup("0000000")
-        tableView.tableHeaderView = searchBar
-        searchBar.setShowsCancelButton(true, animated: true)
+
+        UIView.animateWithDuration(0.3, animations: {
+            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+            self.searchActive = true
+            self.loadGroup("00000")
+            searchBar.showsCancelButton = true
+            self.navigationController?.navigationBarHidden = true
+            }, completion: { value in
+            
+                self.navigationController!.navigationBar.alpha = 0
+        })
         return true
-    }
+}
     
     func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
         searchActive = true
@@ -149,10 +156,21 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        loadGroup("")
-        searchActive = false
     
-        searchBar.resignFirstResponder()
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+            self.loadGroup("")
+            searchBar.showsCancelButton = false
+            searchBar.resignFirstResponder()
+            searchBar.text = ""
+            self.searchActive = false
+            //self.tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
+            self.navigationController!.navigationBarHidden = false
+            }, completion: { finished in
+            
+                self.navigationController!.navigationBar.alpha = 1
+           
+        })
     }
     
 
@@ -179,7 +197,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         else{
             signOut.title = "Log in"
         }
-
+        tabBarController?.tabBar.hidden = false
         timelineGroupData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         var findGroupData:PFQuery = PFQuery(className: "Groups")
@@ -207,6 +225,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
+        
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
             var scope = findLecturerUser.objectForKey("identity") as Bool?
@@ -240,6 +259,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
         searchBar.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         for subView in searchBar.subviews  {
@@ -377,19 +397,22 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     //MARK: Log in delegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
+
         view.showLoading()
         loadData()
-        tabBarController?.selectedIndex = 1
         tabBarController?.tabBar.hidden = false
-    }
+
+        }
     
     func loginCloseViewControllerDidTouch(controller: LoginViewController) {
+       
         tabBarController?.tabBar.hidden = false
     }
     
     
     //MARK: Create Group delegate
     func createGroupViewControllerDidTouch(controller: CreateGroupViewController) {
+       
         view.showLoading()
         loadData()
         tabBarController?.tabBar.hidden = false
@@ -408,7 +431,6 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         else {
             var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
             view.addSubview(imageView)
-            
             
             var imageChosen = UIImage(named: "emptyIconGroup")
             imageView.image = imageChosen
@@ -695,6 +717,18 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     toView.groupCreated = row as? PFObject
                     
                 }
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+                  
+                    self.searchBar.showsCancelButton = true
+                    self.navigationController!.navigationBarHidden = false
+                    }, completion: { finished in
+                        
+                        self.navigationController!.navigationBar.alpha = 1
+                        
+                })
+
             }
             else{
                 

@@ -27,7 +27,7 @@ class LoginViewController: UIViewController
     
     @IBAction func loginButtonDidPress(sender: AnyObject)
     {
-        
+    
         if matricTextField.text != "" && passwordTextField.text != ""
         {
             //view.showLoading()
@@ -41,15 +41,15 @@ class LoginViewController: UIViewController
                 {
                     println("\(matricEntr), you're successfully logged in")
                    
-                   self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismissViewControllerAnimated(true, completion: nil)
                     let alert = UIAlertView()
                     alert.title = "Successful"
                     alert.message = "Welcome, " + self.matricTextField.text + " user"
                     alert.addButtonWithTitle("OK")
                     alert.show()
+                   
                     
-  
-                
+                self.delegate?.loginViewControllerDidLogin(self)
                 }
                     
                 else if reachabbilityStatus == kNotReachableWithWifi {
@@ -87,7 +87,7 @@ class LoginViewController: UIViewController
             
             self.titleLabel.alpha = 1
             self.titleSecondLabel.alpha = 0
-            tabBarController?.tabBar.hidden = false
+            
             
             loginDialogView.animation = "shake"
             loginDialogView.force = 3
@@ -102,8 +102,7 @@ class LoginViewController: UIViewController
                 self.titleLabel.alpha = 0
             })
         }
-       delegate?.loginViewControllerDidLogin(self)
-    
+
     }
     
     @IBAction func closeButtonDidPress(sender: AnyObject) {

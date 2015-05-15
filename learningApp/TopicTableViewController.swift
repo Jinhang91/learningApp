@@ -56,6 +56,21 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
    var timelineTopicData:NSMutableArray! = NSMutableArray()
 
    func loadData(){
+    if PFUser.currentUser() != nil{
+        var findLecturerUser = PFUser.currentUser()
+        var scope = findLecturerUser.objectForKey("identity") as Bool?
+        if scope == true {
+            
+            self.composeButton.enabled = true
+        }
+            
+        else {
+            
+            self.composeButton.enabled = false
+        }
+        
+    }
+    
         timelineTopicData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         var findTopicData:PFQuery = PFQuery(className: "Topics")
@@ -88,7 +103,20 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-     
+        if PFUser.currentUser() != nil{
+            var findLecturerUser = PFUser.currentUser()
+            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            if scope == true {
+                
+                self.composeButton.enabled = true
+            }
+                
+            else {
+                
+                self.composeButton.enabled = false
+            }
+            
+        }
         if isFirstTime {
         self.view.showLoading()
         self.tableView.setNeedsDisplay()
@@ -496,6 +524,7 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
             toView.groupCreated = groupCreated as PFObject?
             toView.delegate = self
         }
+        
     }
     
     //MARK: roll editing

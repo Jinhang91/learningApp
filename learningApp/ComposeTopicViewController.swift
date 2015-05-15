@@ -39,12 +39,7 @@ class ComposeTopicViewController: UIViewController {
         
           UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
-        if titleText.text == nil {
-            submitTopicButton.enabled = false
-        }
-        else{
-            submitTopicButton.enabled = true
-        }
+      
     }
     
     override func viewDidAppear(animated: Bool) {

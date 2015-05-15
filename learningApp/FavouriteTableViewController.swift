@@ -228,7 +228,6 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     func loginViewControllerDidLogin(controller: LoginViewController) {
         view.showLoading()
         loadData()
-        tabBarController?.selectedIndex = 0
         tabBarController?.tabBar.hidden = false
         
     }
