@@ -14,7 +14,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var groupCreated : PFObject?
     var groupList:NSMutableArray = NSMutableArray()
     var searchActive:Bool = false
-    
+    var window: UIWindow?
     
     @IBOutlet weak var signOut: UIBarButtonItem!
     
@@ -39,7 +39,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 alert.message = ""
                 alert.addButtonWithTitle("OK")
                 alert.show()
-                self.createGroupDidTouch.enabled = false
+              //  self.createGroupDidTouch.enabled = false
             }
      
             signOutDialog.addAction(cancelIt)
@@ -54,25 +54,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
     }
     
-    @IBOutlet weak var createGroupDidTouch: UIBarButtonItem!
 
-
-    @IBAction func cretateGroupButtonDidTouch(sender: AnyObject) {
-        if PFUser.currentUser() == nil{
-            performSegueWithIdentifier("loginSegue", sender: self)
-            let alert = UIAlertView()
-            alert.title = "No user is detected"
-            alert.message = "Log in with your account to make comments"
-            alert.addButtonWithTitle("OK")
-            alert.show()
-        }
-        else{
-            performSegueWithIdentifier("createGroupSegue", sender: self)
-            
-        }
-    }
-    
-    
     override init!(style: UITableViewStyle, className: String!) {
         super.init(style: style, className: "Groups")
     }
@@ -138,9 +120,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
 
         UIView.animateWithDuration(0.3, animations: {
-            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+           // UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
             self.searchActive = true
-            self.loadGroup("00000")
+            self.loadGroup("0000")
             searchBar.showsCancelButton = true
             self.navigationController?.navigationBarHidden = true
             }, completion: { value in
@@ -157,20 +139,16 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
     
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+        
             self.loadGroup("")
             searchBar.showsCancelButton = false
             searchBar.resignFirstResponder()
             searchBar.text = ""
             self.searchActive = false
             //self.tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
-            self.navigationController!.navigationBarHidden = false
-            }, completion: { finished in
-            
-                self.navigationController!.navigationBar.alpha = 1
-           
-        })
+ 
+        
+  
     }
     
 
@@ -182,16 +160,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     func loadData(){
         if PFUser.currentUser() != nil{
-            var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
-            if scope == true {
-                self.createGroupDidTouch.enabled = true
-            }
-                
-            else {
-                self.createGroupDidTouch.enabled = false
-            }
-            signOut.title = PFUser.currentUser().username
+           signOut.title = PFUser.currentUser().username
         }
             
         else{
@@ -225,17 +194,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         
         if PFUser.currentUser() != nil{
-            var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
-            if scope == true {
-                self.createGroupDidTouch.enabled = true
-            }
-                
-            else {
-                self.createGroupDidTouch.enabled = false
-            }
+            
            signOut.title = PFUser.currentUser().username
         }
 
@@ -253,19 +215,41 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
 
         //navigationController?.hidesBarsOnSwipe = true
-        navigationController?.navigationBar.topItem?.title = "Home"
+        navigationController?.navigationBar.topItem?.title = "Search"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIView.animateWithDuration(0.3, animations: {
+            // UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
+            self.searchActive = false
+            self.navigationController?.navigationBarHidden = true
+            }, completion: { value in
+                
+                self.navigationController!.navigationBar.alpha = 0
+        })
+
+        var textField = searchBar.valueForKey("searchField") as UITextField
+        textField.backgroundColor = UIColorFromRGB(0xECECEC)
+        
+        searchBar.layer.borderWidth = 1
+        searchBar.layer.borderColor = UIColorFromRGB(0xFFFFFF).CGColor
+
+        var addStatusBar = UIView()
+        addStatusBar.frame = CGRectMake(0, 0, 320, 20);
+        addStatusBar.backgroundColor = UIColorFromRGB(0xFFFFFF)
+        self.window?.rootViewController?.view .addSubview(addStatusBar)
+
+
         tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
         searchBar.delegate = self
         tableView.tableFooterView = UIView(frame: CGRectZero)
         for subView in searchBar.subviews  {
             for subsubView in subView.subviews  {
                 if let textField = subsubView as? UITextField {
-                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search your group here", comment:""),
+                    textField.attributedPlaceholder =  NSAttributedString(string:NSLocalizedString("Search your group to join", comment:""),
                         attributes:[NSForegroundColorAttributeName: UIColorFromRGB(0x9F9C9C), NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 16)!])
                 }
             }
@@ -290,7 +274,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         tableView.estimatedRowHeight = 109
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
@@ -330,13 +314,14 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     //MARK: Group favorite delegate
     func groupTableViewCellFavoriteDidTouch(cell: GroupTableViewCell, sender: AnyObject) {
-        if PFUser.currentUser() != nil{
+        
             let senderButton:UIButton = sender as UIButton
+        if searchActive == false{
             var groupFav:PFObject = timelineGroupData.objectAtIndex(senderButton.tag) as PFObject
             println(groupFav.objectId)
             
-            var objectTo = groupFav.objectForKey("favorite") as Bool?
-            if objectTo == true{
+            var objectTo = groupFav.objectForKey("whoFavorited") as [String]
+            if contains(objectTo, PFUser.currentUser().objectId){
                 PFUser.currentUser().removeObject(groupFav.objectId, forKey: "favorited")
                 PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                     if success == true {
@@ -347,7 +332,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                 }
                 
-                groupFav["favorite"] = false
+                groupFav.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
                 groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                     if success == true {
                         println("remove favorite")
@@ -373,7 +358,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                     }
                     
-                    groupFav["favorite"] = true
+                    groupFav.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
                     groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                         if success == true {
                             println("favorited")
@@ -389,11 +374,68 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 
             }
         }
-        
-        else {
-            performSegueWithIdentifier("loginSegue", sender: self)
+        else{
+            var groupSearched:PFObject = groupList.objectAtIndex(senderButton.tag) as PFObject
+            println(groupSearched.objectId)
+            
+            var objectTo = groupSearched.objectForKey("whoFavorited") as [String]
+            if contains(objectTo, PFUser.currentUser().objectId){
+                PFUser.currentUser().removeObject(groupSearched.objectId, forKey: "favorited")
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("remove favorite")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+                
+                groupSearched.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
+                groupSearched.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("remove favorite")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+                senderButton.setTitle("+ join", forState: UIControlState.Normal)
+                senderButton.setTitleColor(UIColorFromRGB(0x56D7CD), forState: UIControlState.Normal)
+                senderButton.backgroundColor = UIColorFromRGB(0xFFFFFF)
+                
+            }
+                
+            else{
+                PFUser.currentUser().addUniqueObject(groupSearched.objectId, forKey: "favorited")
+                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("favorited")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+                
+                groupSearched.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
+                groupSearched.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    if success == true {
+                        println("favorited")
+                    } else {
+                        println(error)
+                    }
+                    
+                }
+                
+                senderButton.setTitle("Joined", forState: UIControlState.Normal)
+                senderButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
+                senderButton.backgroundColor = UIColorFromRGB(0x56D7CD)
+                
+            }
         }
         }
+    
+    
+    
     
     //MARK: Log in delegate
     func loginViewControllerDidLogin(controller: LoginViewController) {
@@ -474,7 +516,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         cell.authorSign.alpha = 0
         cell.avatarGroup.alpha = 0
         
-        cell.topicNumber.alpha = 0
+    //    cell.topicNumber.alpha = 0
         cell.favoriteButton.alpha = 0
         
         let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
@@ -487,7 +529,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 cell.avatarGroup.image = image
             }
         }
-        
+        /*
         var showTopicNo = PFQuery(className: "Topics")
         showTopicNo.whereKey("parent", equalTo: groupCreated)
         showTopicNo.countObjectsInBackgroundWithBlock{
@@ -501,7 +543,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 }
             }
         }
-        
+        */
         var findUsererData:PFQuery = PFUser.query()
         findUsererData.whereKey("objectId", equalTo: groupCreated.objectForKey("userer").objectId)
         
@@ -524,7 +566,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     cell.authorSign.alpha = 1
                     cell.avatarGroup.alpha = 1
                     
-                    cell.topicNumber.alpha = 1
+                 //   cell.topicNumber.alpha = 1
                     cell.favoriteButton.alpha = 1
                 }
                 
@@ -532,8 +574,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             
         })
         
-        var objectTo = groupCreated.objectForKey("favorite") as Bool?
-        if objectTo == true{
+        var objectTo = groupCreated.objectForKey("whoFavorited") as [String]
+        if contains(objectTo, PFUser.currentUser().objectId){
             
             cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
@@ -568,7 +610,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 cell.avatarGroup.image = image
             }
         }
-        
+        /*
         var showTopicNo = PFQuery(className: "Topics")
         showTopicNo.whereKey("parent", equalTo: groupCreated)
         showTopicNo.countObjectsInBackgroundWithBlock{
@@ -582,7 +624,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                 }
             }
         }
-        
+        */
         var findUsererData:PFQuery = PFUser.query()
         findUsererData.whereKey("objectId", equalTo: groupCreated.objectForKey("userer").objectId)
         
@@ -606,11 +648,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
             })
         
-        var objectTo = groupCreated.objectForKey("favorite") as Bool?
-        if objectTo == true{
+        var objectTo = groupCreated.objectForKey("whoFavorited") as [String]
+        if contains(objectTo, PFUser.currentUser().objectId){
             
             cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
-            //cell.favoriteButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Medium", size: 14)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
             cell.favoriteButton.backgroundColor = UIColorFromRGB(0x56D7CD)
         }
@@ -658,7 +699,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             deleteMenu.addAction(cancelIt)
             self.presentViewController(deleteMenu, animated: true, completion: nil)
             })
-        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        deleteAction.backgroundColor = UIColorFromRGB(0x4DB3B7)
         return[deleteAction]
     }
     
@@ -689,18 +730,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
     // MARK: Prepare for segue
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if PFUser.currentUser() == nil{
-            let alert = UIAlertView()
-            alert.title = "No user is found"
-            alert.message = "Log in or sign up an account to browse into groups"
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            performSegueWithIdentifier("loginSegue", sender: self)
-
-        }
-        else{
-        performSegueWithIdentifier("topicSegue", sender: indexPath)
-        }
+      
          tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
     }

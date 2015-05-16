@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateGroupViewControllerDelegate {
+class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateViewControllerDelegate {
 
     @IBOutlet weak var signOut: UIBarButtonItem!
     @IBOutlet weak var createGroupButton: UIBarButtonItem!
@@ -59,7 +59,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             alert.show()
         }
         else{
-            performSegueWithIdentifier("createGroupFavSegue", sender: self)
+            performSegueWithIdentifier("createGroupSegue", sender: self)
         }
     }
     
@@ -86,8 +86,9 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         }
         timelineFavData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
+        if PFUser.currentUser() != nil{
         var findGroupData:PFQuery = PFQuery(className: "Groups")
-        findGroupData.whereKey("favorite", equalTo: true)
+        findGroupData.whereKey("whoFavorited", equalTo: PFUser.currentUser().objectId)
         findGroupData.findObjectsInBackgroundWithBlock({
             (objects:[AnyObject]!,error:NSError!)->Void in
             
@@ -103,13 +104,21 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                 self.view.hideLoading()
                 self.tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
             }
+            
+            else{
+                println("nil")
+            }
         })
+        }
+        else{
+            view.hideLoading()
+        }
     }
     
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-        
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
             var scope = findLecturerUser.objectForKey("identity") as Bool?
@@ -137,7 +146,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         }
         
         //navigationController?.hidesBarsOnSwipe = true
-        navigationController?.navigationBar.topItem?.title = "Groups"
+        navigationController?.navigationBar.topItem?.title = "My Groups"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
    
@@ -238,17 +247,19 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
     
     //MARK: Create Group delegate
-    func createGroupViewControllerDidTouch(controller: CreateGroupViewController) {
+
+    
+    func createGroupViewControllerDidTouch(controller: CreateViewController) {
         view.showLoading()
         loadData()
         tabBarController?.tabBar.hidden = false
     }
     
-    func closeGroupViewControllerDidTouch(controller: CreateGroupViewController) {
+    func closeGroupViewControllerDidTouch(controller: CreateViewController) {
         tabBarController?.tabBar.hidden = false
     }
     
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("favoriteCell", forIndexPath: indexPath) as FavouriteTableViewCell
         
@@ -345,8 +356,8 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             let row:AnyObject = timelineFavData[indexPath!.row]
             toView.groupCreated = row as? PFObject
     }
-        if (segue.identifier == "createGroupFavSegue"){
-            let toView = segue.destinationViewController as CreateGroupViewController
+        if (segue.identifier == "createGroupSegue"){
+            let toView = segue.destinationViewController as CreateViewController
             tabBarController?.tabBar.hidden = true
             toView.delegate = self
             
@@ -379,7 +390,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                 { action -> Void in
                     var groupDisplay:PFObject = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
-                   groupDisplay["favorite"] = false
+                   groupDisplay.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
                    groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                         if success == true {
                             println("removed")
@@ -408,7 +419,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             deleteMenu.addAction(cancelIt)
             self.presentViewController(deleteMenu, animated: true, completion: nil)
         })
-        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        deleteAction.backgroundColor = UIColorFromRGB(0x4DB3B7)
         return[deleteAction]
     }
     

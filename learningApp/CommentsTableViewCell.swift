@@ -22,6 +22,8 @@ class CommentsTableViewCell: PFTableViewCell {
 
     @IBOutlet weak var evaluateButton: SpringButton!
 
+    @IBOutlet weak var editedLabel: UILabel!
+    
     weak var delegate: CommentsTableViewCellDelegate?
 
     @IBAction func upvoteButtonDidTouch(sender: AnyObject) {

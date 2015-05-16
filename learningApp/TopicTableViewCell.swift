@@ -26,6 +26,9 @@ class TopicTableViewCell: PFTableViewCell,UITextViewDelegate {
     @IBOutlet weak var authorSign: UIImageView!
     @IBOutlet weak var timeSign: UIImageView!
     
+    @IBOutlet weak var editedLabel: UILabel!
+    
+    
     var likeCount = 0
     
     weak var delegate: TopicTableViewCellDelegate?

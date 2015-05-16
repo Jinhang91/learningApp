@@ -217,6 +217,14 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
          topicCell.upvoteButton.alpha = 0
          topicCell.authorSign.alpha = 0
          topicCell.timeSign.alpha = 0
+         
+         var editedInfo = topic?.objectForKey("edited") as? Bool
+            if editedInfo == true{
+                topicCell.editedLabel.hidden = false
+            }
+            else{
+                topicCell.editedLabel.hidden = true
+            }
             
          var commentNo = PFQuery(className: "Comment")
             commentNo.whereKey("parent", equalTo: topic)
@@ -312,6 +320,15 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             }
+            
+            var editedInfo = comment.objectForKey("edited") as? Bool
+            if editedInfo == true{
+                commentCell.editedLabel.hidden = false
+            }
+            else{
+                commentCell.editedLabel.hidden = true
+            }
+
         
       //     var getPost = PFQuery(className: "Topics")
         //    var getComment = PFQuery(className: "Comment")
@@ -1010,14 +1027,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         if (segue.identifier == "editTopicSegue"){
             let toView = segue.destinationViewController as EditTopicViewController
-            if let indexPath: AnyObject = sender{
-            let row:AnyObject = timelineTopicData[indexPath.row]
-            toView.objectTo = row as? PFObject
+            toView.objectTo = topic as PFObject?
           
             }
             
             //toView.delegate = self
-        }
+        
         
         if segue.identifier == "editCommentSegue"{
             let toView = segue.destinationViewController as EditCommentViewController
@@ -1129,7 +1144,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         })
         
         editAction.backgroundColor = UIColorFromRGB(0x4FD7CE)
-        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        deleteAction.backgroundColor = UIColorFromRGB(0x4DB3B7)
        
        
         if indexPath.row >= 1 {

@@ -21,7 +21,8 @@ class EditCommentViewController: UIViewController {
     
     self.objectTo["userer"] = PFUser.currentUser()
     self.objectTo["commentContent"] = self.commentTextView.text
-    
+    self.objectTo["edited"] = true
+        
         self.objectTo.saveEventually{(success,error) -> Void in
             
             if error == nil{

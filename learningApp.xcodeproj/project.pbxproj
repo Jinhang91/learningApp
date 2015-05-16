@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3C268B101AFB9EE8005FBF1B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C809D391AAC388A007318D1 /* LaunchScreen.xib */; };
-		3C268B221AFBA492005FBF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C809D341AAC388A007318D1 /* Main.storyboard */; };
 		3C268B7C1AFC519F005FBF1B /* FavouriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C268B7B1AFC519F005FBF1B /* FavouriteTableViewController.swift */; };
 		3C268B7E1AFC6749005FBF1B /* FavouriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */; };
 		3C2F3B8D1AF1FE87006B1784 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F3B8C1AF1FE87006B1784 /* EvaluationTableViewCell.swift */; };
@@ -75,6 +74,8 @@
 		3C852E5C1AB30D36001F5FA1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */; };
 		3C92EA861AE010B200EC0B60 /* refresh.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C92EA841AE010B200EC0B60 /* refresh.wav */; };
 		3C92EA871AE010B200EC0B60 /* upvote.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3C92EA851AE010B200EC0B60 /* upvote.wav */; };
+		3CA80F5D1B06E1F100EDC64E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C809D341AAC388A007318D1 /* Main.storyboard */; };
+		3CA80F5F1B070A1E00EDC64E /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA80F5E1B070A1E00EDC64E /* CreateViewController.swift */; };
 		3CC0097B1AD66F7900227326 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC0097A1AD66F7900227326 /* Reachability.m */; };
 		3CDD36721AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD365B1AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf */; };
 		3CDD36731AD0E55B00DFC79A /* SanFranciscoDisplay-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD365C1AD0E55B00DFC79A /* SanFranciscoDisplay-Bold.otf */; };
@@ -194,6 +195,7 @@
 		3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		3C92EA841AE010B200EC0B60 /* refresh.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = refresh.wav; sourceTree = "<group>"; };
 		3C92EA851AE010B200EC0B60 /* upvote.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = upvote.wav; sourceTree = "<group>"; };
+		3CA80F5E1B070A1E00EDC64E /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 		3CC009791AD66F7900227326 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		3CC0097A1AD66F7900227326 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3CDD365B1AD0E55B00DFC79A /* SanFranciscoDisplay-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoDisplay-Black.otf"; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 			children = (
 				3C809D301AAC388A007318D1 /* AppDelegate.swift */,
 				3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */,
+				3CA80F5E1B070A1E00EDC64E /* CreateViewController.swift */,
 				3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */,
 				3C4C5FC51AB7C10D00371FAB /* CommentsTableViewCell.swift */,
 				3C809D721AAC87E8007318D1 /* ComposeTopicViewController.swift */,
@@ -571,13 +574,13 @@
 				3CDD36781AD0E55B00DFC79A /* SanFranciscoDisplay-Semibold.otf in Resources */,
 				3C92EA871AE010B200EC0B60 /* upvote.wav in Resources */,
 				3CDD36871AD0E55B00DFC79A /* SanFranciscoText-Thin.otf in Resources */,
-				3C268B221AFBA492005FBF1B /* Main.storyboard in Resources */,
 				3C809D381AAC388A007318D1 /* Images.xcassets in Resources */,
 				3CDD367C1AD0E55B00DFC79A /* SanFranciscoText-BoldItalic.otf in Resources */,
 				3CDD36741AD0E55B00DFC79A /* SanFranciscoDisplay-Heavy.otf in Resources */,
 				3CDD367A1AD0E55B00DFC79A /* SanFranciscoDisplay-Ultralight.otf in Resources */,
 				3CDD36751AD0E55B00DFC79A /* SanFranciscoDisplay-Light.otf in Resources */,
 				3CDD367F1AD0E55B00DFC79A /* SanFranciscoText-Light.otf in Resources */,
+				3CA80F5D1B06E1F100EDC64E /* Main.storyboard in Resources */,
 				3C92EA861AE010B200EC0B60 /* refresh.wav in Resources */,
 				3CDD367D1AD0E55B00DFC79A /* SanFranciscoText-Heavy.otf in Resources */,
 				3CDD36791AD0E55B00DFC79A /* SanFranciscoDisplay-Thin.otf in Resources */,
@@ -643,6 +646,7 @@
 				3C4C5FBA1AB4644A00371FAB /* GroupTableViewCell.swift in Sources */,
 				3C852E3E1AB2D7E9001F5FA1 /* DesignableLabel.swift in Sources */,
 				3C852E4D1AB2D7E9001F5FA1 /* SpringImageView.swift in Sources */,
+				3CA80F5F1B070A1E00EDC64E /* CreateViewController.swift in Sources */,
 				3C852E5C1AB30D36001F5FA1 /* SignUpViewController.swift in Sources */,
 				3C852E581AB2DC46001F5FA1 /* GroupsTableViewController.swift in Sources */,
 				3C852E5A1AB30A04001F5FA1 /* LoginViewController.swift in Sources */,

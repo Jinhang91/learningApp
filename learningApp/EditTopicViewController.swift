@@ -24,7 +24,7 @@ class EditTopicViewController: UIViewController {
         self.objectTo["userer"] = PFUser.currentUser()
         self.objectTo["title"] = self.titleTextView.text
         self.objectTo["content"] = self.contentTextView.text
-   
+        self.objectTo["edited"] = true
         
         self.objectTo.saveEventually{(success,error) -> Void in
         
@@ -54,6 +54,7 @@ class EditTopicViewController: UIViewController {
         if self.objectTo != nil{
             self.titleTextView.text = self.objectTo["title"] as? String
             self.contentTextView.text = self.objectTo["content"] as? String
+       //     self.objectTo.updatedAt = timeAgoSinceDate(objectTo.createdAt, true)
         }
 
         else{

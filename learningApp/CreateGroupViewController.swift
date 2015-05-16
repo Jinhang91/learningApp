@@ -74,13 +74,13 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     
 
     }
-    
+/*
     func imageDefault(){
         let pickedDefaultImage:UIImage = UIImage(named: "avatarDefault")!
         imageDefaultData = UIImagePNGRepresentation(pickedDefaultImage)
 
     }
-  
+  */
    
     func scaleImageWith(image:UIImage, and newSize:CGSize) ->UIImage{
         
@@ -90,7 +90,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         UIGraphicsEndImageContext()
         return newImage
     }
-    
+   /*
     @IBAction func createGroupButtonDidTouch(sender: AnyObject) {
         
         
@@ -102,7 +102,8 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             groupCreated.setObject(imageFile, forKey: "groupAvatar")
             groupCreated["name"] = groupNameTextField.text
             groupCreated["userer"] = PFUser.currentUser()
-            groupCreated["favorite"] = false
+            groupCreated["whoFavorited"] = []
+           
                 
                 groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                     if success == true {
@@ -112,6 +113,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                     }
                     
                 }
+
 
             
             println("Successful to create!")
@@ -123,10 +125,12 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             
            
             self.dismissViewControllerAnimated(true, completion: nil)
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+
 
             }
+                delegate?.createGroupViewControllerDidTouch(self)
       }
+               
             else if (groupNameTextField.text != "" && avatarGroup.image != nil) {
                 self.imageDefault()
                 if let data = imageDefaultData  {
@@ -136,7 +140,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                 groupCreated.setObject(imageFile, forKey: "groupAvatar")
                 groupCreated["name"] = groupNameTextField.text
                 groupCreated["userer"] = PFUser.currentUser()
-                groupCreated["favorite"] = false
+                groupCreated["whoFavorited"] = []
                     
                     groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                         if success == true {
@@ -160,8 +164,9 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
                 UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     
             }
+                delegate?.createGroupViewControllerDidTouch(self)
         }
-    
+
         else if groupNameTextField.text == "" {
             println("Unsuccessful to create!")
             self.groupNameLabel.transform = CGAffineTransformMakeTranslation(0, 0)
@@ -189,7 +194,14 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
             
             
     }
-        delegate?.createGroupViewControllerDidTouch(self)
+            else{
+                println("Very Unsuccessful to create!")
+        }
+        
+    }
+    */
+    override func viewDidAppear(animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     }
     
     override func viewDidLoad() {

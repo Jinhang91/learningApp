@@ -13,6 +13,8 @@
             <string>SanFranciscoDisplay-Light</string>
             <string>SanFranciscoDisplay-Light</string>
             <string>SanFranciscoDisplay-Light</string>
+            <string>SanFranciscoDisplay-Light</string>
+            <string>SanFranciscoDisplay-Light</string>
         </mutableArray>
         <mutableArray key="SanFranciscoDisplay-Medium.otf">
             <string>SanFranciscoDisplay-Medium</string>
@@ -21,7 +23,6 @@
             <string>SanFranciscoDisplay-Medium</string>
         </mutableArray>
         <mutableArray key="SanFranciscoDisplay-Regular.otf">
-            <string>SanFranciscoDisplay-Regular</string>
             <string>SanFranciscoDisplay-Regular</string>
             <string>SanFranciscoDisplay-Regular</string>
             <string>SanFranciscoDisplay-Regular</string>
@@ -234,7 +235,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vID-c7-NcF">
-                                            <rect key="frame" x="42" y="32.5" width="252" height="20.5"/>
+                                            <rect key="frame" x="42" y="32" width="252" height="20.5"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="17"/>
                                             <color key="textColor" red="0.62376922369999999" green="0.61175626520000004" blue="0.61154913899999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -257,13 +258,13 @@
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Va-el-4VT">
-                                            <rect key="frame" x="23" y="8" width="212.5" height="21.5"/>
+                                            <rect key="frame" x="23" y="8" width="211.5" height="21.5"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
                                             <color key="textColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQy-jX-Awi">
-                                            <rect key="frame" x="279.5" y="10" width="17.5" height="19.5"/>
+                                            <rect key="frame" x="279" y="10" width="17.5" height="19.5"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="16"/>
                                             <color key="textColor" red="0.57248467209999998" green="0.57258617879999996" blue="0.57247823480000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -277,14 +278,14 @@
                                             <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                         </textView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recents1" translatesAutoresizingMaskIntoConstraints="NO" id="gB1-d5-x7I">
-                                            <rect key="frame" x="262.5" y="13" width="13" height="13"/>
+                                            <rect key="frame" x="262" y="13" width="13" height="13"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="13" id="0VT-gm-n4o"/>
                                                 <constraint firstAttribute="height" constant="13" id="upf-zs-qfE"/>
                                             </constraints>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="author" translatesAutoresizingMaskIntoConstraints="NO" id="VPv-Se-mZ6">
-                                            <rect key="frame" x="23" y="35.5" width="13" height="13"/>
+                                            <rect key="frame" x="23" y="35" width="13" height="13"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="13" id="lJW-Na-bOs"/>
                                                 <constraint firstAttribute="height" constant="13" id="weK-YN-2wy"/>
@@ -307,6 +308,12 @@
                                                 <action selector="commentButtonDidTouch:" destination="GIh-UP-Pp3" eventType="touchUpInside" id="bnj-m7-eB6"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edited" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1g2-wz-q73">
+                                            <rect key="frame" x="253" y="58" width="43.5" height="19.5"/>
+                                            <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="16"/>
+                                            <color key="textColor" red="0.57241791486740112" green="0.57262569665908813" blue="0.57240414619445801" alpha="0.67185444078947365" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="VPv-Se-mZ6" firstAttribute="top" secondItem="3Va-el-4VT" secondAttribute="bottom" constant="6" id="0ou-Hs-wR1"/>
@@ -322,6 +329,7 @@
                                         <constraint firstItem="gB1-d5-x7I" firstAttribute="leading" secondItem="3Va-el-4VT" secondAttribute="trailing" constant="27.5" id="OLT-lD-jmx"/>
                                         <constraint firstItem="FGX-Z6-WAw" firstAttribute="top" secondItem="vID-c7-NcF" secondAttribute="bottom" constant="27.5" id="S05-bw-tMz"/>
                                         <constraint firstItem="FGX-Z6-WAw" firstAttribute="top" secondItem="lJq-Wv-EFi" secondAttribute="bottom" constant="1" id="UMY-Mj-47E"/>
+                                        <constraint firstAttribute="trailing" secondItem="1g2-wz-q73" secondAttribute="trailing" constant="23" id="bWl-BB-Bav"/>
                                         <constraint firstItem="VPv-Se-mZ6" firstAttribute="leading" secondItem="tcE-Nx-h9C" secondAttribute="leading" constant="23" id="dyN-8O-CSW"/>
                                         <constraint firstItem="gB1-d5-x7I" firstAttribute="top" secondItem="tcE-Nx-h9C" secondAttribute="top" constant="13" id="ffw-cU-oRk"/>
                                         <constraint firstItem="Vqo-Ae-Knq" firstAttribute="leading" secondItem="lJq-Wv-EFi" secondAttribute="trailing" constant="8" id="iyk-J1-VCS"/>
@@ -332,6 +340,7 @@
                                         <constraint firstAttribute="bottom" secondItem="FGX-Z6-WAw" secondAttribute="bottom" constant="5" id="q1n-Y9-QVN"/>
                                         <constraint firstItem="3Va-el-4VT" firstAttribute="top" secondItem="tcE-Nx-h9C" secondAttribute="top" constant="8" id="rIt-rk-5l1"/>
                                         <constraint firstItem="FGX-Z6-WAw" firstAttribute="leading" secondItem="tcE-Nx-h9C" secondAttribute="leading" constant="22" id="ufE-dG-ZlO"/>
+                                        <constraint firstItem="1g2-wz-q73" firstAttribute="top" secondItem="vID-c7-NcF" secondAttribute="bottom" constant="5.5" id="yFv-VF-ckI"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -344,6 +353,7 @@
                                     <outlet property="authorSign" destination="VPv-Se-mZ6" id="rdx-tn-b96"/>
                                     <outlet property="commentButton" destination="Vqo-Ae-Knq" id="umW-GR-yOv"/>
                                     <outlet property="contentTextView" destination="FGX-Z6-WAw" id="U69-O7-mPO"/>
+                                    <outlet property="editedLabel" destination="1g2-wz-q73" id="xsH-qm-Ar2"/>
                                     <outlet property="timeSign" destination="gB1-d5-x7I" id="n5Z-XG-Vx7"/>
                                     <outlet property="timestampLabel" destination="xQy-jX-Awi" id="xkU-hF-vNn"/>
                                     <outlet property="titleLabel" destination="3Va-el-4VT" id="hVZ-OF-sca"/>
@@ -407,12 +417,20 @@
                                                 <action selector="upvoteButtonDidTouch:" destination="aiZ-KA-vUa" eventType="touchUpInside" id="fuv-LH-ZyM"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edited" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6an-7n-JnI">
+                                            <rect key="frame" x="253" y="38" width="44" height="20"/>
+                                            <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="16"/>
+                                            <color key="textColor" red="0.57241791486740112" green="0.57262569665908813" blue="0.57240414619445801" alpha="0.67185444080000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="S0b-Fr-Sii" firstAttribute="top" secondItem="vN1-Dh-U7U" secondAttribute="top" constant="8" id="0Bw-31-12S"/>
+                                        <constraint firstAttribute="trailing" secondItem="6an-7n-JnI" secondAttribute="trailing" constant="23" id="Bvb-tg-cxi"/>
                                         <constraint firstItem="9qK-kl-5eM" firstAttribute="leading" secondItem="SnH-yP-iSC" secondAttribute="trailing" constant="20" id="HJd-qD-E7F"/>
                                         <constraint firstItem="79i-OW-wGT" firstAttribute="leading" secondItem="vN1-Dh-U7U" secondAttribute="leading" constant="23" id="MII-IM-uBh"/>
                                         <constraint firstItem="5XB-Gh-Me9" firstAttribute="top" secondItem="vN1-Dh-U7U" secondAttribute="top" constant="9" id="VCq-bB-Aw7"/>
+                                        <constraint firstItem="6an-7n-JnI" firstAttribute="top" secondItem="5XB-Gh-Me9" secondAttribute="bottom" constant="10" id="Y48-aO-gtH"/>
                                         <constraint firstAttribute="trailing" secondItem="5XB-Gh-Me9" secondAttribute="trailing" constant="23" id="dVt-7M-CQb"/>
                                         <constraint firstAttribute="trailing" secondItem="79i-OW-wGT" secondAttribute="trailing" constant="23" id="eet-M2-5sh"/>
                                         <constraint firstItem="79i-OW-wGT" firstAttribute="top" secondItem="SnH-yP-iSC" secondAttribute="bottom" constant="12" id="f3s-Fx-6hJ"/>
@@ -428,6 +446,7 @@
                                 <connections>
                                     <outlet property="authorLabel" destination="S0b-Fr-Sii" id="of6-p9-jBr"/>
                                     <outlet property="commentLabel" destination="79i-OW-wGT" id="UaF-28-cUx"/>
+                                    <outlet property="editedLabel" destination="6an-7n-JnI" id="gp6-SZ-qeF"/>
                                     <outlet property="evaluateButton" destination="9qK-kl-5eM" id="5PV-3Y-Dyr"/>
                                     <outlet property="timeLabel" destination="5XB-Gh-Me9" id="GVa-uT-fha"/>
                                     <outlet property="upvoteButton" destination="SnH-yP-iSC" id="4Ba-Eb-1hB"/>
@@ -841,11 +860,11 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="109" sectionHeaderHeight="22" sectionFooterHeight="22" id="hWj-S6-9J2">
                         <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" text="" placeholder="Search your group to join..." id="BvW-0X-OfS">
+                        <searchBar key="tableHeaderView" clipsSubviews="YES" contentMode="redraw" text="" placeholder="Search your group to join..." id="BvW-0X-OfS">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="tintColor" red="0.2162935138" green="0.72341287139999999" blue="0.68833255770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <color key="barTintColor" red="0.8980392157" green="0.90980392160000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="barTintColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
                             <scopeButtonTitles>
                                 <string>Title</string>
@@ -886,33 +905,10 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="author" translatesAutoresizingMaskIntoConstraints="NO" id="I4W-3N-w5Z">
                                             <rect key="frame" x="105" y="49" width="13" height="13"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="13" id="KX5-l5-o17"/>
-                                                <constraint firstAttribute="width" constant="13" id="Xh6-zx-jdI"/>
+                                                <constraint firstAttribute="width" constant="13" id="DpF-SL-hQF"/>
+                                                <constraint firstAttribute="height" constant="13" id="jx1-GV-zwf"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKg-BA-ODz" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                            <rect key="frame" x="105" y="68" width="66.5" height="25.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="25.5" id="QQz-Rv-WbD"/>
-                                                <constraint firstAttribute="width" constant="66.5" id="R8k-bT-PlK"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="14"/>
-                                            <state key="normal" title="2 topics">
-                                                <color key="titleColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <color key="titleShadowColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                    <real key="value" value="1"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                    <real key="value" value="5"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
                                         <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subgroup-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="QMy-Jt-tD8" customClass="DesignableImageView" customModule="learningApp" customModuleProvider="target">
                                             <rect key="frame" x="16" y="20" width="70" height="70"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -933,10 +929,10 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IeT-I5-Otd" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                            <rect key="frame" x="187" y="68" width="66.5" height="25.5"/>
+                                            <rect key="frame" x="106" y="70" width="66.5" height="25.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="25.5" id="bqu-ds-wQO"/>
-                                                <constraint firstAttribute="width" constant="66.5" id="xDR-8t-Umy"/>
+                                                <constraint firstAttribute="width" constant="66.5" id="fos-La-F1E"/>
+                                                <constraint firstAttribute="height" constant="25.5" id="g5U-b7-6Is"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="14"/>
                                             <state key="normal" title="+ Join">
@@ -960,23 +956,20 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="I4W-3N-w5Z" firstAttribute="leading" secondItem="QMy-Jt-tD8" secondAttribute="trailing" constant="19" id="3fc-qr-SgT"/>
                                         <constraint firstItem="pgk-kc-1Bz" firstAttribute="top" secondItem="WMn-N7-axO" secondAttribute="top" constant="25" id="3xy-AX-JGJ"/>
+                                        <constraint firstItem="I4W-3N-w5Z" firstAttribute="leading" secondItem="QMy-Jt-tD8" secondAttribute="trailing" constant="19" id="4Xa-NE-9j9"/>
                                         <constraint firstAttribute="trailing" secondItem="YKz-GM-gvp" secondAttribute="trailing" constant="45" id="AD5-oo-8un"/>
                                         <constraint firstItem="QMy-Jt-tD8" firstAttribute="top" secondItem="WMn-N7-axO" secondAttribute="top" constant="20" id="BCS-oJ-l4t"/>
                                         <constraint firstItem="NxE-rL-zqc" firstAttribute="leading" secondItem="pgk-kc-1Bz" secondAttribute="trailing" constant="5" id="Bf3-vw-A0y"/>
+                                        <constraint firstItem="IeT-I5-Otd" firstAttribute="leading" secondItem="QMy-Jt-tD8" secondAttribute="trailing" constant="20" id="JOu-lb-nKw"/>
                                         <constraint firstItem="QMy-Jt-tD8" firstAttribute="leading" secondItem="WMn-N7-axO" secondAttribute="leading" constant="16" id="JR0-YA-xaX"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="SKg-BA-ODz" secondAttribute="bottom" constant="7" id="QvG-Jc-IVy"/>
-                                        <constraint firstItem="YKz-GM-gvp" firstAttribute="leading" secondItem="I4W-3N-w5Z" secondAttribute="trailing" constant="6" id="VTh-oZ-VLS"/>
-                                        <constraint firstItem="SKg-BA-ODz" firstAttribute="leading" secondItem="QMy-Jt-tD8" secondAttribute="trailing" constant="19" id="VUa-mN-Sq4"/>
-                                        <constraint firstItem="IeT-I5-Otd" firstAttribute="leading" secondItem="SKg-BA-ODz" secondAttribute="trailing" constant="15.5" id="WES-gc-NTv"/>
-                                        <constraint firstItem="SKg-BA-ODz" firstAttribute="top" secondItem="I4W-3N-w5Z" secondAttribute="bottom" constant="6" id="Xu1-rY-hBl"/>
-                                        <constraint firstItem="IeT-I5-Otd" firstAttribute="top" secondItem="YKz-GM-gvp" secondAttribute="bottom" constant="2.5" id="YAY-wA-Ikn"/>
                                         <constraint firstItem="NxE-rL-zqc" firstAttribute="top" secondItem="WMn-N7-axO" secondAttribute="top" constant="22" id="byJ-dj-q24"/>
+                                        <constraint firstItem="YKz-GM-gvp" firstAttribute="leading" secondItem="I4W-3N-w5Z" secondAttribute="trailing" constant="6" id="c0R-8G-0B6"/>
                                         <constraint firstAttribute="bottom" secondItem="QMy-Jt-tD8" secondAttribute="bottom" constant="18.5" id="cvE-S6-eBZ"/>
-                                        <constraint firstItem="SKg-BA-ODz" firstAttribute="top" secondItem="YKz-GM-gvp" secondAttribute="bottom" constant="2.5" id="gWv-Fg-Yar"/>
+                                        <constraint firstItem="IeT-I5-Otd" firstAttribute="top" secondItem="YKz-GM-gvp" secondAttribute="bottom" constant="4.5" id="fho-1Q-5sY"/>
+                                        <constraint firstAttribute="bottom" secondItem="IeT-I5-Otd" secondAttribute="bottom" constant="13" id="gCV-nv-3Qi"/>
                                         <constraint firstAttribute="trailing" secondItem="NxE-rL-zqc" secondAttribute="trailing" constant="23.5" id="rYA-wZ-Vsa"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="IeT-I5-Otd" secondAttribute="bottom" constant="7" id="yI3-Rf-NPg"/>
+                                        <constraint firstItem="IeT-I5-Otd" firstAttribute="top" secondItem="I4W-3N-w5Z" secondAttribute="bottom" constant="8" id="zWh-ai-zkx"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="23" minY="0.0" maxX="23" maxY="0.0"/>
@@ -988,7 +981,6 @@
                                     <outlet property="groupName" destination="ezz-YN-oi3" id="wca-DH-zWv"/>
                                     <outlet property="timeLabel" destination="NxE-rL-zqc" id="wy7-Wl-gew"/>
                                     <outlet property="timeLabelSign" destination="pgk-kc-1Bz" id="ygx-D0-SaK"/>
-                                    <outlet property="topicNumber" destination="SKg-BA-ODz" id="pcT-tN-Njr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1001,11 +993,6 @@
                         <barButtonItem key="leftBarButtonItem" title="Item" id="kvo-YP-jd9">
                             <connections>
                                 <action selector="signOutButtonDidTouch:" destination="eDa-TO-OQA" id="HBC-Ak-41d"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Create" id="X1A-hH-zdg">
-                            <connections>
-                                <action selector="cretateGroupButtonDidTouch:" destination="eDa-TO-OQA" id="GOY-hx-cgv"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1026,19 +1013,16 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="loadingViewEnabled" value="NO"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <outlet property="createGroupDidTouch" destination="X1A-hH-zdg" id="D3m-Yu-CtF"/>
                         <outlet property="searchBar" destination="BvW-0X-OfS" id="y8D-Sw-XFu"/>
                         <outlet property="signOut" destination="kvo-YP-jd9" id="18B-5j-po5"/>
                         <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="lfw-qO-gEX"/>
-                        <segue destination="dVO-1Q-ktY" kind="show" identifier="topicSegue" id="xjj-LN-1JA"/>
-                        <segue destination="D0H-a1-ADH" kind="presentation" identifier="createGroupSegue" modalPresentationStyle="overCurrentContext" id="FXN-Yi-z0S"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HJN-Fl-G1u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1956" y="471.5"/>
         </scene>
-        <!--Groups-->
+        <!--My Groups-->
         <scene sceneID="uD2-xs-TKF">
             <objects>
                 <tableViewController id="X88-lJ-j57" customClass="FavouriteTableViewController" customModule="learningApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -1058,7 +1042,7 @@
                                             <color key="textColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Author" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUH-yw-byJ">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUH-yw-byJ">
                                             <rect key="frame" x="125" y="46" width="150" height="19.5"/>
                                             <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="16"/>
                                             <color key="textColor" red="0.57248467209999998" green="0.57258617879999996" blue="0.57247823480000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1134,7 +1118,7 @@
                                         <constraint firstItem="XZu-uo-2gY" firstAttribute="top" secondItem="nUH-yw-byJ" secondAttribute="bottom" constant="2.5" id="Kfm-kX-bws"/>
                                         <constraint firstItem="XZu-uo-2gY" firstAttribute="top" secondItem="yoN-0a-neP" secondAttribute="bottom" constant="6" id="Llm-Dz-7Pc"/>
                                         <constraint firstItem="2Pc-Hi-jud" firstAttribute="leading" secondItem="mGs-tG-zdR" secondAttribute="leading" constant="16" id="N8z-2b-Rde"/>
-                                        <constraint firstAttribute="trailing" secondItem="nUH-yw-byJ" secondAttribute="trailing" constant="45" id="Zte-kA-7cC"/>
+                                        <constraint firstAttribute="trailing" secondItem="nUH-yw-byJ" secondAttribute="trailing" constant="12" id="Zte-kA-7cC"/>
                                         <constraint firstItem="x8h-8v-kt1" firstAttribute="top" secondItem="mGs-tG-zdR" secondAttribute="top" constant="22" id="bU2-o2-Qvb"/>
                                         <constraint firstItem="yoN-0a-neP" firstAttribute="leading" secondItem="2Pc-Hi-jud" secondAttribute="trailing" constant="20" id="eD1-Be-qMH"/>
                                         <constraint firstItem="x8h-8v-kt1" firstAttribute="leading" secondItem="L7g-hs-zP6" secondAttribute="trailing" constant="3" id="fOb-fW-Rcu"/>
@@ -1161,7 +1145,7 @@
                             <outlet property="delegate" destination="X88-lJ-j57" id="crj-RB-9lN"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Groups" id="C9k-f1-Ofy">
+                    <navigationItem key="navigationItem" title="My Groups" id="C9k-f1-Ofy">
                         <barButtonItem key="leftBarButtonItem" title="User" id="xq7-ZY-e1R">
                             <connections>
                                 <action selector="signOutButtonDidTouch:" destination="X88-lJ-j57" id="Ts1-iE-hZr"/>
@@ -1178,259 +1162,13 @@
                         <outlet property="createGroupButton" destination="5JU-wc-HXv" id="1E9-gg-oXL"/>
                         <outlet property="signOut" destination="xq7-ZY-e1R" id="fEQ-s9-WNp"/>
                         <segue destination="6uh-WN-Szt" kind="presentation" identifier="loginFavSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="zqw-5d-Yqu"/>
-                        <segue destination="D0H-a1-ADH" kind="presentation" identifier="createGroupFavSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="TIh-zm-MNR"/>
                         <segue destination="dVO-1Q-ktY" kind="show" identifier="topicFavSegue" id="OHQ-rh-s41"/>
+                        <segue destination="GrY-Hg-MiR" kind="presentation" identifier="createGroupSegue" modalPresentationStyle="overFullScreen" id="aar-3W-9I8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KaF-e3-66F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1964" y="-164"/>
-        </scene>
-        <!--Create Group View Controller-->
-        <scene sceneID="5qT-t9-KUI">
-            <objects>
-                <viewController id="D0H-a1-ADH" customClass="CreateGroupViewController" customModule="learningApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9b3-eb-SmI"/>
-                        <viewControllerLayoutGuide type="bottom" id="lut-Xu-raZ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ZNv-uE-vbw">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="crO-ks-lCh">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="haP-Km-Bqi">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="dark"/>
-                            </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buw-L3-C5t">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="closeButtonDidTouch:" destination="D0H-a1-ADH" eventType="touchUpInside" id="Aj5-hJ-5If"/>
-                                </connections>
-                            </button>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w9Z-Bg-7Ww" customClass="DesignableView" customModule="learningApp" customModuleProvider="target">
-                                <rect key="frame" x="20" y="144" width="280" height="280"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name your group" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oCQ-SN-lQh" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="53" width="257" height="22"/>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
-                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H9-RU-gtW" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="218" width="250" height="44"/>
-                                        <color key="backgroundColor" red="0.25098039220000001" green="0.64705882349999999" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="lpn-2j-DiL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Medium" family="San Francisco Display" pointSize="19"/>
-                                        <state key="normal" title="CREATE">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideUp"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                                <real key="value" value="0.59999999999999998"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="curve" value="spring"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="createGroupButtonDidTouch:" destination="D0H-a1-ADH" eventType="touchUpInside" id="CMq-gQ-hBP"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T14-7c-0FG" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="166" width="250" height="44"/>
-                                        <color key="backgroundColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="ayG-29-bPL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="19"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" title="Pick Photo (Optional)"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                <real key="value" value="3"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideRight"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="curve" value="spring"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="pickPhotoButtonDidTouch:" destination="D0H-a1-ADH" eventType="touchUpInside" id="fBd-4Q-SOZ"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose group avatar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pgv-Xr-5sF" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="136" width="170" height="22"/>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
-                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideRight"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                                <real key="value" value="0.40000000000000002"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name your group" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIs-zZ-Rnf" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="53" width="257" height="22"/>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
-                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                                <real key="value" value="0.20000000000000001"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Course Code (ABC - 1234)" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2Ur-4h-4gL" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
-                                        <rect key="frame" x="15" y="82" width="250" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="QOW-hR-4ef"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
-                                                <real key="value" value="15"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                                <real key="value" value="0.20000000000000001"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                                <color key="value" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                </subviews>
-                                <color key="backgroundColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="8KG-aI-jV2"/>
-                                    <constraint firstAttribute="trailing" secondItem="VIs-zZ-Rnf" secondAttribute="trailing" constant="8" id="B5e-Nz-Jgz"/>
-                                    <constraint firstItem="VIs-zZ-Rnf" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="Dgp-GX-MWw"/>
-                                    <constraint firstAttribute="trailing" secondItem="Pgv-Xr-5sF" secondAttribute="trailing" constant="95" id="Dqh-UL-cdB"/>
-                                    <constraint firstItem="2Ur-4h-4gL" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="EAl-nK-W6f"/>
-                                    <constraint firstItem="T14-7c-0FG" firstAttribute="top" secondItem="Pgv-Xr-5sF" secondAttribute="bottom" constant="8" id="Lz7-Yg-Srs"/>
-                                    <constraint firstItem="T14-7c-0FG" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="NHS-iS-3NT"/>
-                                    <constraint firstAttribute="bottom" secondItem="8H9-RU-gtW" secondAttribute="bottom" constant="18" id="UL0-4m-xra"/>
-                                    <constraint firstItem="2Ur-4h-4gL" firstAttribute="top" secondItem="oCQ-SN-lQh" secondAttribute="bottom" constant="8" id="XfN-iI-AKo"/>
-                                    <constraint firstAttribute="trailing" secondItem="T14-7c-0FG" secondAttribute="trailing" constant="15" id="YxL-KF-wpL"/>
-                                    <constraint firstAttribute="trailing" secondItem="oCQ-SN-lQh" secondAttribute="trailing" constant="8" id="fQu-nZ-UEM"/>
-                                    <constraint firstAttribute="height" constant="280" id="fac-cR-nKN"/>
-                                    <constraint firstAttribute="trailing" secondItem="2Ur-4h-4gL" secondAttribute="trailing" constant="15" id="itR-jz-2X7"/>
-                                    <constraint firstItem="Pgv-Xr-5sF" firstAttribute="top" secondItem="2Ur-4h-4gL" secondAttribute="bottom" constant="10" id="lIo-Iu-zyc"/>
-                                    <constraint firstItem="Pgv-Xr-5sF" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="m8u-jm-fsi"/>
-                                    <constraint firstItem="oCQ-SN-lQh" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="pT3-h3-A9r"/>
-                                    <constraint firstItem="2Ur-4h-4gL" firstAttribute="top" secondItem="VIs-zZ-Rnf" secondAttribute="bottom" constant="8" id="tUo-A9-ZKk"/>
-                                    <constraint firstAttribute="trailing" secondItem="8H9-RU-gtW" secondAttribute="trailing" constant="15" id="vXb-ei-aeZ"/>
-                                    <constraint firstItem="8H9-RU-gtW" firstAttribute="leading" secondItem="w9Z-Bg-7Ww" secondAttribute="leading" constant="15" id="vn7-Vt-TxW"/>
-                                    <constraint firstItem="8H9-RU-gtW" firstAttribute="top" secondItem="T14-7c-0FG" secondAttribute="bottom" constant="8" id="yaC-be-MXi"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subgroup-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="UT5-Aa-J8a" customClass="DesignableImageView" customModule="learningApp" customModuleProvider="target">
-                                <rect key="frame" x="125" y="107" width="70" height="70"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="b7S-Dw-lBa"/>
-                                    <constraint firstAttribute="height" constant="70" id="efO-m7-Rsw"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="35"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" red="0.92538952827453613" green="0.92554807662963867" blue="0.92537951469421387" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
-                                        <real key="value" value="0.80000000000000004"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideDown"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="force">
-                                        <real key="value" value="3"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="crO-ks-lCh" firstAttribute="leading" secondItem="ZNv-uE-vbw" secondAttribute="leading" id="4Ku-79-lSS"/>
-                            <constraint firstAttribute="centerY" secondItem="UT5-Aa-J8a" secondAttribute="centerY" constant="142" id="56g-Cd-LjZ"/>
-                            <constraint firstAttribute="centerX" secondItem="w9Z-Bg-7Ww" secondAttribute="centerX" id="7z3-WY-OoA"/>
-                            <constraint firstItem="buw-L3-C5t" firstAttribute="leading" secondItem="ZNv-uE-vbw" secondAttribute="leading" id="KlK-FD-UXi"/>
-                            <constraint firstItem="buw-L3-C5t" firstAttribute="top" secondItem="ZNv-uE-vbw" secondAttribute="top" id="Sad-Dx-ILZ"/>
-                            <constraint firstAttribute="trailing" secondItem="crO-ks-lCh" secondAttribute="trailing" id="ToS-ma-mQ8"/>
-                            <constraint firstItem="lut-Xu-raZ" firstAttribute="top" secondItem="crO-ks-lCh" secondAttribute="bottom" id="UEr-Yt-xmQ"/>
-                            <constraint firstAttribute="centerX" secondItem="UT5-Aa-J8a" secondAttribute="centerX" id="boi-M9-De3"/>
-                            <constraint firstAttribute="trailing" secondItem="buw-L3-C5t" secondAttribute="trailing" id="ljj-GB-JHU"/>
-                            <constraint firstItem="crO-ks-lCh" firstAttribute="top" secondItem="ZNv-uE-vbw" secondAttribute="top" id="m3N-Cw-NcD"/>
-                            <constraint firstAttribute="centerY" secondItem="w9Z-Bg-7Ww" secondAttribute="centerY" id="vcc-xq-xoY"/>
-                            <constraint firstItem="lut-Xu-raZ" firstAttribute="top" secondItem="buw-L3-C5t" secondAttribute="bottom" id="zxr-oO-eQF"/>
-                        </constraints>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="avatarGroup" destination="UT5-Aa-J8a" id="o5D-mg-f8a"/>
-                        <outlet property="avatarLabel" destination="Pgv-Xr-5sF" id="4bC-JC-66W"/>
-                        <outlet property="createGroupButton" destination="8H9-RU-gtW" id="hkr-V1-DOF"/>
-                        <outlet property="groupDialogView" destination="w9Z-Bg-7Ww" id="5Jl-ca-AZ7"/>
-                        <outlet property="groupNameLabel" destination="oCQ-SN-lQh" id="j8z-k4-cXX"/>
-                        <outlet property="groupNameLabel2" destination="VIs-zZ-Rnf" id="ike-ID-p8P"/>
-                        <outlet property="groupNameTextField" destination="2Ur-4h-4gL" id="6cU-QF-jdr"/>
-                        <outlet property="pickPhotoButton" destination="T14-7c-0FG" id="UcV-4f-M8A"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PqX-oE-cBC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2401" y="-164"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="UWt-47-WHl">
@@ -1903,11 +1641,15 @@
             </objects>
             <point key="canvasLocation" x="1956" y="1162"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Search-->
         <scene sceneID="71g-vO-hAk">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="A2L-RL-ejL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" selectedImage="HomeFill" systemItem="search" id="qmf-te-LTo"/>
+                    <tabBarItem key="tabBarItem" title="Search" image="Home" id="qmf-te-LTo">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="HomeFill"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="wma-bE-bkq">
@@ -1933,7 +1675,7 @@
         <scene sceneID="N07-qf-3PK">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Snk-3U-4VN" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Groups" image="join" selectedImage="joinFill" id="d3O-wq-quT">
+                    <tabBarItem key="tabBarItem" title="Groups" image="join" id="d3O-wq-quT">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="joinFill"/>
                         </userDefinedRuntimeAttributes>
@@ -1971,8 +1713,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="A2L-RL-ejL" kind="relationship" relationship="viewControllers" id="bky-7X-k8m"/>
                         <segue destination="Snk-3U-4VN" kind="relationship" relationship="viewControllers" id="bnF-cx-H3U"/>
+                        <segue destination="A2L-RL-ejL" kind="relationship" relationship="viewControllers" id="bky-7X-k8m"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqN-hS-AMX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2448,18 +2190,263 @@
             </objects>
             <point key="canvasLocation" x="2853" y="1392"/>
         </scene>
+        <!--Create View Controller-->
+        <scene sceneID="ndz-vM-p29">
+            <objects>
+                <viewController id="GrY-Hg-MiR" customClass="CreateViewController" customModule="learningApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9eZ-e8-QVT"/>
+                        <viewControllerLayoutGuide type="bottom" id="My6-xY-KQO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tMt-11-DNv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sx7-MD-eHc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="h2A-2x-irN">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m0N-im-XPq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeButtonDidTouch:" destination="GrY-Hg-MiR" eventType="touchUpInside" id="7gg-oN-40d"/>
+                                </connections>
+                            </button>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yb7-0O-1r9" customClass="DesignableView" customModule="learningApp" customModuleProvider="target">
+                                <rect key="frame" x="20" y="144" width="280" height="280"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name your group" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngh-i8-M6G" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="53" width="257" height="22"/>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
+                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9HM-3v-KDD" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="218" width="250" height="44"/>
+                                        <color key="backgroundColor" red="0.25098039220000001" green="0.64705882349999999" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="lIF-Nl-9cg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Medium" family="San Francisco Display" pointSize="19"/>
+                                        <state key="normal" title="CREATE">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideUp"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                                <real key="value" value="0.59999999999999998"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="curve" value="spring"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="createGroupDidTouch:" destination="GrY-Hg-MiR" eventType="touchUpInside" id="Rhx-px-x98"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUX-Jg-SqK" customClass="DesignableButton" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="166" width="250" height="44"/>
+                                        <color key="backgroundColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="CFr-Xv-ba4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="19"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Pick Photo (Optional)"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideRight"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="curve" value="spring"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="pickPhotoDidTouch:" destination="GrY-Hg-MiR" eventType="touchUpInside" id="hC7-zQ-FK7"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose group avatar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="maB-n7-Iig" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="136" width="170" height="22"/>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
+                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideRight"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                                <real key="value" value="0.40000000000000002"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name your group" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mhv-I5-4R3" customClass="DesignableLabel" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="53" width="257" height="22"/>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Regular" family="San Francisco Display" pointSize="18"/>
+                                        <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="highlightedColor" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Course Code (ABC - 1234)" minimumFontSize="17" background="input-outline" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8hU-gf-Sen" customClass="DesignableTextField" customModule="learningApp" customModuleProvider="target">
+                                        <rect key="frame" x="15" y="82" width="250" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="4Aq-LK-3OZ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="SanFranciscoDisplay-Light" family="San Francisco Display" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideLeft"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                <color key="value" red="0.58211529250000005" green="0.65011382100000004" blue="0.71265947819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="280" id="05R-tP-rTS"/>
+                                    <constraint firstAttribute="trailing" secondItem="8hU-gf-Sen" secondAttribute="trailing" constant="15" id="1L6-44-vUn"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZUX-Jg-SqK" secondAttribute="trailing" constant="15" id="4i0-gZ-fU6"/>
+                                    <constraint firstItem="ZUX-Jg-SqK" firstAttribute="top" secondItem="maB-n7-Iig" secondAttribute="bottom" constant="8" id="DDF-0V-pVC"/>
+                                    <constraint firstItem="maB-n7-Iig" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="DDO-WQ-sLX"/>
+                                    <constraint firstAttribute="bottom" secondItem="9HM-3v-KDD" secondAttribute="bottom" constant="18" id="F97-bq-C0C"/>
+                                    <constraint firstAttribute="trailing" secondItem="ngh-i8-M6G" secondAttribute="trailing" constant="8" id="KZL-9R-SLW"/>
+                                    <constraint firstAttribute="trailing" secondItem="maB-n7-Iig" secondAttribute="trailing" constant="95" id="Lr6-mX-Xcg"/>
+                                    <constraint firstAttribute="trailing" secondItem="9HM-3v-KDD" secondAttribute="trailing" constant="15" id="N2z-Cn-2S2"/>
+                                    <constraint firstItem="maB-n7-Iig" firstAttribute="top" secondItem="8hU-gf-Sen" secondAttribute="bottom" constant="10" id="NtL-GS-1Fc"/>
+                                    <constraint firstAttribute="width" constant="280" id="Wzc-NU-ELt"/>
+                                    <constraint firstItem="8hU-gf-Sen" firstAttribute="top" secondItem="Mhv-I5-4R3" secondAttribute="bottom" constant="8" id="asS-7u-IHQ"/>
+                                    <constraint firstItem="ngh-i8-M6G" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="bWG-tE-SoS"/>
+                                    <constraint firstItem="9HM-3v-KDD" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="cZi-GY-NNU"/>
+                                    <constraint firstItem="ZUX-Jg-SqK" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="e7F-rb-Npc"/>
+                                    <constraint firstItem="Mhv-I5-4R3" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="fAV-pc-4XL"/>
+                                    <constraint firstItem="8hU-gf-Sen" firstAttribute="top" secondItem="ngh-i8-M6G" secondAttribute="bottom" constant="8" id="hYJ-Yd-Biq"/>
+                                    <constraint firstItem="9HM-3v-KDD" firstAttribute="top" secondItem="ZUX-Jg-SqK" secondAttribute="bottom" constant="8" id="hz3-Fi-zaO"/>
+                                    <constraint firstItem="8hU-gf-Sen" firstAttribute="leading" secondItem="Yb7-0O-1r9" secondAttribute="leading" constant="15" id="ujg-ID-K2n"/>
+                                    <constraint firstAttribute="trailing" secondItem="Mhv-I5-4R3" secondAttribute="trailing" constant="8" id="zpn-3S-uHI"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="zoomIn"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatarDefault" translatesAutoresizingMaskIntoConstraints="NO" id="3YT-ug-0h5" customClass="DesignableImageView" customModule="learningApp" customModuleProvider="target">
+                                <rect key="frame" x="125" y="107" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="eim-t1-mhv"/>
+                                    <constraint firstAttribute="width" constant="70" id="qUh-bW-cHU"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.92538952829999999" green="0.92554807660000005" blue="0.92537951470000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="delay">
+                                        <real key="value" value="0.80000000000000004"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="animation" value="slideDown"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autostart" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="force">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="m0N-im-XPq" firstAttribute="top" secondItem="tMt-11-DNv" secondAttribute="top" id="6kI-V9-iZI"/>
+                            <constraint firstAttribute="centerX" secondItem="3YT-ug-0h5" secondAttribute="centerX" id="6oc-Yt-bcm"/>
+                            <constraint firstAttribute="trailing" secondItem="sx7-MD-eHc" secondAttribute="trailing" id="AUq-LZ-1FP"/>
+                            <constraint firstItem="sx7-MD-eHc" firstAttribute="leading" secondItem="tMt-11-DNv" secondAttribute="leading" id="EVO-qH-9fD"/>
+                            <constraint firstItem="m0N-im-XPq" firstAttribute="leading" secondItem="tMt-11-DNv" secondAttribute="leading" id="JcJ-HH-bSz"/>
+                            <constraint firstAttribute="centerY" secondItem="3YT-ug-0h5" secondAttribute="centerY" constant="142" id="LH9-7P-lrP"/>
+                            <constraint firstAttribute="centerX" secondItem="Yb7-0O-1r9" secondAttribute="centerX" id="Pit-bq-0Js"/>
+                            <constraint firstAttribute="trailing" secondItem="m0N-im-XPq" secondAttribute="trailing" id="Q6V-rE-8oK"/>
+                            <constraint firstAttribute="centerY" secondItem="Yb7-0O-1r9" secondAttribute="centerY" id="gff-dO-Wya"/>
+                            <constraint firstItem="My6-xY-KQO" firstAttribute="top" secondItem="m0N-im-XPq" secondAttribute="bottom" id="oqc-CU-93J"/>
+                            <constraint firstItem="sx7-MD-eHc" firstAttribute="top" secondItem="tMt-11-DNv" secondAttribute="top" id="vpb-aa-Q9F"/>
+                            <constraint firstItem="My6-xY-KQO" firstAttribute="top" secondItem="sx7-MD-eHc" secondAttribute="bottom" id="wfp-vr-4jj"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="avatarGroup" destination="3YT-ug-0h5" id="nto-st-X2y"/>
+                        <outlet property="groupDialogView" destination="Yb7-0O-1r9" id="sAf-dO-XPo"/>
+                        <outlet property="groupNameLabel" destination="ngh-i8-M6G" id="oH1-BR-aXA"/>
+                        <outlet property="groupNameLabel2" destination="Mhv-I5-4R3" id="rIi-SR-KjH"/>
+                        <outlet property="groupNameTextField" destination="8hU-gf-Sen" id="mDa-7T-u0Y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O45-Gh-FAG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2379" y="-172"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="HomeFill" width="25" height="25"/>
+        <image name="Home" width="24" height="24"/>
+        <image name="HomeFill" width="24" height="24"/>
         <image name="action-share" width="19" height="27"/>
         <image name="author" width="12" height="12"/>
+        <image name="avatarDefault" width="70" height="70"/>
         <image name="icon-close" width="19" height="19"/>
         <image name="icon-comment" width="17" height="15"/>
         <image name="icon-reply" width="20" height="16"/>
         <image name="icon-upvote" width="18" height="16"/>
         <image name="input-outline" width="7" height="44"/>
-        <image name="join" width="24" height="22"/>
-        <image name="joinFill" width="24" height="22"/>
+        <image name="join" width="27" height="26"/>
+        <image name="joinFill" width="27" height="26"/>
         <image name="rating" width="18" height="17"/>
         <image name="rating3" width="54" height="18"/>
         <image name="recents1" width="12" height="12"/>
@@ -2467,7 +2454,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="zqw-5d-Yqu"/>
-        <segue reference="TIh-zm-MNR"/>
-        <segue reference="OHQ-rh-s41"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.30791938299999999" green="0.8433039188" blue="0.80606621499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

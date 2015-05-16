@@ -69,7 +69,7 @@ class ComposeTopicViewController: UIViewController {
         topic["userer"] = PFUser.currentUser()
         topic["parent"] = groupCreated
         topic["whoLiked"] = []
-        
+        topic["edited"] = false
             
         
             topic.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in

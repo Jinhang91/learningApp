@@ -570,7 +570,7 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
                 deleteMenu.addAction(cancelIt)
                 self.presentViewController(deleteMenu, animated: true, completion: nil)
         })
-        deleteAction.backgroundColor = UIColorFromRGB(0xD83A31)
+        deleteAction.backgroundColor = UIColorFromRGB(0x4DB3B7)
         return[deleteAction]
     }
  
