@@ -8,19 +8,17 @@
 
 import UIKit
 
-class CommentsTableViewController: PFQueryTableViewController, CommentsTableViewCellDelegate, TopicTableViewCellDelegate,ReplyViewControllerDelegate,UITextViewDelegate {
+class CommentsTableViewController: PFQueryTableViewController, CommentsTableViewCellDelegate, TopicTableViewCellDelegate,ReplyViewControllerDelegate,UITextViewDelegate, EditTopicViewControllerDelegate,EditCommentViewControllerDelegate {
 
     var groupCreated : PFObject?
     var topic :PFObject?
     var comment :PFObject?
     var urlTest: String?
     var realURL:NSURL!
-    var likeButton: UIButton!
-    var likeCommentButton: UIButton!
     var likeCount: NSArray!
     let transitionManager = TransitionManager()
     var timelineTopicData:NSMutableArray! = NSMutableArray()
-    
+    var index2Path:NSIndexPath!
    
   //  @IBOutlet weak var textView: AutoTextView!
     
@@ -86,16 +84,14 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
     
     func pullToRefresh(){
-        view.showLoading()
-        self.loadData()
+
+        loadData()
+        tableView.reloadData()
         refreshControl?.endRefreshing()
-        self.tableView.reloadData()
         println("reload finised")
-        view.hideLoading()
+
     }
-   
- 
-    
+
     var isFirstTime = true
     override func viewDidAppear(animated: Bool) {
         
@@ -107,8 +103,21 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             isFirstTime = false
         }
         
+        navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
         navigationController?.navigationBar.topItem?.title = "Comments"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        if navigationController?.navigationBarHidden == true {
+            return true
+        }
+        return false
+    }
+    
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
     }
     
     override init!(style: UITableViewStyle, className: String!) {
@@ -201,7 +210,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let identifier = indexPath.row == 0 ? "topicCell" : "commentCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as UITableViewCell
         
         if let topicCell = cell as? TopicTableViewCell{
          topicCell.titleLabel.text = topic?.objectForKey("title") as? String
@@ -214,9 +223,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
          topicCell.timestampLabel.alpha = 0
          topicCell.usernameLabel.alpha = 0
          topicCell.commentButton.alpha = 0
-         topicCell.upvoteButton.alpha = 0
+         topicCell.upvoteButton2.alpha = 0
          topicCell.authorSign.alpha = 0
          topicCell.timeSign.alpha = 0
+         topicCell.editedLabel.alpha = 0
+         topicCell.timerButton2.alpha = 0
          
          var editedInfo = topic?.objectForKey("edited") as? Bool
             if editedInfo == true{
@@ -244,7 +255,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
                 if (error == nil){
                     self.likeCount = objects as NSArray
-                    topicCell.upvoteButton.setTitle("\(self.likeCount.count)", forState: UIControlState.Normal)
+                    topicCell.upvoteButton2.setTitle(toString(self.likeCount.count), forState: UIControlState.Normal)
                 }
                 
             })
@@ -253,15 +264,27 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             var objectTo = topic?.objectForKey("whoLiked") as [String]
             if contains(objectTo, PFUser.currentUser().objectId){
                 
-                topicCell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
+                topicCell.upvoteButton2.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
             }
             else{
-                topicCell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
+                topicCell.upvoteButton2.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
+            }
+            
+            var startDate = topic?.objectForKey("startingDate") as String!
+            var endDate = topic?.objectForKey("endingDate") as String!
+            
+            if startDate == nil && endDate == nil{
+                topicCell.timerButton2.setImage(UIImage(named: "timer"), forState: UIControlState.Normal)
+            }
+                
+            else{
+                topicCell.timerButton2.setImage(UIImage(named: "timerFill"), forState: UIControlState.Normal)
             }
             
             //MARK: topic Cell tag for indexPath
-            topicCell.upvoteButton.tag = indexPath.row
- 
+            topicCell.upvoteButton2.tag = index2Path.row
+            topicCell.timerButton2.tag = index2Path.row
+    
             
             var findUsererData:PFQuery = PFUser.query()
             findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
@@ -282,9 +305,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                         topicCell.timestampLabel.alpha = 1
                         topicCell.usernameLabel.alpha = 1
                         topicCell.commentButton.alpha = 1
-                        topicCell.upvoteButton.alpha = 1
+                        topicCell.upvoteButton2.alpha = 1
                         topicCell.timeSign.alpha = 1
                         topicCell.authorSign.alpha = 1
+                        topicCell.editedLabel.alpha = 1
+                        topicCell.timerButton2.alpha = 1
                     }
             
             
@@ -353,6 +378,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             commentCell.upvoteButton.alpha = 0
             commentCell.authorLabel.alpha = 0
             commentCell.evaluateButton.alpha = 0
+            commentCell.editedLabel.alpha = 0
             
             //Show upvote
             var showTopicLikeNumber = PFUser.query()
@@ -439,6 +465,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                         commentCell.upvoteButton.alpha = 1
                         commentCell.evaluateButton.alpha = 1
                         commentCell.authorLabel.alpha = 1
+                        commentCell.editedLabel.alpha = 1
                     }
                     
                 }
@@ -467,15 +494,60 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         return cell
     }
+    
+    // MARK: Edit topic and comment
+    func doneButtonDidTouch(controller: EditTopicViewController) {
+        view.showLoading()
+        loadData()
+    }
+    
+    func doneButtonCommentDidTouch(controller: EditCommentViewController) {
+        view.showLoading()
+        loadData()
+    }
+    
   // MARK: topic and comment table cell delegate
+    func topicTableViewCellDIdTouchTimer(cell: TopicTableViewCell, sender: AnyObject) {
+        
+    }
+    
+    func topicTableViewCellDidTouchTimer2(cell: TopicTableViewCell, sender: AnyObject) {
+        let senderButton:UIButton = sender as UIButton
+        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        println(dateInfo.objectId)
+        
+        var startDate = dateInfo.objectForKey("startingDate") as String!
+        var endDate = dateInfo.objectForKey("endingDate") as String!
+        
+        if startDate == nil && endDate == nil{
+            let alert = UIAlertView()
+            alert.title = "No Date is set yet!"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
+            
+        else{
+            let alert = UIAlertView()
+            alert.title = "Date"
+            alert.message = "Starting Date: \(startDate) \n Ending Date: \(endDate)"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
+    }
+
+    
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
         performSegueWithIdentifier("replySegue", sender: cell)
         
     }
     
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
-        let senderButton:SpringButton = sender as SpringButton
-        //   senderButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
+      
+    }
+    
+    func topicTableViewCellDidTouchUpvote2(cell: TopicTableViewCell, sender: AnyObject) {
+        let senderButton:UIButton = sender as UIButton
+   
         var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
         println(topicLiked.objectId)
         
@@ -491,7 +563,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             }
-
+            
             topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
             topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                 if success == true {
@@ -501,7 +573,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             }
-
+            
             
             senderButton.setImage(UIImage(named: "icon-upvote-active"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count + 1), forState: UIControlState.Normal)
@@ -518,23 +590,23 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             }
-
+            
             topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
             topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                 if success == true {
-                    println("liked removed")
+                    println("like removed")
                 } else {
                     println(error)
                 }
                 
             }
-
+            
             senderButton.setImage(UIImage(named:"icon-upvote"), forState: UIControlState.Normal)
             senderButton.setTitle(toString(likeCount.count), forState: UIControlState.Normal)
             
             
         }
-
+  
     }
     
     func commentsTableViewCellDidTouchUpvote(cell: CommentsTableViewCell, sender: AnyObject) {
@@ -1011,10 +1083,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 //println(escapedString)
                 toView.urlString = escapedString as String?
                 toView.realURL = realURL as NSURL!
-                //UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
-                
-                UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
-               
                 
                 toView.transitioningDelegate = transitionManager
                 }
@@ -1023,15 +1091,16 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         if segue.identifier == "evaluateSegue"{
             let toView = segue.destinationViewController as EvaluationTableViewController
             toView.topic = topic as PFObject?
+            toView.timelineTopicData = timelineTopicData as NSMutableArray!
         }
         
         if (segue.identifier == "editTopicSegue"){
             let toView = segue.destinationViewController as EditTopicViewController
             toView.objectTo = topic as PFObject?
-          
+            toView.delegate = self
             }
             
-            //toView.delegate = self
+  
         
         
         if segue.identifier == "editCommentSegue"{
@@ -1039,6 +1108,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             if let indexPath:AnyObject = sender{
             let row:AnyObject = timelineCommentData[indexPath.row - 1]
             toView.objectTo = row as? PFObject
+            toView.delegate = self
             }
         }
 }
@@ -1074,8 +1144,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
     }
-    
-
     
     deinit
     {
@@ -1154,7 +1222,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             }
             
             else if commentDisplay.objectForKey("userer").objectId == PFUser.currentUser().objectId {
-                return [editAction]
+                return [deleteAction,editAction]
             }
 
             else {
@@ -1164,15 +1232,15 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         else if indexPath.row == 0 {
             if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId {
-            return[deleteAction,editAction]
+            return[editAction]
         }
             else{
                 return nil
             }
         }
-        else{
+        
             return nil
-        }
+        
        
     }
     

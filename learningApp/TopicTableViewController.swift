@@ -102,7 +102,20 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     
     var isFirstTime = true
     
+    override func prefersStatusBarHidden() -> Bool {
+        if navigationController?.navigationBarHidden == true {
+            return true
+        }
+        return false
+    }
+    
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
+    }
+    
     override func viewDidAppear(animated: Bool) {
+  
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
             var scope = findLecturerUser.objectForKey("identity") as Bool?
@@ -169,87 +182,16 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
     
     func pullToRefresh(){
-     //   view.showLoading()
-        self.loadData()
+        loadData()
+        tableView.reloadData()
         refreshControl?.endRefreshing()
-        self.tableView.reloadData()
         println("reload finised")
-      //  view.hideLoading()
+
     }
     
-    /*
-    func loginSystem(){
-        
-        if PFUser.currentUser() == nil
-        {
-            var loginAlert:UIAlertController = UIAlertController(title: "Sign Up/ Sign In", message: "Please sign up or log in", preferredStyle: UIAlertControllerStyle.Alert)
-            
-            loginAlert.addTextFieldWithConfigurationHandler({
-                textfield in
-                textfield.placeholder = "Your Matric No."
-            })
-            
-            loginAlert.addTextFieldWithConfigurationHandler({
-                textfield in
-                textfield.placeholder = "Your Password"
-                textfield.secureTextEntry = true
-            })
-            
-            loginAlert.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler:{
-                alertAction in
-                let textFields:NSArray = loginAlert.textFields! as NSArray
-                let matricTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-                let passwordTextField:UITextField = textFields.objectAtIndex(1) as UITextField
-                
-                PFUser.logInWithUsernameInBackground(matricTextField.text, password: passwordTextField.text)
-                    {
-                        (user:PFUser!, error:NSError!)->Void in
-                        if user != nil
-                        {
-                            println("Login successful")
-                            self.loadData()
-                        }
-                        else
-                        {
-                            println("Login failed")
-                        }
-                }
-                
-                
-                
-            }  ))
-            
-            loginAlert.addAction(UIAlertAction(title: "Sign Up", style: UIAlertActionStyle.Default, handler:{
-                alertAction in
-                let textFields:NSArray = loginAlert.textFields! as NSArray
-                let matricTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-                let passwordTextfield:UITextField = textFields.objectAtIndex(1) as UITextField
-                
-                var userer:PFUser = PFUser()
-                userer.username = matricTextField.text
-                userer.password = passwordTextfield.text
-                passwordTextfield.secureTextEntry = true
-                
-                userer.signUpInBackgroundWithBlock{
-                    (success:Bool!, error:NSError!)->Void in
-                    if !(error != nil){
-                        println("Sign Up Successful")
-                    }else{
-                        let errorString = error.userInfo!["error"] as String
-                        println(errorString)
-                    }
-                }
-                
-            }))
-            
-            self.presentViewController(loginAlert, animated: true, completion: nil)
-            
-        }
-        
-    }
-    */
 
-
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -300,7 +242,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         cell.commentButton.alpha = 0
         cell.timeSign.alpha = 0
         cell.authorSign.alpha = 0
-        
+        cell.timerButton.alpha = 0
       
         
         //Time setting
@@ -340,6 +282,19 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             cell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
                         }
         
+        var startDate = topic.objectForKey("startingDate") as String!
+        var endDate = topic.objectForKey("endingDate") as String!
+        
+        if startDate == nil && endDate == nil{
+            cell.timerButton.setImage(UIImage(named: "timer"), forState: UIControlState.Normal)
+        }
+            
+        else{
+            cell.timerButton.setImage(UIImage(named: "timerFill"), forState: UIControlState.Normal)
+        }
+    
+
+    
         
         //show comment enabled 
       /*
@@ -360,6 +315,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
       */
         cell.upvoteButton.tag = indexPath.row
         cell.commentButton.tag = indexPath.row
+        cell.timerButton.tag = indexPath.row
         
         //Username
         var findUsererData:PFQuery = PFUser.query()
@@ -382,6 +338,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 cell.upvoteButton.alpha = 1
                 cell.timeSign.alpha = 1
                 cell.authorSign.alpha = 1
+                cell.timerButton.alpha = 1
                 }
               }
         })
@@ -420,12 +377,42 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         tabBarController?.tabBar.hidden = false
     }
     
+    
+    
     // MARK: TopicTableViewCellDelegate
    
     var _currentIndexPath:NSIndexPath?
     
+    func topicTableViewCellDidTouchTimer2(cell: TopicTableViewCell, sender: AnyObject) {
+        
+    }
+    
+    func topicTableViewCellDIdTouchTimer(cell: TopicTableViewCell, sender: AnyObject) {
+        let senderButton:UIButton = sender as UIButton
+        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        println(dateInfo.objectId)
+        
+        var startDate = dateInfo.objectForKey("startingDate") as String!
+        var endDate = dateInfo.objectForKey("endingDate") as String!
+        
+        if startDate == nil && endDate == nil{
+            let alert = UIAlertView()
+            alert.title = "No Date is set yet!"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
+        
+        else{
+            let alert = UIAlertView()
+            alert.title = "Date"
+            alert.message = "Starting Date: \(startDate) \n Ending Date: \(endDate)"
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
+    }
+    
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
-        if PFUser.currentUser() != nil{
+    
             
         let senderButton:UIButton = sender as UIButton
    
@@ -471,7 +458,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             }
 
                 topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
                 if success == true {
                     println("like removed")
                 } else {
@@ -485,14 +472,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
          
 
             }
-          
-        }
-        else{
-            performSegueWithIdentifier("loginTopicSegue", sender: self)
-        }
-        if let indexPath = _currentIndexPath {
-self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+        
     }
+    
+    func topicTableViewCellDidTouchUpvote2(cell: TopicTableViewCell, sender: AnyObject) {
+        
     }
 
     func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
@@ -512,9 +496,11 @@ self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "CommentsSegue"){
     let toView = segue.destinationViewController as CommentsTableViewController
-    let indexPath = tableView.indexPathForCell(sender as UITableViewCell)!
+            let indexPath:AnyObject = tableView.indexPathForCell(sender as UITableViewCell)!
             let topic: AnyObject = timelineTopicData[indexPath.row]
+
             toView.topic = topic as? PFObject
+            toView.index2Path = tableView.indexPathForCell(sender as UITableViewCell)
             toView.groupCreated = groupCreated as PFObject?
             toView.timelineTopicData = timelineTopicData as NSMutableArray!
         }

@@ -47,20 +47,18 @@ class WebViewController: UIViewController,UIWebViewDelegate {
 
         navigationController?.navigationBar.topItem?.title = "Loading..."
     
-         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xECECEC)
+         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0xF8F8F8)
+            navigationController?.navigationBar.barStyle = UIBarStyle.Default
    //    navigationController?.navigationBar.barTintColor = UIColor(red: 236, green: 236, blue: 236, alpha: 0.1)
        navigationController?.navigationBar.translucent = true
        navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!,  NSForegroundColorAttributeName: UIColorFromRGB(0x7B7B7B)]
 
     }
-    
-    override func prefersStatusBarHidden() -> Bool {
-        
-        return false
+
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
     }
-
-
-
+    
     
     func addLeftNavItemOnView()
     {
@@ -127,7 +125,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationController?.popViewControllerAnimated(true)
         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0x4FD7CE)
-        //UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+  
     }
     
 

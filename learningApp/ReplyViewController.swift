@@ -29,14 +29,25 @@ class ReplyViewController: UIViewController {
         UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
        // navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
-        replyTextView.becomeFirstResponder()
+      //  replyTextView.becomeFirstResponder()
         
           }
 
     override func viewDidAppear(animated: Bool) {
-        
+      navigationController?.hidesBarsOnSwipe = true
       //  navigationController?.navigationBar.topItem?.title = "Reply"
       //  navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        if navigationController?.navigationBarHidden == true {
+            return true
+        }
+        return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     @IBAction func cancelButtonDidTouch(sender: AnyObject) {

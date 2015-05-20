@@ -41,8 +41,7 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         avatarGroup.animate()
         groupDialogView.animateNext{
         self.dismissViewControllerAnimated(true, completion: nil)
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-       
+           
         }
         delegate?.closeGroupViewControllerDidTouch(self)
     }
@@ -55,9 +54,13 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
         
          groupNameLabel2.hidden = true
          self.presentViewController(imagePicker, animated: true, completion: nil)
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
-
+        
     }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.Default
+    }
+    
 
     
  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {

@@ -8,11 +8,12 @@
 
 import UIKit
 
+
 class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateViewControllerDelegate {
 
     @IBOutlet weak var signOut: UIBarButtonItem!
     @IBOutlet weak var createGroupButton: UIBarButtonItem!
-    
+
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() != nil {
             
@@ -39,15 +40,14 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             signOutDialog.addAction(cancelIt)
             signOutDialog.addAction(logOut)
             self.presentViewController(signOutDialog, animated: true, completion: nil)
-            
+           
             
         }
-            
+    
         else {
             performSegueWithIdentifier("loginFavSegue", sender: self)
         }
     }
-
     
     @IBAction func createGroupDidTouch(sender: AnyObject) {
         if PFUser.currentUser() == nil{
@@ -114,11 +114,12 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             view.hideLoading()
         }
     }
-    
+
     var isFirstTime = true
     
     override func viewDidAppear(animated: Bool) {
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+       
+        navigationController?.hidesBarsOnSwipe = true
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
             var scope = findLecturerUser.objectForKey("identity") as Bool?
@@ -144,9 +145,12 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             self.loadData()
             isFirstTime = false
         }
-        
-        //navigationController?.hidesBarsOnSwipe = true
+        if PFUser.currentUser() != nil{
         navigationController?.navigationBar.topItem?.title = "My Groups"
+        }
+        else{
+            navigationController?.navigationBar.topItem?.title = "Groups"
+        }
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
    
@@ -172,7 +176,6 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         tableView.estimatedRowHeight = 109
         tableView.rowHeight = UITableViewAutomaticDimension
         
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
@@ -182,7 +185,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         navigationItem.backBarButtonItem = backButton
         
         
-        hideBottomBorder()
+//        hideBottomBorder()
     }
     
     
@@ -202,14 +205,26 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         
         println("reload finised")
     }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        if navigationController?.navigationBarHidden == true {
+            return true
+        }
+        return false
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
+    }
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
-        if timelineFavData.count != 0{
+        if PFUser.currentUser() != nil{
+            if timelineFavData.count != 0{
             tableView.backgroundView = nil
             tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
             return 1
         }
-        else {
+            else {
             var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
             view.addSubview(imageView)
             
@@ -223,7 +238,20 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
             
         }
-        
+        }
+        else{
+            var imageView = UIImageView(frame: CGRectMake(0, 0, 124, 110))
+            view.addSubview(imageView)
+            
+            
+            var imageChosen = UIImage(named: "emptyNotLogin")
+            imageView.image = imageChosen
+            
+            tableView.backgroundView = imageView
+            // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundView?.contentMode = UIViewContentMode.Center
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
         return 1
     }
 
@@ -362,6 +390,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             toView.delegate = self
             
         }
+        
         
         if (segue.identifier == "loginFavSegue"){
             let toView = segue.destinationViewController as LoginViewController

@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import MessageUI
 
-class EvaluationTableViewController: UITableViewController {
+class EvaluationTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 
     var topic:PFObject?
     var segmentT:UISegmentedControl!
+    var timelineTopicData:NSMutableArray! = NSMutableArray()
     
     @IBAction func saveButtonDidTouch(sender: AnyObject) {
         var priorBounds:CGRect = self.tableView.bounds;
@@ -42,10 +44,52 @@ class EvaluationTableViewController: UITableViewController {
         
         
         let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
-        var pdfFileName = path.stringByAppendingPathComponent("testfilewnew.pdf")
+        var pdfFileName = path.stringByAppendingPathComponent("testfile.pdf")
         
         pdfData.writeToFile(pdfFileName, atomically: true)
+        
+        if( MFMailComposeViewController.canSendMail() ) {
+            println("Can send email.")
+            
+            let mailComposer = MFMailComposeViewController()
+            mailComposer.mailComposeDelegate = self
+            
+            //Set the subject and message of the email
+            mailComposer.setSubject("Evaluation PFD File")
+            mailComposer.setMessageBody("This is what they sound like.", isHTML: false)
+            
+            if let filePath = NSBundle.mainBundle().pathForResource("testfile", ofType: "pdf") {
+                println("File path loaded.")
+                
+                if let fileData = NSData(contentsOfFile: filePath) {
+                    println("File data loaded.")
+                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "testfile")
+                }
+            }
+            self.presentViewController(mailComposer, animated: true, completion: nil)
+        }
     }
+    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        
+        switch result.value{
+        case MFMailComposeResultCancelled.value:
+            println("Mail Canceled")
+        case MFMailComposeResultFailed.value:
+            println("Mail Failed")
+        case MFMailComposeResultSaved.value:
+            println("Mail Saved")
+        case MFMailComposeResultSent.value:
+            println("Mail Sent")
+        default: break
+            
+        }
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+
+
     
     @IBOutlet weak var segmentedRating: UISegmentedControl!
     
@@ -67,10 +111,9 @@ class EvaluationTableViewController: UITableViewController {
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
         
-        tableView.estimatedRowHeight = 53
+        tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
     }
     
     var isFirstTime = true
@@ -345,27 +388,27 @@ class EvaluationTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if segmentedRating.selectedSegmentIndex == 0{
-            return timelineEvaluatedData.count
+            return timelineEvaluatedData.count + 1
         }
         
         else if segmentedRating.selectedSegmentIndex == 1{
-            return timelineExcellentEvaluatedData.count
+            return timelineExcellentEvaluatedData.count + 1
         }
         
         else if segmentedRating.selectedSegmentIndex == 2{
-            return timelineGoodEvaluatedData.count
+            return timelineGoodEvaluatedData.count + 1
         }
         
         else if segmentedRating.selectedSegmentIndex == 3{
-            return timelineAveEvaluatedData.count
+            return timelineAveEvaluatedData.count + 1
         }
         
         else if segmentedRating.selectedSegmentIndex == 4{
-            return timelineFairEvaluatedData.count
+            return timelineFairEvaluatedData.count + 1
         }
         
         else if segmentedRating.selectedSegmentIndex == 5{
-            return timelinePoorEvaluatedData.count
+            return timelinePoorEvaluatedData.count + 1
         }
             
         else{
@@ -375,51 +418,102 @@ class EvaluationTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:EvaluationTableViewCell = tableView.dequeueReusableCellWithIdentifier("evaluateCell", forIndexPath: indexPath) as EvaluationTableViewCell
         
+        let identifier = indexPath.row == 0 ? "topicCell" : "evaluateCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as UITableViewCell
         
+        if let topicCell = cell as? TopicTableViewCell{
+    
+            topicCell.titleLabel.text = topic?.objectForKey("title") as? String
+            topicCell.startingDate.text = topic?.objectForKey("startingDate") as? String
+            topicCell.endingDate.text = topic?.objectForKey("endingDate") as? String
+            
+            topicCell.titleLabel.alpha = 0
+            topicCell.usernameLabel.alpha = 0
+            topicCell.authorSign.alpha = 0
+            topicCell.startingDate.alpha = 0
+            topicCell.startingLabel.alpha = 0
+            topicCell.endingDate.alpha = 0
+            topicCell.endingLabel.alpha = 0
+            
+            
+            var findUsererData:PFQuery = PFUser.query()
+            findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
+            
+            findUsererData.findObjectsInBackgroundWithBlock({
+                (objects:[AnyObject]!,error:NSError!)->Void in
+                
+                if (error == nil) {
+                    
+                    
+                    let user:PFUser! = (objects as NSArray).lastObject as? PFUser!
+                    
+                    topicCell.usernameLabel.text = user.username
+                    
+                    spring(1.0){
+                        topicCell.titleLabel.alpha = 1
+                        topicCell.usernameLabel.alpha = 1
+                        topicCell.authorSign.alpha = 1
+                        topicCell.startingDate.alpha = 1
+                        topicCell.startingLabel.alpha = 1
+                        topicCell.endingDate.alpha = 1
+                        topicCell.endingLabel.alpha = 1
+                    }
+                    
+                    
+                }
+                else{
+                    println("No username detected")
+                }
+                
+            })
+
+
+            
+        }
+        if let evaluateCell = cell as? EvaluationTableViewCell{
         if segmentedRating.selectedSegmentIndex == 0 {
        
-        let evaluatedData:PFObject = self.timelineEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-        cell.timeLabel.alpha = 0
-        cell.studentMatric.alpha = 0
-        cell.ratingDisplayed.alpha = 0
+        let evaluatedData:PFObject = self.timelineEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+        evaluateCell.timeLabel.alpha = 0
+        evaluateCell.studentMatric.alpha = 0
+        evaluateCell.ratingDisplayed.alpha = 0
         
         var rating = evaluatedData.objectForKey("rating") as String?
         if rating == "poorRating" {
             
-            cell.ratingDisplayed.setImage(UIImage(named:"rating1"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating1"), forState: UIControlState.Normal)
             
         }
         
         else if rating == "fairRating" {
             
-            cell.ratingDisplayed.setImage(UIImage(named: "rating2"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating2"), forState: UIControlState.Normal)
             
         }
             
         else if rating == "averageRating" {
             
-            cell.ratingDisplayed.setImage(UIImage(named: "rating3"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating3"), forState: UIControlState.Normal)
             
         }
             
             
         else if rating == "goodRating" {
             
-            cell.ratingDisplayed.setImage(UIImage(named: "rating4"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating4"), forState: UIControlState.Normal)
             
         }
             
         else if rating == "excellentRating" {
             
-            cell.ratingDisplayed.setImage(UIImage(named: "rating5"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating5"), forState: UIControlState.Normal)
             
         }
             
         else {
             
-            cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+            evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
         }
 
         var findUsererData:PFQuery = PFUser.query()
@@ -431,39 +525,39 @@ class EvaluationTableViewController: UITableViewController {
             if (error == nil) {
                 
                 let user:PFUser = (objects as NSArray).lastObject as PFUser
-                cell.studentMatric.text = user.username
+                evaluateCell.studentMatric.text = user.username
                 
                 //final animation
                 spring(1.0){
-                    cell.timeLabel.alpha = 1
-                    cell.studentMatric.alpha = 1
-                    cell.ratingDisplayed.alpha = 1
+                    evaluateCell.timeLabel.alpha = 1
+                    evaluateCell.studentMatric.alpha = 1
+                    evaluateCell.ratingDisplayed.alpha = 1
                 }
             }
         })
 
         var dateFormat:NSDateFormatter = NSDateFormatter()
-        dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-        cell.timeLabel.text = dateFormat.stringFromDate(evaluatedData.createdAt)
+        dateFormat.dateFormat = "dd MMM, yy, HH:mm"
+        evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedData.createdAt)
         }
         
         if segmentedRating.selectedSegmentIndex == 1 {
             
-            let evaluatedExcellentData:PFObject = self.timelineExcellentEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-            cell.timeLabel.alpha = 0
-            cell.studentMatric.alpha = 0
-            cell.ratingDisplayed.alpha = 0
+            let evaluatedExcellentData:PFObject = self.timelineExcellentEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            evaluateCell.timeLabel.alpha = 0
+            evaluateCell.studentMatric.alpha = 0
+            evaluateCell.ratingDisplayed.alpha = 0
             
             var rating = evaluatedExcellentData.objectForKey("rating") as String?
             if rating == "excellentRating" {
                 
-                cell.ratingDisplayed.setImage(UIImage(named:"rating5"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating5"), forState: UIControlState.Normal)
                 
             }
                 
             else {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
             var findUsererData:PFQuery = PFUser.query()
@@ -475,39 +569,39 @@ class EvaluationTableViewController: UITableViewController {
                 if (error == nil) {
                     
                     let user:PFUser = (objects as NSArray).lastObject as PFUser
-                    cell.studentMatric.text = user.username
+                    evaluateCell.studentMatric.text = user.username
                     
                     //final animation
                     spring(1.0){
-                        cell.timeLabel.alpha = 1
-                        cell.studentMatric.alpha = 1
-                        cell.ratingDisplayed.alpha = 1
+                        evaluateCell.timeLabel.alpha = 1
+                        evaluateCell.studentMatric.alpha = 1
+                        evaluateCell.ratingDisplayed.alpha = 1
                     }
                 }
             })
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            cell.timeLabel.text = dateFormat.stringFromDate(evaluatedExcellentData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedExcellentData.createdAt)
         }
         
         if segmentedRating.selectedSegmentIndex == 2 {
             
-            let evaluatedGoodData:PFObject = self.timelineGoodEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-            cell.timeLabel.alpha = 0
-            cell.studentMatric.alpha = 0
-            cell.ratingDisplayed.alpha = 0
+            let evaluatedGoodData:PFObject = self.timelineGoodEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            evaluateCell.timeLabel.alpha = 0
+            evaluateCell.studentMatric.alpha = 0
+            evaluateCell.ratingDisplayed.alpha = 0
             
             var rating = evaluatedGoodData.objectForKey("rating") as String?
             if rating == "goodRating" {
                 
-                cell.ratingDisplayed.setImage(UIImage(named:"rating4"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating4"), forState: UIControlState.Normal)
                 
             }
                 
             else {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
             var findUsererData:PFQuery = PFUser.query()
@@ -519,40 +613,40 @@ class EvaluationTableViewController: UITableViewController {
                 if (error == nil) {
                     
                     let user:PFUser = (objects as NSArray).lastObject as PFUser
-                    cell.studentMatric.text = user.username
+                    evaluateCell.studentMatric.text = user.username
                     
                     //final animation
                     spring(1.0){
-                        cell.timeLabel.alpha = 1
-                        cell.studentMatric.alpha = 1
-                        cell.ratingDisplayed.alpha = 1
+                        evaluateCell.timeLabel.alpha = 1
+                        evaluateCell.studentMatric.alpha = 1
+                        evaluateCell.ratingDisplayed.alpha = 1
                     }
                 }
             })
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            cell.timeLabel.text = dateFormat.stringFromDate(evaluatedGoodData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedGoodData.createdAt)
         }
         
         if segmentedRating.selectedSegmentIndex == 3 {
             
-            let evaluatedAverageData:PFObject = self.timelineAveEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-            cell.timeLabel.alpha = 0
-            cell.studentMatric.alpha = 0
-            cell.ratingDisplayed.alpha = 0
+            let evaluatedAverageData:PFObject = self.timelineAveEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            evaluateCell.timeLabel.alpha = 0
+            evaluateCell.studentMatric.alpha = 0
+            evaluateCell.ratingDisplayed.alpha = 0
             
             var rating = evaluatedAverageData.objectForKey("rating") as String?
                 
             if rating == "averageRating" {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating3"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating3"), forState: UIControlState.Normal)
                 
             }
                 
             else {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
             var findUsererData:PFQuery = PFUser.query()
@@ -564,40 +658,40 @@ class EvaluationTableViewController: UITableViewController {
                 if (error == nil) {
                     
                     let user:PFUser = (objects as NSArray).lastObject as PFUser
-                    cell.studentMatric.text = user.username
+                    evaluateCell.studentMatric.text = user.username
                     
                     //final animation
                     spring(1.0){
-                        cell.timeLabel.alpha = 1
-                        cell.studentMatric.alpha = 1
-                        cell.ratingDisplayed.alpha = 1
+                        evaluateCell.timeLabel.alpha = 1
+                        evaluateCell.studentMatric.alpha = 1
+                        evaluateCell.ratingDisplayed.alpha = 1
                     }
                 }
             })
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            cell.timeLabel.text = dateFormat.stringFromDate(evaluatedAverageData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedAverageData.createdAt)
         }
         
         if segmentedRating.selectedSegmentIndex == 4 {
             
-            let evaluatedFairData:PFObject = self.timelineFairEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-            cell.timeLabel.alpha = 0
-            cell.studentMatric.alpha = 0
-            cell.ratingDisplayed.alpha = 0
+            let evaluatedFairData:PFObject = self.timelineFairEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            evaluateCell.timeLabel.alpha = 0
+            evaluateCell.studentMatric.alpha = 0
+            evaluateCell.ratingDisplayed.alpha = 0
             
             var rating = evaluatedFairData.objectForKey("rating") as String?
             
             if rating == "fairRating" {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating2"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating2"), forState: UIControlState.Normal)
                 
             }
                 
             else {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
             var findUsererData:PFQuery = PFUser.query()
@@ -609,40 +703,40 @@ class EvaluationTableViewController: UITableViewController {
                 if (error == nil) {
                     
                     let user:PFUser = (objects as NSArray).lastObject as PFUser
-                    cell.studentMatric.text = user.username
+                    evaluateCell.studentMatric.text = user.username
                     
                     //final animation
                     spring(1.0){
-                        cell.timeLabel.alpha = 1
-                        cell.studentMatric.alpha = 1
-                        cell.ratingDisplayed.alpha = 1
+                        evaluateCell.timeLabel.alpha = 1
+                        evaluateCell.studentMatric.alpha = 1
+                        evaluateCell.ratingDisplayed.alpha = 1
                     }
                 }
             })
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            cell.timeLabel.text = dateFormat.stringFromDate(evaluatedFairData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedFairData.createdAt)
         }
         
         if segmentedRating.selectedSegmentIndex == 5 {
             
-            let evaluatedPoorData:PFObject = self.timelinePoorEvaluatedData.objectAtIndex(indexPath.row) as PFObject
-            cell.timeLabel.alpha = 0
-            cell.studentMatric.alpha = 0
-            cell.ratingDisplayed.alpha = 0
+            let evaluatedPoorData:PFObject = self.timelinePoorEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            evaluateCell.timeLabel.alpha = 0
+            evaluateCell.studentMatric.alpha = 0
+            evaluateCell.ratingDisplayed.alpha = 0
             
             var rating = evaluatedPoorData.objectForKey("rating") as String?
             
             if rating == "fairRating" {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating1"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating1"), forState: UIControlState.Normal)
                 
             }
                 
             else {
                 
-                cell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
+                evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
             var findUsererData:PFQuery = PFUser.query()
@@ -654,23 +748,23 @@ class EvaluationTableViewController: UITableViewController {
                 if (error == nil) {
                     
                     let user:PFUser = (objects as NSArray).lastObject as PFUser
-                    cell.studentMatric.text = user.username
+                    evaluateCell.studentMatric.text = user.username
                     
                     //final animation
                     spring(1.0){
-                        cell.timeLabel.alpha = 1
-                        cell.studentMatric.alpha = 1
-                        cell.ratingDisplayed.alpha = 1
+                        evaluateCell.timeLabel.alpha = 1
+                        evaluateCell.studentMatric.alpha = 1
+                        evaluateCell.ratingDisplayed.alpha = 1
                     }
                 }
             })
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            cell.timeLabel.text = dateFormat.stringFromDate(evaluatedPoorData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedPoorData.createdAt)
         }
 
-
+        }
         return cell
     }
     
