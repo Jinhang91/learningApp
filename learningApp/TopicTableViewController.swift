@@ -295,13 +295,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     
 
     
-        
+        /*
         //show comment enabled 
-      /*
+      
         var commentEnabled:PFQuery = PFQuery(className: "Comment")
         commentEnabled.whereKey("parent", equalTo: topic)
-        commentEnabled.includeKey("parent")
-         commentEnabled.whereKey("userer", equalTo: PFUser.currentUser())
+        commentEnabled.whereKey("userer", equalTo: PFUser.currentUser().objectId)
    
         commentEnabled.findObjectsInBackgroundWithBlock{
             (objects:[AnyObject]!,error:NSError!) ->Void in

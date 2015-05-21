@@ -34,7 +34,7 @@ class ReplyViewController: UIViewController {
           }
 
     override func viewDidAppear(animated: Bool) {
-      navigationController?.hidesBarsOnSwipe = true
+     // navigationController?.hidesBarsOnSwipe = true
       //  navigationController?.navigationBar.topItem?.title = "Reply"
       //  navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }

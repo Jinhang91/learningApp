@@ -90,7 +90,7 @@ class EditTopicViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        navigationController?.hidesBarsOnSwipe = true
+     //   navigationController?.hidesBarsOnSwipe = true
     }
     
     override func prefersStatusBarHidden() -> Bool {

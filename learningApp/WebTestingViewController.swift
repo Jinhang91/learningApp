@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import WebKit
+//import WebKit
 
 class WebTestingViewController: UIViewController, UIWebViewDelegate {
 
@@ -24,7 +24,7 @@ class WebTestingViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var progressView: UIProgressView!
     
-    @IBOutlet weak var webview: WKWebView!
+   // @IBOutlet weak var webview: WKWebView!
     @IBAction func closeButtonDidTouch(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }

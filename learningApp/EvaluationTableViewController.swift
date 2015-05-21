@@ -7,15 +7,20 @@
 //
 
 import UIKit
-import MessageUI
 
-class EvaluationTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+
+class EvaluationTableViewController: UITableViewController{
 
     var topic:PFObject?
     var segmentT:UISegmentedControl!
     var timelineTopicData:NSMutableArray! = NSMutableArray()
     
+    
     @IBAction func saveButtonDidTouch(sender: AnyObject) {
+        let exportMenu = UIAlertController(title: nil, message: "Create PDF and display it", preferredStyle: .ActionSheet)
+        
+        let createPDF = UIAlertAction(title: "1) Create a PDF file of this data", style: .Default)
+         { action -> Void in
         var priorBounds:CGRect = self.tableView.bounds;
         
         var fittedSize:CGSize = self.tableView.sizeThatFits(CGSizeMake(priorBounds.size.width, self.tableView.contentSize.height))
@@ -44,52 +49,35 @@ class EvaluationTableViewController: UITableViewController, MFMailComposeViewCon
         
         
         let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
-        var pdfFileName = path.stringByAppendingPathComponent("testfile.pdf")
+        var pdfFileName = path.stringByAppendingPathComponent("Evaluation.pdf")
         
         pdfData.writeToFile(pdfFileName, atomically: true)
         
-        if( MFMailComposeViewController.canSendMail() ) {
-            println("Can send email.")
-            
-            let mailComposer = MFMailComposeViewController()
-            mailComposer.mailComposeDelegate = self
-            
-            //Set the subject and message of the email
-            mailComposer.setSubject("Evaluation PFD File")
-            mailComposer.setMessageBody("This is what they sound like.", isHTML: false)
-            
-            if let filePath = NSBundle.mainBundle().pathForResource("testfile", ofType: "pdf") {
-                println("File path loaded.")
-                
-                if let fileData = NSData(contentsOfFile: filePath) {
-                    println("File data loaded.")
-                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "testfile")
-                }
-            }
-            self.presentViewController(mailComposer, animated: true, completion: nil)
-        }
-    }
-    
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
-        
-        switch result.value{
-        case MFMailComposeResultCancelled.value:
-            println("Mail Canceled")
-        case MFMailComposeResultFailed.value:
-            println("Mail Failed")
-        case MFMailComposeResultSaved.value:
-            println("Mail Saved")
-        case MFMailComposeResultSent.value:
-            println("Mail Sent")
-        default: break
-            
+        println("PDF file is created")
+       
+        let alert = UIAlertView()
+        alert.title = "PDF file is created"
+        alert.addButtonWithTitle("OK")
+        alert.show()
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let displayPDF = UIAlertAction(title: "2) Display the PDF", style: .Default)
+            { action -> Void in
+        
+                self.performSegueWithIdentifier("pdfSegue", sender: self)
+        
+        }
+        
+        let cancelIt = UIAlertAction(title: "Cancel", style: .Cancel)
+            {
+                action -> Void in
+        }
+        exportMenu.addAction(createPDF)
+        exportMenu.addAction(displayPDF)
+        exportMenu.addAction(cancelIt)
+        
+        self.presentViewController(exportMenu, animated: true, completion: nil)
     }
-
-
-
     
     @IBOutlet weak var segmentedRating: UISegmentedControl!
     

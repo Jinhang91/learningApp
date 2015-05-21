@@ -46,7 +46,7 @@ class EditCommentViewController: UIViewController {
     @IBOutlet weak var commentTextView: UITextView!
     
     override func viewDidAppear(animated: Bool) {
-        navigationController?.hidesBarsOnSwipe = true
+       // navigationController?.hidesBarsOnSwipe = true
     }
     
     override func prefersStatusBarHidden() -> Bool {

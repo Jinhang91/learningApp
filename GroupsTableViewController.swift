@@ -149,7 +149,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         navigationController?.navigationBar.topItem?.title = "Search"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
         
-        navigationController?.hidesBarsOnSwipe = true
+       // navigationController?.hidesBarsOnSwipe = true
     }
 
     override func prefersStatusBarHidden() -> Bool {

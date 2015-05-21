@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import WebKit
+
 
 class WebViewController: UIViewController,UIWebViewDelegate {
 
@@ -122,30 +122,13 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     }
     
     func closeButton(sender:UIButton!){
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+  
         navigationController?.popViewControllerAnimated(true)
         navigationController?.navigationBar.barTintColor = UIColorFromRGB(0x4FD7CE)
   
     }
     
 
-    /*
-    func maskButtonDoesUse(){
-        maskButton.hidden = false
-        maskButton.alpha = 0
-        spring(1){
-            self.maskButton.alpha = 1
-        }
-    }
-    
-    func maskButtonDidUse(){
-        maskButton.hidden = true
-        maskButton.alpha = 1
-        spring(1){
-            self.maskButton.alpha = 0
-        }
-    }
-    */
     func maskButtonDoesUse(){
         visualBlur.hidden = false
         visualBlur.alpha = 0

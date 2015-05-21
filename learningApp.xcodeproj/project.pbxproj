@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C083A3E1B0D8C7B00B212A3 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C083A3D1B0D8C7B00B212A3 /* Entitlements.plist */; };
+		3C083A401B0E056900B212A3 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C083A3F1B0E056900B212A3 /* PDFViewController.swift */; };
 		3C268B101AFB9EE8005FBF1B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C809D391AAC388A007318D1 /* LaunchScreen.xib */; };
 		3C268B7C1AFC519F005FBF1B /* FavouriteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C268B7B1AFC519F005FBF1B /* FavouriteTableViewController.swift */; };
 		3C268B7E1AFC6749005FBF1B /* FavouriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C268B7D1AFC6749005FBF1B /* FavouriteTableViewCell.swift */; };
@@ -113,7 +115,6 @@
 		3CDD36871AD0E55B00DFC79A /* SanFranciscoText-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD36701AD0E55B00DFC79A /* SanFranciscoText-Thin.otf */; };
 		3CDD36881AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3CDD36711AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf */; };
 		3CE840861AD7A33D006CE2B4 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840851AD7A33D006CE2B4 /* WebViewController.swift */; };
-		3CE840881AD93019006CE2B4 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE840871AD93019006CE2B4 /* TestingViewController.swift */; };
 		3CE9D3711ABEFA9C00D08A7C /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */; };
 		3CF4D5BE1B04ABFD00A6676D /* EditTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF4D5BD1B04ABFD00A6676D /* EditTopicViewController.swift */; };
 /* End PBXBuildFile section */
@@ -129,6 +130,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C083A3D1B0D8C7B00B212A3 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		3C083A3F1B0E056900B212A3 /* PDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PDFViewController.swift; path = learningApp/PDFViewController.swift; sourceTree = "<group>"; };
 		3C268B1A1AFBA3A1005FBF1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C268B1B1AFBA3A1005FBF1B /* learningApp_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = learningApp_Tests.swift; sourceTree = "<group>"; };
 		3C268B721AFBA914005FBF1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -260,7 +263,6 @@
 		3CDD36701AD0E55B00DFC79A /* SanFranciscoText-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoText-Thin.otf"; sourceTree = "<group>"; };
 		3CDD36711AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SanFranciscoText-ThinItalic.otf"; sourceTree = "<group>"; };
 		3CE840851AD7A33D006CE2B4 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		3CE840871AD93019006CE2B4 /* TestingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
 		3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		3CF4D5BD1B04ABFD00A6676D /* EditTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTopicViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -417,6 +419,7 @@
 		3C809D221AAC388A007318D1 = {
 			isa = PBXGroup;
 			children = (
+				3C083A3F1B0E056900B212A3 /* PDFViewController.swift */,
 				3C268B181AFBA3A1005FBF1B /* learningApp Tests */,
 				3C268B701AFBA914005FBF1B /* learningApp NewTests */,
 				3C809D6A1AAC3A45007318D1 /* Frameworks */,
@@ -442,6 +445,7 @@
 				3CE9D3701ABEFA9C00D08A7C /* CreateGroupViewController.swift */,
 				3CA80F5E1B070A1E00EDC64E /* CreateViewController.swift */,
 				3C4C5FBB1AB6B5F000371FAB /* CommentsTableViewController.swift */,
+				3C083A3D1B0D8C7B00B212A3 /* Entitlements.plist */,
 				3C4C5FC51AB7C10D00371FAB /* CommentsTableViewCell.swift */,
 				3C809D721AAC87E8007318D1 /* ComposeTopicViewController.swift */,
 				3C4A34811AED36D200B73F6D /* EvaluationTableViewController.swift */,
@@ -460,7 +464,6 @@
 				3C852E5B1AB30D36001F5FA1 /* SignUpViewController.swift */,
 				3CE840851AD7A33D006CE2B4 /* WebViewController.swift */,
 				3C809D341AAC388A007318D1 /* Main.storyboard */,
-				3CE840871AD93019006CE2B4 /* TestingViewController.swift */,
 				3CDD365A1AD0E55A00DFC79A /* Sans Francisco Fonts */,
 				3C852E191AB2D7E9001F5FA1 /* Spring */,
 				3C809D371AAC388A007318D1 /* Images.xcassets */,
@@ -687,6 +690,7 @@
 				3CDD36761AD0E55B00DFC79A /* SanFranciscoDisplay-Medium.otf in Resources */,
 				3CDD36811AD0E55B00DFC79A /* SanFranciscoText-Medium.otf in Resources */,
 				3CDD367E1AD0E55B00DFC79A /* SanFranciscoText-HeavyItalic.otf in Resources */,
+				3C083A3E1B0D8C7B00B212A3 /* Entitlements.plist in Resources */,
 				3CDD36881AD0E55B00DFC79A /* SanFranciscoText-ThinItalic.otf in Resources */,
 				3CDD36801AD0E55B00DFC79A /* SanFranciscoText-LightItalic.otf in Resources */,
 				3CDD36771AD0E55B00DFC79A /* SanFranciscoDisplay-Regular.otf in Resources */,
@@ -785,8 +789,8 @@
 				3C852E461AB2D7E9001F5FA1 /* LoadingView.swift in Sources */,
 				3C852E501AB2D7E9001F5FA1 /* SpringTextView.swift in Sources */,
 				3C268B7E1AFC6749005FBF1B /* FavouriteTableViewCell.swift in Sources */,
-				3CE840881AD93019006CE2B4 /* TestingViewController.swift in Sources */,
 				3CC0097B1AD66F7900227326 /* Reachability.m in Sources */,
+				3C083A401B0E056900B212A3 /* PDFViewController.swift in Sources */,
 				3C852E391AB2D7E9001F5FA1 /* AsyncImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -846,7 +850,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -863,7 +869,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -888,7 +894,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "-";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -899,7 +907,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -910,12 +918,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = learningApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "learningApp/learningApp-Bridging-Header.h";
@@ -927,12 +937,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = learningApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "learningApp/learningApp-Bridging-Header.h";
@@ -943,6 +955,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -962,6 +975,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

@@ -354,20 +354,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 commentCell.editedLabel.hidden = true
             }
 
-        
-      //     var getPost = PFQuery(className: "Topics")
-        //    var getComment = PFQuery(className: "Comment")
-       //     var query = PFQuery(className: "Topics")
-      
-       //    getPost.whereKey("objectId", equalTo:comment.objectForKey("parent").objectId)
-          //  getComment.whereKey("parent", equalTo:PFObject(withoutDataWithClassName: "topic", objectId: "bOX43RTnLW"))
-       // getComment.whereKey("parent", matchesQuery: getPost)
-     //getComment.includeKey("parent")
-
-      
-       // query.whereKey("objectId", equalTo:comment.objectForKey("parent").objectId)
-       // query.includeKey("")
-//getComment.whereKey("parent", equalTo:PFObject(withoutDataWithClassName: "topic", objectId: "bOX43RTnLW"))
     
             commentCell.commentLabel.text = comment.objectForKey("commentContent") as? String
             commentCell.timeLabel.text = timeAgoSinceDate(comment.createdAt, true)

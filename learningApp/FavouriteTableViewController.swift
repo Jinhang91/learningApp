@@ -119,7 +119,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
     override func viewDidAppear(animated: Bool) {
        
-        navigationController?.hidesBarsOnSwipe = true
+      //  navigationController?.hidesBarsOnSwipe = true
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
             var scope = findLecturerUser.objectForKey("identity") as Bool?
