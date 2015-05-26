@@ -157,7 +157,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.estimatedRowHeight = 96
         tableView.rowHeight = UITableViewAutomaticDimension
-       
+      // tableView.rowHeight = 115
         self.navigationItem.hidesBackButton = true
         //let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
         //backButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
@@ -381,6 +381,9 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     // MARK: TopicTableViewCellDelegate
    
     var _currentIndexPath:NSIndexPath?
+    func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
+        performSegueWithIdentifier("CommentsSegue", sender: cell)
+    }
     
     func topicTableViewCellDidTouchTimer2(cell: TopicTableViewCell, sender: AnyObject) {
         
@@ -478,11 +481,6 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         
     }
 
-    func topicTableViewCellDidTouchComment(cell: TopicTableViewCell, sender: AnyObject) {
-       
-            performSegueWithIdentifier("CommentsSegue", sender: cell)
-        
-    }
 
     // MARK: Prepare for segue
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -528,7 +526,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         let deleteAction = UITableViewRowAction(style: .Default, title: "Delete", handler:
             {(action: UITableViewRowAction!,indexPath: NSIndexPath!) -> Void in
             
-                let deleteMenu = UIAlertController(title: nil, message: "Delete this topic?", preferredStyle: .ActionSheet)
+                let deleteMenu = UIAlertController(title: nil, message: "Delete this topic?", preferredStyle: .Alert)
+                
+                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                    { action -> Void in
+                        
+                }
                 
                 let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                     { action -> Void in
@@ -545,10 +548,6 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                             
                         }
                         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-                }
-                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
-                    { action -> Void in
-                        
                 }
                 
                 deleteMenu.addAction(deleteIt)

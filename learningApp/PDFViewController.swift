@@ -35,10 +35,17 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
         var urlString = url?.absoluteString
         let encodedString = urlString?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         var webURL = NSURL(string: encodedString!)
+        println("\(url)")
+        println("\(urlString)")
+        println("\(webURL)")
         let request = NSURLRequest(URL: webURL!)
                 webView.loadRequest(request)
                 webView.delegate = self
         
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        navigationController?.navigationBar.barTintColor = UIColorFromRGB(0x2B2B2B)
     }
     
     func navigationBarItems(){
@@ -78,12 +85,19 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
             mailComposer.setSubject("Evaluation PFD File")
             mailComposer.setMessageBody("This is what they sound like.", isHTML: false)
             
-            if let filePath = NSBundle.mainBundle().pathForResource("testfile", ofType: "pdf") {
-                println("File path loaded.")
+            
+            let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
+            let documentDirectory = paths[0] as String
+          //  var pdfFileName = documentDirectory.stringByAppendingPathComponent("Evaluation.pdf")
+          //  var url = NSURL(fileURLWithPath:pdfFileName)
+
+          //if let filePath = NSBundle.mainBundle().pathForResource("testfile", ofType: "pdf") {
+            if let pdfFileName = documentDirectory.stringByAppendingPathComponent("Evaluation.pdf") as String?{
+            println("File path loaded.")
                 
-                if let fileData = NSData(contentsOfFile: filePath) {
+                if let fileData = NSData(contentsOfFile: pdfFileName) {
                     println("File data loaded.")
-                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "testfile")
+                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "Evaluation")
                 }
             }
             self.presentViewController(mailComposer, animated: true, completion: nil)

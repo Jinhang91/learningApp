@@ -130,10 +130,10 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     
 
     func maskButtonDoesUse(){
-        visualBlur.hidden = false
-        visualBlur.alpha = 0
+       visualBlur.hidden = false
+       visualBlur.alpha = 0
         spring(1){
-            self.visualBlur.alpha = 1
+        self.visualBlur.alpha = 1
         }
     }
 
@@ -164,8 +164,8 @@ class WebViewController: UIViewController,UIWebViewDelegate {
       //  navigationController?.navigationBar.topItem?.title = "\(shareTitle)"
         
         var headerWebView = UIView(frame: CGRectMake(0, 0, 100, 50))
-        headerWebView.center = self.view.center
-        view.addSubview(headerWebView)
+        headerWebView.contentMode = UIViewContentMode.Center
+       // view.addSubview(headerWebView)
         var linkTitle = UILabel(frame: CGRectMake(0, 5, 100, 22))
  
         linkTitle.text = shareTitle

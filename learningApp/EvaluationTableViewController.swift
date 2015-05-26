@@ -15,6 +15,7 @@ class EvaluationTableViewController: UITableViewController{
     var segmentT:UISegmentedControl!
     var timelineTopicData:NSMutableArray! = NSMutableArray()
     
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBAction func saveButtonDidTouch(sender: AnyObject) {
         let exportMenu = UIAlertController(title: nil, message: "Create PDF and display it", preferredStyle: .ActionSheet)
@@ -76,6 +77,14 @@ class EvaluationTableViewController: UITableViewController{
         exportMenu.addAction(displayPDF)
         exportMenu.addAction(cancelIt)
         
+        //the following lines are used in iPad
+        if let alertPopver = exportMenu.popoverPresentationController{
+            alertPopver.barButtonItem = sender as UIBarButtonItem
+            alertPopver.permittedArrowDirections = UIPopoverArrowDirection.Up
+          //  alertPopver.sourceView = sender.view
+          //  alertPopver.sourceRect = sender.bounds
+        }
+
         self.presentViewController(exportMenu, animated: true, completion: nil)
     }
     

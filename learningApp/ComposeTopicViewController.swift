@@ -34,6 +34,7 @@ class ComposeTopicViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         startingTextField.becomeFirstResponder()
       //  navigationController?.navigationBar.barStyle = UIBarStyle.
        // navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!], forState: UIControlState.Normal)
@@ -69,6 +70,7 @@ class ComposeTopicViewController: UIViewController {
         
         var datePickerView  : UIDatePicker = UIDatePicker(frame: CGRectMake(0, 0, 0, 0))
         datePickerView.datePickerMode = UIDatePickerMode.DateAndTime
+        datePickerView.contentMode = UIViewContentMode.Center
         inputView.addSubview(datePickerView) // add date picker to UIView
    /*
         let doneButton = UIButton(frame: CGRectMake((self.view.frame.size.width/2) - (100/2), 0, 100, 50))
@@ -92,6 +94,7 @@ class ComposeTopicViewController: UIViewController {
         
         var datePickerView  : UIDatePicker = UIDatePicker(frame: CGRectMake(0, 0, 0, 0))
         datePickerView.datePickerMode = UIDatePickerMode.DateAndTime
+        datePickerView.contentMode = UIViewContentMode.Center
         inputView.addSubview(datePickerView) // add date picker to UIView
         
         sender.inputView = inputView

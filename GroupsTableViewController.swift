@@ -146,6 +146,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             self.tableView.reloadData()
             isFirstTime = false
         }
+        
+        if PFUser.currentUser() != nil{
+            loadData()
+        }
         navigationController?.navigationBar.topItem?.title = "Search"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
         
@@ -165,7 +169,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         searchBar = UISearchBar(frame: CGRectMake(0, 0, 320, 44))
         navigationItem.titleView = searchBar
 
@@ -203,8 +207,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         refreshControl.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
         
-        tableView.estimatedRowHeight = 109
-        tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.estimatedRowHeight = 109
+        //tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = 109
         
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
@@ -585,7 +590,12 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
             
-            let deleteMenu = UIAlertController(title: nil, message: "Delete this group?", preferredStyle: .ActionSheet)
+            let deleteMenu = UIAlertController(title: nil, message: "Delete this group?", preferredStyle: .Alert)
+            
+            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                { action -> Void in
+                    
+            }
             
             let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                 { action -> Void in
@@ -602,10 +612,6 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
     }
-            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
-                { action -> Void in
-            
-            }
             
             deleteMenu.addAction(deleteIt)
             deleteMenu.addAction(cancelIt)

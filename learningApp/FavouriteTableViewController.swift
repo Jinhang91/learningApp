@@ -9,7 +9,7 @@
 import UIKit
 
 
-class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateViewControllerDelegate {
+class FavouriteTableViewController: UITableViewController, LoginViewControllerDelegate, CreateViewControllerDelegate, ShowMemberViewControllerDelegate, FavouriteTableViewCellDelegate {
 
     @IBOutlet weak var signOut: UIBarButtonItem!
     @IBOutlet weak var createGroupButton: UIBarButtonItem!
@@ -17,7 +17,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() != nil {
             
-            let signOutDialog = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .Alert)
+            let signOutDialog:UIAlertController = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .Alert)
             
             let cancelIt = UIAlertAction(title: "Cancel", style: .Cancel)
                 {
@@ -156,6 +156,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.tableFooterView = UIView(frame: CGRectZero)
         let cancelButtonAttributes:NSDictionary = [NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 17)!, NSForegroundColorAttributeName:UIColorFromRGB(0x37B8B0)]
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
@@ -173,9 +174,9 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         refreshControl.addTarget(self, action: "pullToRefresh", forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
         
-        tableView.estimatedRowHeight = 109
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
+      //  tableView.estimatedRowHeight = 109
+      //  tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = 109
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
         
@@ -220,6 +221,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if PFUser.currentUser() != nil{
             if timelineFavData.count != 0{
+               
             tableView.backgroundView = nil
             tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
             return 1
@@ -233,7 +235,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             imageView.image = imageChosen
             
             tableView.backgroundView = imageView
-            // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
             tableView.backgroundView?.contentMode = UIViewContentMode.Center
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
             
@@ -248,7 +250,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             imageView.image = imageChosen
             
             tableView.backgroundView = imageView
-            // tableView.backgroundColor = UIColorFromRGB(0xECECEC)
+            tableView.backgroundColor = UIColorFromRGB(0xFFFFFF)
             tableView.backgroundView?.contentMode = UIViewContentMode.Center
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
@@ -259,6 +261,17 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
 
         return timelineFavData.count
 
+    }
+    
+    //MARK: show member 
+    func showMemberCloseDidTouch(controller: ShowMemberViewController) {
+        tabBarController?.tabBar.hidden = false
+    }
+    
+    //MARK: favorite delegate
+    func favoriteMemberDidTouch(cell: FavouriteTableViewCell, sender: AnyObject) {
+        performSegueWithIdentifier("memberSegue", sender: cell)
+    
     }
     
     //MARK: Log in delegate
@@ -298,6 +311,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         cell.authorSign.alpha = 0
         cell.authorLabel.alpha = 0
         cell.topicLabel.alpha = 0
+        cell.memberLabel.alpha = 0
         
         let favoriteGroup = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
         cell.groupLabel.text = favoriteGroup.objectForKey("name") as? String
@@ -313,7 +327,41 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                     cell.groupAvatar.image = image
                 }
             }
+        
+        //Show member no
+        var showMemberNumber = PFUser.query()
+        showMemberNumber.whereKey("favorited", equalTo: favoriteGroup.objectId)
+        
+        showMemberNumber.countObjectsInBackgroundWithBlock({
+            (count: Int32, error: NSError!) -> Void in
+            if error == nil {
+                if count <= 1 {
+                    cell.memberLabel.setTitle("\(count) student", forState: UIControlState.Normal)
+                }
+                else{
+                    cell.memberLabel.setTitle("\(count) students", forState: UIControlState.Normal)
+                }
+            }
+            })
+        /*
+        var findMember:PFQuery = PFUser.query()
+        findMember.whereKey("favorited", equalTo: favoriteGroup.objectId)
+        
+        findMember.findObjectsInBackgroundWithBlock({
+            (objects:[AnyObject]!,error:NSError!)->Void in
             
+            if (error == nil) {
+                
+                if let user:PFUser = (objects as NSArray).lastObject as? PFUser{
+                println("\(user.username)/n/n")
+                }
+                
+                
+            }
+            
+        })
+*/
+        
             var showTopicNo = PFQuery(className: "Topics")
             showTopicNo.whereKey("parent", equalTo: favoriteGroup)
             showTopicNo.countObjectsInBackgroundWithBlock{
@@ -348,13 +396,14 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                         cell.authorSign.alpha = 1
                         cell.authorLabel.alpha = 1
                         cell.topicLabel.alpha = 1
+                        cell.memberLabel.alpha = 1
                     }
 
                     
                 }
                 
             })
-        
+        cell.delegate = self
         return cell
     }
     
@@ -384,11 +433,21 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             let row:AnyObject = timelineFavData[indexPath!.row]
             toView.groupCreated = row as? PFObject
     }
+        
         if (segue.identifier == "createGroupSegue"){
             let toView = segue.destinationViewController as CreateViewController
             tabBarController?.tabBar.hidden = true
             toView.delegate = self
             
+        }
+        
+        if (segue.identifier == "memberSegue"){
+            let toView = segue.destinationViewController as ShowMemberViewController
+            tabBarController?.tabBar.hidden = true
+            let indexPath:AnyObject = tableView.indexPathForCell(sender as UITableViewCell)!
+            let groupFav: AnyObject = timelineFavData[indexPath.row]
+            toView.groupFav = groupFav as? PFObject
+            toView.delegate = self
         }
         
         
@@ -414,7 +473,12 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
         var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Remove", handler: {(action:UITableViewRowAction!, indexPath:NSIndexPath!) -> Void in
             
-            let deleteMenu = UIAlertController(title: nil, message: "Remove this group?", preferredStyle: .ActionSheet)
+            let deleteMenu = UIAlertController(title: nil, message: "Remove this group?", preferredStyle: .Alert)
+            
+            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                { action -> Void in
+                    
+            }
             
             let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                 { action -> Void in
@@ -439,13 +503,12 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                     self.timelineFavData.removeObjectAtIndex(indexPath.row)
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
-            let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
-                { action -> Void in
-                    
-            }
+
             
             deleteMenu.addAction(deleteIt)
             deleteMenu.addAction(cancelIt)
+
+
             self.presentViewController(deleteMenu, animated: true, completion: nil)
         })
         deleteAction.backgroundColor = UIColorFromRGB(0x4DB3B7)

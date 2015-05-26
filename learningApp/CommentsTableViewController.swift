@@ -34,7 +34,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         tableView.tableFooterView = UIView(frame: CGRectZero)
         tableView.estimatedRowHeight = 104
         tableView.rowHeight = UITableViewAutomaticDimension
- 
+      //  tableView.rowHeight = 115
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
     
         self.navigationItem.hidesBackButton = true
@@ -1022,15 +1022,19 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             rateMenu.addAction(poorRating)
         }
 
-
-    
-
-        
         let cancelRating = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
         rateMenu.addAction(cancelRating)
         
+        
+        //the following lines are used in iPad
+        if let alertPopver:UIPopoverPresentationController = rateMenu.popoverPresentationController{
+        alertPopver.sourceView = cell.evaluateButton
+       // rateMenu.popoverPresentationController?.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0)
+            alertPopver.sourceRect = cell.evaluateButton.bounds
+        }
         self.presentViewController(rateMenu, animated: true, completion: nil)
-           }
+        
+    }
     
    // MARK: reply delegate
     func sendReplyDidTouch(controller: ReplyViewController) {
@@ -1143,7 +1147,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         let editAction = UITableViewRowAction(style: .Default, title: "Edit", handler:
             {(action: UITableViewRowAction!,indexPath: NSIndexPath!) -> Void in
                 
-                let editMenu = UIAlertController(title: nil, message: "Edit this?", preferredStyle: .ActionSheet)
+                let editMenu = UIAlertController(title: nil, message: "Edit this?", preferredStyle: .Alert)
+                
+                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                    { action -> Void in
+                        
+                }
                 
                 let editIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                     { action -> Void in
@@ -1156,10 +1165,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                             self.performSegueWithIdentifier("editCommentSegue", sender: indexPath)
                         }
                 }
-                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
-                    { action -> Void in
-                        
-                }
                 
                 editMenu.addAction(editIt)
                 editMenu.addAction(cancelIt)
@@ -1170,7 +1175,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         let deleteAction = UITableViewRowAction(style: .Default, title: "Delete", handler:
             {(action: UITableViewRowAction!,indexPath: NSIndexPath!) -> Void in
                 
-                let deleteMenu = UIAlertController(title: nil, message: "Delete this comment?", preferredStyle: .ActionSheet)
+                let deleteMenu = UIAlertController(title: nil, message: "Delete this comment?", preferredStyle: .Alert)
+                
+                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
+                    { action -> Void in
+                        
+                }
                 
                 let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                     { action -> Void in
@@ -1186,10 +1196,6 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                             
                         }
                         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-                }
-                let cancelIt = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
-                    { action -> Void in
-                        
                 }
                 
                 deleteMenu.addAction(deleteIt)

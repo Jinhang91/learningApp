@@ -8,9 +8,13 @@
 
 import UIKit
 
+protocol FavouriteTableViewCellDelegate: class{
+    func favoriteMemberDidTouch(cell: FavouriteTableViewCell, sender:AnyObject)
+}
 class FavouriteTableViewCell: UITableViewCell {
 
-
+    weak var delegate:FavouriteTableViewCellDelegate?
+    
     @IBOutlet weak var groupAvatar: DesignableImageView!
     
     @IBOutlet weak var groupLabel: UILabel!
@@ -25,8 +29,18 @@ class FavouriteTableViewCell: UITableViewCell {
     
     @IBOutlet weak var authorSign: UIImageView!
     
+    @IBOutlet weak var memberLabel: DesignableButton!
  
     
+    
+    @IBAction func memberDidTouch(sender: AnyObject) {
+    memberLabel.animation = "pop"
+    memberLabel.force = 3.0
+    memberLabel.animate()
+    
+        delegate?.favoriteMemberDidTouch(self, sender: sender)
+
+    }
     
     
     
