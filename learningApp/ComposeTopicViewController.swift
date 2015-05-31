@@ -118,7 +118,7 @@ class ComposeTopicViewController: UIViewController {
         endingTextField.resignFirstResponder()
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         view.endEditing(true)
     }
     
@@ -140,7 +140,7 @@ class ComposeTopicViewController: UIViewController {
         topic["startingDate"] = startingTextField.text
         topic["endingDate"] = endingTextField.text
         
-            topic.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            topic.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("\(self.titleText.text) topic created")
                 } else {
@@ -149,8 +149,8 @@ class ComposeTopicViewController: UIViewController {
                 
             }
 
-        
-            var mama = topic["parent"] as PFObject
+        /*
+            var mama = topic["parent"] as! PFObject
             
             mama.fetchIfNeededInBackgroundWithBlock {
                 (mama: PFObject!, error: NSError!) -> Void in
@@ -162,7 +162,7 @@ class ComposeTopicViewController: UIViewController {
                     println("No group is identifed")
                 }
             }
-
+*/
         }
 
         else

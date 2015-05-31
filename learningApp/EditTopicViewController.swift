@@ -55,7 +55,7 @@ class EditTopicViewController: UIViewController {
         endingField.text = dateFormatter.stringFromDate(sender.date)
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         view.endEditing(true)
     }
     
@@ -82,7 +82,7 @@ class EditTopicViewController: UIViewController {
             }
         
             else {
-                println(error.userInfo)
+                println(error!.userInfo)
             }
         }
         delegate?.doneButtonDidTouch(self)

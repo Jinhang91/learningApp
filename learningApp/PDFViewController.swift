@@ -29,7 +29,7 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
         }
   */
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
-        let documentDirectory = paths[0] as String
+        let documentDirectory = paths[0] as! String
         var pdfFileName = documentDirectory.stringByAppendingPathComponent("Evaluation.pdf")
         var url = NSURL(fileURLWithPath:pdfFileName)
         var urlString = url?.absoluteString
@@ -49,7 +49,7 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
     }
     
     func navigationBarItems(){
-        var closeButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var closeButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         closeButton.frame = CGRectMake(0,0,40,40)
         closeButton.addTarget(self, action: "closeButton:", forControlEvents: UIControlEvents.TouchUpInside)
         closeButton.tintColor = UIColorFromRGB(0xFFFFFF)
@@ -58,7 +58,7 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
         var leftBarButtonClose:UIBarButtonItem = UIBarButtonItem(customView: closeButton)
         self.navigationItem.setLeftBarButtonItem(leftBarButtonClose, animated: true)
         
-        var exportButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var exportButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         exportButton.frame = CGRectMake(0,0,40,40)
         exportButton.addTarget(self, action: "shareButton:", forControlEvents: UIControlEvents.TouchUpInside)
         exportButton.tintColor = UIColorFromRGB(0xFFFFFF)
@@ -87,7 +87,7 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
             
             
             let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
-            let documentDirectory = paths[0] as String
+            let documentDirectory = paths[0] as! String
           //  var pdfFileName = documentDirectory.stringByAppendingPathComponent("Evaluation.pdf")
           //  var url = NSURL(fileURLWithPath:pdfFileName)
 
@@ -97,7 +97,7 @@ class PDFViewController: UIViewController,UIWebViewDelegate, MFMailComposeViewCo
                 
                 if let fileData = NSData(contentsOfFile: pdfFileName) {
                     println("File data loaded.")
-                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "Evaluation")
+                    mailComposer.addAttachmentData(fileData, mimeType: "pdf", fileName: "Evaluation.pdf")
                 }
             }
             self.presentViewController(mailComposer, animated: true, completion: nil)

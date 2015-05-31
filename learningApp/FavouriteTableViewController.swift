@@ -14,6 +14,21 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     @IBOutlet weak var signOut: UIBarButtonItem!
     @IBOutlet weak var createGroupButton: UIBarButtonItem!
 
+ /*
+    override init(style: UITableViewStyle, className: String!) {
+        super.init(style: style, className: "Favorite")
+    }
+    
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.parseClassName = "Favorite"
+        self.pullToRefreshEnabled = false
+        self.paginationEnabled = true
+        self.objectsPerPage = 50
+    }
+ */
     @IBAction func signOutButtonDidTouch(sender: AnyObject) {
         if PFUser.currentUser() != nil {
             
@@ -68,37 +83,41 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     var timelineFavData:NSMutableArray = NSMutableArray()
     
     func loadData(){
-        if PFUser.currentUser() != nil{
+            if PFUser.currentUser() != nil{
+            navigationController?.navigationBar.topItem?.title = "My Groups"
             var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            var scope = findLecturerUser!.objectForKey("identity") as! Bool?
             if scope == true {
                 self.createGroupButton.enabled = true
+                self.signOut.title = PFUser.currentUser()!.username! + "  (Lecturer)"
             }
                 
             else {
                 self.createGroupButton.enabled = false
+                self.signOut.title = PFUser.currentUser()!.username! + "  (Student)"
             }
-            signOut.title = PFUser.currentUser().username
+
         }
             
         else{
+            navigationController?.navigationBar.topItem?.title = "Groups"
             signOut.title = "Log in"
         }
         timelineFavData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
         if PFUser.currentUser() != nil{
         var findGroupData:PFQuery = PFQuery(className: "Groups")
-        findGroupData.whereKey("whoFavorited", equalTo: PFUser.currentUser().objectId)
+        findGroupData.whereKey("whoFavorited", equalTo: PFUser.currentUser()!.objectId!)
         findGroupData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineFavData.addObject(object)
                 }
                 
                 let array:NSArray = self.timelineFavData.reverseObjectEnumerator().allObjects
-                self.timelineFavData = array.mutableCopy() as NSMutableArray
+                self.timelineFavData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -122,15 +141,16 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
       //  navigationController?.hidesBarsOnSwipe = true
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            var scope = findLecturerUser!.objectForKey("identity") as! Bool?
             if scope == true {
                 self.createGroupButton.enabled = true
+
             }
                 
             else {
                 self.createGroupButton.enabled = false
             }
-            signOut.title = PFUser.currentUser().username
+
         }
             
         else{
@@ -145,12 +165,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             self.loadData()
             isFirstTime = false
         }
-        if PFUser.currentUser() != nil{
-        navigationController?.navigationBar.topItem?.title = "My Groups"
-        }
-        else{
-            navigationController?.navigationBar.topItem?.title = "Groups"
-        }
+
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
     }
    
@@ -159,7 +174,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         
         tableView.tableFooterView = UIView(frame: CGRectZero)
         let cancelButtonAttributes:NSDictionary = [NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 17)!, NSForegroundColorAttributeName:UIColorFromRGB(0x37B8B0)]
-        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as [NSObject : AnyObject], forState: UIControlState.Normal)
         
         var refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColorFromRGB(0x4FD7CE)
@@ -178,7 +193,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
       //  tableView.rowHeight = UITableViewAutomaticDimension
         tableView.rowHeight = 109
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 18)!], forState: UIControlState.Normal)
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Medium", size: 18)!], forState: UIControlState.Normal)
         
         
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
@@ -189,7 +204,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
 //        hideBottomBorder()
     }
     
-    
+    /*
     func hideBottomBorder() {
         for view in navigationController?.navigationBar.subviews.filter({ NSStringFromClass($0.dynamicType) == "_UINavigationBarBackground" }) as [UIView] {
             if let imageView = view.subviews.filter({ $0 is UIImageView }).first as? UIImageView {
@@ -197,6 +212,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             }
         }
     }
+    */
     
     func pullToRefresh(){
         view.showLoading()
@@ -270,7 +286,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
     //MARK: favorite delegate
     func favoriteMemberDidTouch(cell: FavouriteTableViewCell, sender: AnyObject) {
-        performSegueWithIdentifier("memberSegue", sender: cell)
+       // performSegueWithIdentifier("memberSegue", sender: cell)
     
     }
     
@@ -302,7 +318,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("favoriteCell", forIndexPath: indexPath) as FavouriteTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("favoriteCell", forIndexPath: indexPath) as! FavouriteTableViewCell
         
         cell.groupLabel.alpha = 0
         cell.timeLabel.alpha = 0
@@ -313,27 +329,27 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         cell.topicLabel.alpha = 0
         cell.memberLabel.alpha = 0
         
-        let favoriteGroup = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
+        let favoriteGroup = self.timelineFavData.objectAtIndex(indexPath.row) as! PFObject
         cell.groupLabel.text = favoriteGroup.objectForKey("name") as? String
-        cell.timeLabel.text = timeAgoSinceDate(favoriteGroup.createdAt, true)
+        cell.timeLabel.text = timeAgoSinceDate(favoriteGroup.createdAt!, true)
         
-        let groupPic:PFFile = favoriteGroup["groupAvatar"] as PFFile
+        let groupPic:PFFile = favoriteGroup["groupAvatar"] as! PFFile
             
             groupPic.getDataInBackgroundWithBlock{
-                (imageData:NSData!, error:NSError!) -> Void in
+                (imageData:NSData?, error:NSError?) -> Void in
                 
                 if error == nil{
-                    let image:UIImage = UIImage(data: imageData)!
+                    let image:UIImage = UIImage(data: imageData!)!
                     cell.groupAvatar.image = image
                 }
             }
         
         //Show member no
-        var showMemberNumber = PFUser.query()
-        showMemberNumber.whereKey("favorited", equalTo: favoriteGroup.objectId)
+        var showMemberNumber = PFUser.query()!
+        showMemberNumber.whereKey("favorited", equalTo: favoriteGroup.objectId!)
         
         showMemberNumber.countObjectsInBackgroundWithBlock({
-            (count: Int32, error: NSError!) -> Void in
+            (count: Int32, error: NSError?) -> Void in
             if error == nil {
                 if count <= 1 {
                     cell.memberLabel.setTitle("\(count) student", forState: UIControlState.Normal)
@@ -365,7 +381,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             var showTopicNo = PFQuery(className: "Topics")
             showTopicNo.whereKey("parent", equalTo: favoriteGroup)
             showTopicNo.countObjectsInBackgroundWithBlock{
-                (count: Int32, error: NSError!) -> Void in
+                (count: Int32, error: NSError?) -> Void in
                 if error == nil {
                     if count <= 1 {
                         cell.topicLabel.setTitle("\(count) topic", forState: UIControlState.Normal)
@@ -376,15 +392,17 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
                 }
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: favoriteGroup.objectForKey("userer").objectId)
-            
+            var findUsererData:PFQuery = PFUser.query()!
+            let favSerial = favoriteGroup["userer"] as? PFObject
+        
+            findUsererData.whereKey("objectId", equalTo: favSerial!.objectId!)
+        
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     cell.authorLabel.text = user.username
                     
                     //final animation
@@ -427,7 +445,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "topicFavSegue"{
-            let toView = segue.destinationViewController as TopicTableViewController
+            let toView = segue.destinationViewController as! TopicTableViewController
             toView.hidesBottomBarWhenPushed = true
             let indexPath = self.tableView.indexPathForSelectedRow()
             let row:AnyObject = timelineFavData[indexPath!.row]
@@ -435,16 +453,16 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
     }
         
         if (segue.identifier == "createGroupSegue"){
-            let toView = segue.destinationViewController as CreateViewController
+            let toView = segue.destinationViewController as! CreateViewController
             tabBarController?.tabBar.hidden = true
             toView.delegate = self
             
         }
         
         if (segue.identifier == "memberSegue"){
-            let toView = segue.destinationViewController as ShowMemberViewController
+            let toView = segue.destinationViewController as! ShowMemberViewController
             tabBarController?.tabBar.hidden = true
-            let indexPath:AnyObject = tableView.indexPathForCell(sender as UITableViewCell)!
+            let indexPath:AnyObject = tableView.indexPathForCell(sender as! UITableViewCell)!
             let groupFav: AnyObject = timelineFavData[indexPath.row]
             toView.groupFav = groupFav as? PFObject
             toView.delegate = self
@@ -452,7 +470,7 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
         
         
         if (segue.identifier == "loginFavSegue"){
-            let toView = segue.destinationViewController as LoginViewController
+            let toView = segue.destinationViewController as! LoginViewController
             tabBarController?.tabBar.hidden = true
             toView.delegate = self
             
@@ -482,17 +500,17 @@ class FavouriteTableViewController: UITableViewController, LoginViewControllerDe
             
             let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                 { action -> Void in
-                    var groupDisplay:PFObject = self.timelineFavData.objectAtIndex(indexPath.row) as PFObject
-                   groupDisplay.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
-                   groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    var groupDisplay:PFObject = self.timelineFavData.objectAtIndex(indexPath.row) as! PFObject
+                   groupDisplay.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoFavorited")
+                   groupDisplay.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("removed")
                         } else {
                             println(error)
                         }
                     }
-                    PFUser.currentUser().removeObject(groupDisplay.objectId, forKey: "favorited")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(groupDisplay.objectId!, forKey: "favorited")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("removed")
                         } else {

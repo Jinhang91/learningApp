@@ -21,8 +21,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
    // @IBOutlet weak var searchBar: UISearchBar!
     var searchBar: UISearchBar!
 
-    override init!(style: UITableViewStyle, className: String!) {
-        super.init(style: style, className: "Groups")
+    override init(style: UITableViewStyle, className: String!) {
+        super.init(style: style, className: className)
     }
     
     
@@ -44,9 +44,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
         searchGroup.orderByDescending("createdAt")
         searchGroup.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!) -> Void in
+            (objects:[AnyObject]?,error:NSError?) -> Void in
             if error == nil{
-                self.groupList = NSMutableArray(array: objects)
+                self.groupList = NSMutableArray(array: objects!)
                 self.tableView.reloadData()
          
             }
@@ -119,15 +119,15 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         var findGroupData:PFQuery = PFQuery(className: "Groups")
         findGroupData.orderByAscending("createdAt")
         findGroupData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineGroupData.addObject(object)
                 }
                 
                 let array:NSArray = self.timelineGroupData.reverseObjectEnumerator().allObjects
-                self.timelineGroupData = array.mutableCopy() as NSMutableArray
+                self.timelineGroupData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -173,7 +173,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         searchBar = UISearchBar(frame: CGRectMake(0, 0, 320, 44))
         navigationItem.titleView = searchBar
 
-        var textField = searchBar.valueForKey("searchField") as UITextField
+        var textField = searchBar.valueForKey("searchField") as! UITextField
         textField.backgroundColor = UIColorFromRGB(0xE3E4E6)
         
         searchBar.layer.borderWidth = 1
@@ -192,7 +192,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         }
         
         let cancelButtonAttributes:NSDictionary = [NSFontAttributeName:UIFont(name: "SanFranciscoDisplay-Regular", size: 17)!, NSForegroundColorAttributeName:UIColorFromRGB(0x000000)]
-        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, forState: UIControlState.Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as! [NSObject : AnyObject], forState: UIControlState.Normal)
         
         var refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColorFromRGB(0x4FD7CE)
@@ -227,9 +227,9 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             println("Font Names = [\(names)]") */
         
 
-   hideBottomBorder()
+//   hideBottomBorder()
                }
-    
+    /*
     func hideBottomBorder() {
         for view in navigationController?.navigationBar.subviews.filter({ NSStringFromClass($0.dynamicType) == "_UINavigationBarBackground" }) as [UIView] {
             if let imageView = view.subviews.filter({ $0 is UIImageView }).first as? UIImageView {
@@ -237,7 +237,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
         }
     }
-    
+    */
     func pullToRefresh(){
         searchActive = false
         loadData()
@@ -250,16 +250,16 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     //MARK: Group favorite delegate
     func groupTableViewCellFavoriteDidTouch(cell: GroupTableViewCell, sender: AnyObject) {
         
-            let senderButton:UIButton = sender as UIButton
+            let senderButton:UIButton = sender as! UIButton
         if PFUser.currentUser() != nil{
         if searchActive == false{
-            var groupFav:PFObject = timelineGroupData.objectAtIndex(senderButton.tag) as PFObject
+            var groupFav:PFObject = timelineGroupData.objectAtIndex(senderButton.tag) as! PFObject
             println(groupFav.objectId)
             
-            var objectTo = groupFav.objectForKey("whoFavorited") as [String]
-            if contains(objectTo, PFUser.currentUser().objectId){
-                PFUser.currentUser().removeObject(groupFav.objectId, forKey: "favorited")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            var objectTo = groupFav.objectForKey("whoFavorited") as! [String]
+            if contains(objectTo, PFUser.currentUser()!.objectId!){
+                PFUser.currentUser()!.removeObject(groupFav.objectId!, forKey: "favorited")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("remove favorite")
                     } else {
@@ -268,8 +268,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                 }
                 
-                groupFav.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
-                groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                groupFav.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoFavorited")
+                groupFav.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("remove favorite")
                     } else {
@@ -284,8 +284,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
                 
             else{
-                PFUser.currentUser().addUniqueObject(groupFav.objectId, forKey: "favorited")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                PFUser.currentUser()!.addUniqueObject(groupFav.objectId!, forKey: "favorited")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("favorited")
                     } else {
@@ -294,8 +294,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                     }
                     
-                    groupFav.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
-                    groupFav.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    groupFav.addUniqueObject(PFUser.currentUser()!.objectId!, forKey: "whoFavorited")
+                    groupFav.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("favorited")
                         } else {
@@ -311,13 +311,13 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
         }
         else{
-            var groupSearched:PFObject = groupList.objectAtIndex(senderButton.tag) as PFObject
+            var groupSearched:PFObject = groupList.objectAtIndex(senderButton.tag) as! PFObject
             println(groupSearched.objectId)
             
-            var objectTo = groupSearched.objectForKey("whoFavorited") as [String]
-            if contains(objectTo, PFUser.currentUser().objectId){
-                PFUser.currentUser().removeObject(groupSearched.objectId, forKey: "favorited")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            var objectTo = groupSearched.objectForKey("whoFavorited") as! [String]
+            if contains(objectTo, PFUser.currentUser()!.objectId!){
+                PFUser.currentUser()!.removeObject(groupSearched.objectId!, forKey: "favorited")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("remove favorite")
                     } else {
@@ -326,8 +326,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                 }
                 
-                groupSearched.removeObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
-                groupSearched.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                groupSearched.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoFavorited")
+                groupSearched.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("remove favorite")
                     } else {
@@ -342,8 +342,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             }
                 
             else{
-                PFUser.currentUser().addUniqueObject(groupSearched.objectId, forKey: "favorited")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                PFUser.currentUser()!.addUniqueObject(groupSearched.objectId!, forKey: "favorited")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("favorited")
                     } else {
@@ -352,8 +352,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
                     
                 }
                 
-                groupSearched.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoFavorited")
-                groupSearched.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                groupSearched.addUniqueObject(PFUser.currentUser()!.objectId!, forKey: "whoFavorited")
+                groupSearched.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("favorited")
                     } else {
@@ -447,14 +447,14 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as GroupTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("groupCell", forIndexPath: indexPath) as! GroupTableViewCell
         cell.favoriteButton.tag = indexPath.row
       
        if searchActive == true {
         
-            let groupCreated:PFObject = self.groupList.objectAtIndex(indexPath.row) as PFObject
+            let groupCreated:PFObject = self.groupList.objectAtIndex(indexPath.row) as! PFObject
             cell.groupName.text = groupCreated.objectForKey("name") as? String
-            cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true) + " ago"
+            cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt!, true) + " ago"
         
         cell.groupName.alpha = 0
         
@@ -467,26 +467,27 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
 
         cell.favoriteButton.alpha = 0
         
-        let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
+        let groupAvatar:PFFile = groupCreated["groupAvatar"] as! PFFile
         
         groupAvatar.getDataInBackgroundWithBlock{
-            (imageData:NSData!, error:NSError!) -> Void in
+            (imageData:NSData?, error:NSError?) -> Void in
             
             if error == nil{
-                let image:UIImage = UIImage(data: imageData)!
+                let image:UIImage = UIImage(data: imageData!)!
                 cell.avatarGroup.image = image
             }
         }
 
-        var findUsererData:PFQuery = PFUser.query()
-        findUsererData.whereKey("objectId", equalTo: groupCreated.objectForKey("userer").objectId)
+        var findUsererData:PFQuery = PFUser.query()!
+        let groupSerial = groupCreated["userer"] as? PFObject
+        findUsererData.whereKey("objectId", equalTo: groupSerial!.objectId!)
         
         findUsererData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
                 
-                let user:PFUser = (objects as NSArray).lastObject as PFUser
+                let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                 cell.authorName.text = user.username
                 
                 //final animation
@@ -504,8 +505,8 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             
         })
         if PFUser.currentUser() != nil{
-        var objectTo = groupCreated.objectForKey("whoFavorited") as [String]
-        if contains(objectTo, PFUser.currentUser().objectId){
+        var objectTo = groupCreated.objectForKey("whoFavorited") as! [String]
+        if contains(objectTo, PFUser.currentUser()!.objectId!){
             
             cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
@@ -528,38 +529,41 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
         else {
        
             
-        let groupCreated:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+        let groupCreated:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as! PFObject
         cell.groupName.text = groupCreated.objectForKey("name") as? String
-        cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt, true)
+        cell.timeLabel.text = timeAgoSinceDate(groupCreated.createdAt!, true)
         
-        let groupAvatar:PFFile = groupCreated["groupAvatar"] as PFFile
+        let groupAvatar:PFFile = groupCreated["groupAvatar"] as! PFFile
         
         groupAvatar.getDataInBackgroundWithBlock{
-            (imageData:NSData!, error:NSError!) -> Void in
+            (imageData:NSData?, error:NSError?) -> Void in
             
             if error == nil{
-                let image:UIImage = UIImage(data: imageData)!
+                let image:UIImage = UIImage(data: imageData!)!
                 cell.avatarGroup.image = image
             }
         }
 
-        var findUsererData:PFQuery = PFUser.query()
-        findUsererData.whereKey("objectId", equalTo: groupCreated.objectForKey("userer").objectId)
+        var findUsererData:PFQuery = PFUser.query()!
+        let groupSerial = groupCreated["userer"] as? PFObject
+        
+        findUsererData.whereKey("objectId", equalTo: groupSerial!.objectId!)
         
         findUsererData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
                 
-                let user:PFUser = (objects as NSArray).lastObject as PFUser
+                let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                 cell.authorName.text = user.username
                 
             }
 
             })
+        
         if PFUser.currentUser() != nil{
-        var objectTo = groupCreated.objectForKey("whoFavorited") as [String]
-        if contains(objectTo, PFUser.currentUser().objectId){
+        var objectTo = groupCreated.objectForKey("whoFavorited") as! [String]
+        if contains(objectTo, PFUser.currentUser()!.objectId!){
             
             cell.favoriteButton.setTitle("Joined", forState: UIControlState.Normal)
             cell.favoriteButton.setTitleColor(UIColorFromRGB(0xFFFFFF), forState: UIControlState.Normal)
@@ -599,10 +603,10 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
             
             let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                 { action -> Void in
-                    var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+                    var groupDisplay:PFObject = self.timelineGroupData.objectAtIndex(indexPath.row) as! PFObject
                     groupDisplay.deleteInBackground()
                     self.timelineGroupData.removeObjectAtIndex(indexPath.row)
-                    groupDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    groupDisplay.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("deleted")
                         } else {
@@ -623,13 +627,13 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
    
-        var groupObject:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as PFObject
+        var groupObject:PFObject = timelineGroupData.objectAtIndex(indexPath.row) as! PFObject
         if PFUser.currentUser() != nil{
-        if groupObject.objectForKey("userer").objectId == PFUser.currentUser().objectId {
+        if groupObject.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId! {
        
         return true
     }
-        else if groupObject.objectForKey("userer").objectId != PFUser.currentUser().objectId {
+        else if groupObject.objectForKey("userer")!.objectId != PFUser.currentUser()!.objectId! {
             return false
         }
         }
@@ -657,7 +661,7 @@ class GroupsTableViewController: PFQueryTableViewController, UISearchBarDelegate
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         if (segue.identifier == "loginSegue"){
-            let toView = segue.destinationViewController as LoginViewController
+            let toView = segue.destinationViewController as! LoginViewController
             tabBarController?.tabBar.hidden = true
             toView.delegate = self
             

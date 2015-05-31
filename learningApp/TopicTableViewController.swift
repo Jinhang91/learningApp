@@ -39,10 +39,10 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
   
 
-    override init!(style: UITableViewStyle, className: String!) {
+    override init(style: UITableViewStyle, className: String!) {
         super.init(style: style, className: "Topics")
     }
-    
+
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -52,13 +52,13 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
        self.paginationEnabled = true
         self.objectsPerPage = 50
     }
-    
+   
    var timelineTopicData:NSMutableArray! = NSMutableArray()
 
    func loadData(){
     if PFUser.currentUser() != nil{
         var findLecturerUser = PFUser.currentUser()
-        var scope = findLecturerUser.objectForKey("identity") as Bool?
+        var scope = findLecturerUser!.objectForKey("identity") as! Bool?
         if scope == true {
             
             self.composeButton.enabled = true
@@ -78,16 +78,16 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         findTopicData.whereKey("parent", equalTo: groupCreated!)
         findTopicData.orderByAscending("createdAt")
         findTopicData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineTopicData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineTopicData.reverseObjectEnumerator().allObjects
-                self.timelineTopicData = array.mutableCopy() as NSMutableArray
+                self.timelineTopicData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -118,7 +118,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
   
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            var scope = findLecturerUser!.objectForKey("identity") as! Bool?
             if scope == true {
                 
                 self.composeButton.enabled = true
@@ -142,7 +142,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         isFirstTime = false
     }
         
-        let title = groupCreated?["name"] as String
+        let title = groupCreated?["name"] as! String
         
         navigationController?.navigationBar.topItem?.title = "\(title)"
         navigationController?.navigationBar.titleTextAttributes = [ NSFontAttributeName: UIFont(name: "SanFranciscoDisplay-Regular", size: 20)!,  NSForegroundColorAttributeName: UIColor.whiteColor()]
@@ -169,7 +169,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
     
     func backButton(){
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         myBackButton.setTitle("  Groups", forState: UIControlState.Normal)
         myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 18)
@@ -226,10 +226,10 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
 
    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:TopicTableViewCell = tableView.dequeueReusableCellWithIdentifier("topicCell", forIndexPath: indexPath) as TopicTableViewCell
+        let cell:TopicTableViewCell = tableView.dequeueReusableCellWithIdentifier("topicCell", forIndexPath: indexPath) as! TopicTableViewCell
 
         
-        let topic:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
+        let topic:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as! PFObject
         cell.titleLabel.text = topic.objectForKey("title") as? String
         
       
@@ -246,35 +246,35 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
       
         
         //Time setting
-        cell.timestampLabel.text = timeAgoSinceDate(topic.createdAt, true)
+        cell.timestampLabel.text = timeAgoSinceDate(topic.createdAt!, true)
         
         //Show comment number
         var showCommentNo = PFQuery(className: "Comment")
         showCommentNo.whereKey("parent", equalTo: topic)
         showCommentNo.countObjectsInBackgroundWithBlock{
-            (count: Int32, error: NSError!) -> Void in
+            (count: Int32, error: NSError?) -> Void in
             if error == nil {
             cell.commentButton.setTitle("\(count)", forState: UIControlState.Normal)
             }
         }
         
         //Show upvote 
-       var showTopicLikeNumber = PFUser.query()
-        showTopicLikeNumber.whereKey("liked", equalTo: topic.objectId)
+       var showTopicLikeNumber = PFUser.query()!
+        showTopicLikeNumber.whereKey("liked", equalTo: topic.objectId!)
         
         showTopicLikeNumber.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil){
                 //let liked:NSArray = objects as NSArray
-                self.likeCount = objects as NSArray
+                self.likeCount = objects! as NSArray
                cell.upvoteButton.setTitle(toString(self.likeCount.count), forState: UIControlState.Normal)
                               }
             
             })
      
-        var objectTo = topic.objectForKey("whoLiked") as [String]
-        if contains(objectTo, PFUser.currentUser().objectId){
+        var objectTo = topic.objectForKey("whoLiked") as! [String]
+        if contains(objectTo, PFUser.currentUser()!.objectId!){
             
           cell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
                         }
@@ -282,8 +282,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
             cell.upvoteButton.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
                         }
         
-        var startDate = topic.objectForKey("startingDate") as String!
-        var endDate = topic.objectForKey("endingDate") as String!
+        var startDate = topic.objectForKey("startingDate") as! String!
+        var endDate = topic.objectForKey("endingDate") as! String!
         
         if startDate == nil && endDate == nil{
             cell.timerButton.setImage(UIImage(named: "timer"), forState: UIControlState.Normal)
@@ -317,15 +317,16 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
         cell.timerButton.tag = indexPath.row
         
         //Username
-        var findUsererData:PFQuery = PFUser.query()
-        findUsererData.whereKey("objectId", equalTo: topic.objectForKey("userer").objectId)
+        var findUsererData:PFQuery = PFUser.query()!
+        let topicSerial = topic["userer"] as? PFObject
+        findUsererData.whereKey("objectId", equalTo: topicSerial!.objectId!)
         
         findUsererData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
                 
-                let user:PFUser = (objects as NSArray).lastObject as PFUser
+                let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                 cell.usernameLabel.text = user.username
             
                 //final animation
@@ -341,8 +342,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 }
               }
         })
-        
-        var mama = topic["parent"] as PFObject
+        /*
+        var mama = topic["parent"] as! PFObject
         
         mama.fetchIfNeededInBackgroundWithBlock {
             (mama: PFObject!, error: NSError!) -> Void in
@@ -354,7 +355,7 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 println("No group is identifed")
             }
         }
-        
+        */
         cell.delegate = self
         return cell
     }
@@ -390,12 +391,12 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
     
     func topicTableViewCellDIdTouchTimer(cell: TopicTableViewCell, sender: AnyObject) {
-        let senderButton:UIButton = sender as UIButton
-        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        let senderButton:UIButton = sender as! UIButton
+        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as! PFObject
         println(dateInfo.objectId)
         
-        var startDate = dateInfo.objectForKey("startingDate") as String!
-        var endDate = dateInfo.objectForKey("endingDate") as String!
+        var startDate = dateInfo.objectForKey("startingDate") as! String!
+        var endDate = dateInfo.objectForKey("endingDate") as! String!
         
         if startDate == nil && endDate == nil{
             let alert = UIAlertView()
@@ -416,16 +417,16 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     func topicTableViewCellDidTouchUpvote(cell: TopicTableViewCell, sender: AnyObject) {
     
             
-        let senderButton:UIButton = sender as UIButton
+        let senderButton:UIButton = sender as! UIButton
    
-        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as! PFObject
             println(topicLiked.objectId)
         
-           var objectTo = topicLiked.objectForKey("whoLiked") as [String]
-           if !contains(objectTo, PFUser.currentUser().objectId){
+           var objectTo = topicLiked.objectForKey("whoLiked") as! [String]
+           if !contains(objectTo, PFUser.currentUser()!.objectId!){
             
-                PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                PFUser.currentUser()!.addUniqueObject(topicLiked.objectId!, forKey: "liked")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -434,8 +435,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 
             }
 
-                topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-                topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                topicLiked.addUniqueObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+                topicLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -449,8 +450,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
 
             }
            else{
-                PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
-                PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                PFUser.currentUser()!.removeObject(topicLiked.objectId!, forKey: "liked")
+                PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("like removed")
                 } else {
@@ -459,8 +460,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 
             }
 
-                topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-                topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                topicLiked.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+                topicLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("like removed")
                 } else {
@@ -492,18 +493,18 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "CommentsSegue"){
-    let toView = segue.destinationViewController as CommentsTableViewController
-            let indexPath:AnyObject = tableView.indexPathForCell(sender as UITableViewCell)!
+    let toView = segue.destinationViewController as! CommentsTableViewController
+            let indexPath:AnyObject = tableView.indexPathForCell(sender as! UITableViewCell)!
             let topic: AnyObject = timelineTopicData[indexPath.row]
 
             toView.topic = topic as? PFObject
-            toView.index2Path = tableView.indexPathForCell(sender as UITableViewCell)
+            toView.index2Path = tableView.indexPathForCell(sender as! UITableViewCell)
             toView.groupCreated = groupCreated as PFObject?
             toView.timelineTopicData = timelineTopicData as NSMutableArray!
         }
         
         if (segue.identifier == "composeSegue"){
-            let toView = segue.destinationViewController as ComposeTopicViewController
+            let toView = segue.destinationViewController as! ComposeTopicViewController
             toView.groupCreated = groupCreated as PFObject?
             toView.delegate = self
         }
@@ -535,11 +536,11 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
                 
                 let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                     { action -> Void in
-                        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
+                        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as! PFObject
                         topicDisplay.deleteInBackground()
                         self.timelineTopicData.removeObjectAtIndex(indexPath.row)
 
-                        topicDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        topicDisplay.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                             if success == true {
                                 println("deleted")
                             } else {
@@ -559,8 +560,8 @@ class TopicTableViewController: PFQueryTableViewController, TopicTableViewCellDe
     }
  
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as PFObject
-        if topicDisplay.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+        var topicDisplay:PFObject = self.timelineTopicData.objectAtIndex(indexPath.row) as! PFObject
+        if topicDisplay.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId{
         return true
         }
     

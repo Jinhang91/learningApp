@@ -15,13 +15,19 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var signUpMatricTextField: DesignableTextField!
     @IBOutlet weak var signUpPassTextField: DesignableTextField!
     
-    @IBOutlet weak var textSecondLabel: DesignableLabel!
     
     @IBOutlet weak var signUpDialogView: DesignableView!
+    
+    @IBOutlet weak var logoLabel: DesignableImageView!
+    
     
     @IBOutlet weak var lecturerButton: DesignableButton!
     
     @IBOutlet weak var studentButton: DesignableButton!
+    
+    @IBOutlet weak var signUpButton: DesignableButton!
+    
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var identity = false
     
@@ -86,7 +92,9 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButtonDidPress(sender: AnyObject)
     {
-       
+     signUpButton.setTitle("", forState: UIControlState.Normal)
+     loadingIndicator.hidden = false
+        
         if signUpMatricTextField.text != "" && signUpPassTextField.text != "" && (lecturerButton.selected == true || studentButton.selected == true)
         {
             var userer:PFUser = PFUser()
@@ -100,9 +108,9 @@ class SignUpViewController: UIViewController {
                 userer["identity"] = false
             }
             
-            view.showLoading()
+           // view.showLoading()
             userer.signUpInBackgroundWithBlock{
-                (success:Bool!, error:NSError!)->Void in
+                (success:Bool, error:NSError?)->Void in
                 if !(error != nil){
                     println("Sign Up Successful")
                     
@@ -112,13 +120,19 @@ class SignUpViewController: UIViewController {
                     alert.addButtonWithTitle("OK")
                     alert.show()
                  
+                    self.signUpButton.setTitle("SIGN UP", forState: UIControlState.Normal)
+                    self.loadingIndicator.hidden = true
+                    
                     self.view.hideLoading()
                     PFUser.logOut()
                     self.dismissViewControllerAnimated(true, completion: nil)
 
                 }else{
-                    let errorString = error.userInfo!["error"] as String
+                    let errorString = error!.userInfo!["error"] as! String
                     println(errorString)
+                    self.signUpButton.setTitle("SIGN UP", forState: UIControlState.Normal)
+                    self.loadingIndicator.hidden = true
+                    
                     self.textLabel.text = "Error, please try again."
                     self.textLabel.textAlignment = NSTextAlignment.Center
                     self.textLabel.textColor = UIColor.redColor()
@@ -134,17 +148,18 @@ class SignUpViewController: UIViewController {
             self.textLabel.textAlignment = NSTextAlignment.Center
             self.textLabel.textColor = UIColor.redColor()
             self.textLabel.alpha = 1
-            self.textSecondLabel.alpha = 0
+            self.textLabel.hidden = false
+            self.logoLabel.alpha = 0
             tabBarController?.tabBar.hidden = false
             signUpDialogView.animation = "shake"
             signUpDialogView.animate()
+            
+            signUpButton.setTitle("SIGN UP", forState: UIControlState.Normal)
+            loadingIndicator.hidden = true
 
             springWithDelay(1, 1, {
                 self.textLabel.alpha = 0
-                self.textSecondLabel.alpha = 1
-                self.textSecondLabel.animation = "pop"
-                self.textSecondLabel.animate()
-                self.textSecondLabel.hidden = false
+                self.logoLabel.alpha = 1
             })
             
             
@@ -161,11 +176,9 @@ class SignUpViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
-    
 
     /*
     // MARK: - Navigation

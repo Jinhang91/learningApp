@@ -107,13 +107,7 @@ class TopicTableViewCell: PFTableViewCell,UITextViewDelegate {
     }
     
     
-    func textView(textView: AutoTextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
-        println("Link Selected!")
-        
-        let webViewController = WebViewController()
-      
-        return false
-    }
+
     
     
 }

@@ -29,21 +29,21 @@ class ShowMemberViewController: UIViewController,  UITableViewDelegate, UITableV
     func loadData(){
         timelineMemberData.removeAllObjects()
         SoundPlayer.play("refresh.wav")
-        var findMemberData:PFQuery = PFUser.query()
-        
-        findMemberData.whereKey("favorited", equalTo: groupFav?.objectId)
+        var findMemberData:PFQuery = PFUser.query()!
+       
+        findMemberData.whereKey("favorited", equalTo: groupFav!.objectId!)
         
         findMemberData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineMemberData.addObject(object)
                 
                 
                 }
                 let array:NSArray = self.timelineMemberData.reverseObjectEnumerator().allObjects
-                self.timelineMemberData = array.mutableCopy() as NSMutableArray
+                self.timelineMemberData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -55,6 +55,7 @@ class ShowMemberViewController: UIViewController,  UITableViewDelegate, UITableV
                 println("no data")
             }
         })
+        
     }
     
     override func viewDidLoad() {
@@ -92,19 +93,20 @@ class ShowMemberViewController: UIViewController,  UITableViewDelegate, UITableV
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("memberCell", forIndexPath: indexPath) as ShowMemberTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("memberCell", forIndexPath: indexPath) as! ShowMemberTableViewCell
         
         cell.studentLabel.alpha = 0
     
-        var findUsererData:PFQuery = PFUser.query()
-        findUsererData.whereKey("favorited", equalTo: groupFav?.objectId)
+        var findUsererData:PFQuery = PFUser.query()!
+       
+        findUsererData.whereKey("favorited", equalTo: groupFav!.objectId!)
         findUsererData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?, error:NSError?) -> Void in
             
             if (error == nil) {
                 
                 
-                let user:PFUser = (objects as NSArray).lastObject as PFUser
+                let user:PFUser = (objects! as NSArray).lastObject as! PFUser
              //   println(user.objectId)
             
                 cell.studentLabel.text = user.username
@@ -120,7 +122,7 @@ class ShowMemberViewController: UIViewController,  UITableViewDelegate, UITableV
             }
             
         })
-
+        
         
         return cell
     }

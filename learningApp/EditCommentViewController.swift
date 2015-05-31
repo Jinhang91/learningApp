@@ -36,7 +36,7 @@ class EditCommentViewController: UIViewController {
             }
                 
             else {
-                println(error.userInfo)
+                println(error!.userInfo)
             }
         }
         delegate?.doneButtonCommentDidTouch(self)

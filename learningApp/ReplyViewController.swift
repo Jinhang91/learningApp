@@ -67,7 +67,7 @@ dismissViewControllerAnimated(true, completion: nil)
             comment["whoLiked"] = []
             comment["rating"] = ""
             comment["edited"] = false
-            comment.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            comment.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println(" your comment is posted")
                 } else {
@@ -76,16 +76,16 @@ dismissViewControllerAnimated(true, completion: nil)
                 
             }
 
-            
-            var post = comment["parent"] as PFObject
+          /*
+            var post = comment["parent"] as! PFObject
        
             post.fetchIfNeededInBackgroundWithBlock {
-                (post: PFObject!, error: NSError!) -> Void in
+                (post: PFObject!, error: NSError?) -> Void in
                 let title = post["title"] as NSString
                 println("\(title)")    // do something with your title variable
                 
             }
-           
+           */
             
         }
         else

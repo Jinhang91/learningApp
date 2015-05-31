@@ -39,10 +39,10 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
         self.navigationItem.hidesBackButton = true
         
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         
-        let title = groupCreated?["name"] as String
+        let title = groupCreated?["name"] as! String
         myBackButton.setTitle(" \(title)", forState: UIControlState.Normal)
         myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
         myBackButton.titleLabel?.font = UIFont(name: "SanFranciscoDisplay-Regular", size: 18)
@@ -52,7 +52,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         var myCustomBackButtonItem:UIBarButtonItem = UIBarButtonItem(customView: myBackButton)
         self.navigationItem.leftBarButtonItem  = myCustomBackButtonItem
         
-        var evaluateButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var evaluateButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         evaluateButton.addTarget(self, action: "evaluateLink:", forControlEvents: UIControlEvents.TouchUpInside)
         
         evaluateButton.setImage(UIImage(named: "evaluate"), forState: UIControlState.Normal)
@@ -62,9 +62,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         if PFUser.currentUser() != nil{
             var findLecturerUser = PFUser.currentUser()
-            var scope = findLecturerUser.objectForKey("identity") as Bool?
+            var scope = findLecturerUser!.objectForKey("identity") as! Bool?
+            let topicSerial = topic?["userer"] as? PFObject
+
             if scope == true {
-                if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+                if topicSerial?.objectId == findLecturerUser?.objectId{
                 evaluateButton.enabled = true
                 }
                 else{
@@ -120,10 +122,10 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         return UIStatusBarAnimation.Fade
     }
     
-    override init!(style: UITableViewStyle, className: String!) {
+    override init(style: UITableViewStyle, className: String!) {
         super.init(style: style, className: className)
     }
-    
+
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -148,15 +150,15 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         findCommentData.orderByAscending("createdAt")
 
         findCommentData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineCommentData.addObject(object)
                 }
                 
                 let array:NSArray = self.timelineCommentData.reverseObjectEnumerator().allObjects
-                self.timelineCommentData = array.mutableCopy() as NSMutableArray
+                self.timelineCommentData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -210,12 +212,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let identifier = indexPath.row == 0 ? "topicCell" : "commentCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! UITableViewCell
         
         if let topicCell = cell as? TopicTableViewCell{
          topicCell.titleLabel.text = topic?.objectForKey("title") as? String
          topicCell.contentTextView.text = topic?.objectForKey("content") as? String
-         topicCell.timestampLabel.text = timeAgoSinceDate(topic!.createdAt, true)
+         topicCell.timestampLabel.text = timeAgoSinceDate(topic!.createdAt!, true)
             
          //Initial animation
          topicCell.titleLabel.alpha = 0
@@ -238,31 +240,34 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             }
             
          var commentNo = PFQuery(className: "Comment")
-            commentNo.whereKey("parent", equalTo: topic)
+            commentNo.whereKey("parent", equalTo: topic!)
             commentNo.countObjectsInBackgroundWithBlock{
-                (count:Int32, error:NSError!) -> Void in
+                (count:Int32, error:NSError?) -> Void in
                 if (error == nil){
                     topicCell.commentButton.setTitle("\(count)", forState: UIControlState.Normal)
                 }
             }
             
             //Show upvote
-            var showTopicLikeNumber = PFUser.query()
-            showTopicLikeNumber.whereKey("liked", equalTo: topic?.objectId)
+            var showTopicLikeNumber = PFUser.query()!
+            let topicSerial = topic?["objectId"] as? String
+            if let topicObject = topicSerial{
+            showTopicLikeNumber.whereKey("liked", equalTo: topicObject)
             
             showTopicLikeNumber.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil){
-                    self.likeCount = objects as NSArray
+                    self.likeCount = objects! as NSArray
                     topicCell.upvoteButton2.setTitle(toString(self.likeCount.count), forState: UIControlState.Normal)
                 }
                 
             })
+            }
+
+            var objectTo = topic?.objectForKey("whoLiked") as! [String]
             
-            //likeButton = topicCell.upvoteButton
-            var objectTo = topic?.objectForKey("whoLiked") as [String]
-            if contains(objectTo, PFUser.currentUser().objectId){
+            if contains(objectTo, PFUser.currentUser()!.objectId!){
                 
                 topicCell.upvoteButton2.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
             }
@@ -270,8 +275,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 topicCell.upvoteButton2.setImage(UIImage(named: "icon-upvote"), forState: UIControlState.Normal)
             }
             
-            var startDate = topic?.objectForKey("startingDate") as String!
-            var endDate = topic?.objectForKey("endingDate") as String!
+            var startDate = topic?.objectForKey("startingDate") as! String!
+            var endDate = topic?.objectForKey("endingDate") as! String!
             
             if startDate == nil && endDate == nil{
                 topicCell.timerButton2.setImage(UIImage(named: "timer"), forState: UIControlState.Normal)
@@ -286,16 +291,18 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             topicCell.timerButton2.tag = index2Path.row
     
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let topicSeria = topic?["userer"] as? PFObject
+            
+            findUsererData.whereKey("objectId", equalTo: topicSeria!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
 
             
-            let user:PFUser! = (objects as NSArray).lastObject as? PFUser!
+            let user:PFUser! = (objects! as NSArray).lastObject as! PFUser!
             
             topicCell.usernameLabel.text = user.username
                   
@@ -319,19 +326,21 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
                 
             })
+            
         topicCell.contentTextView.delegate = self
         topicCell.delegate = self
         
         }
         
         if let commentCell = cell as? CommentsTableViewCell {
-         let comment:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
+         let comment:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as! PFObject
             
             if PFUser.currentUser() != nil{
                 var findLecturerUser = PFUser.currentUser()
-                var scope = findLecturerUser.objectForKey("identity") as Bool?
+                var topicId = topic?["userer"] as? PFObject
+                var scope = findLecturerUser!.objectForKey("identity") as! Bool?
                 if scope == true {
-                    if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+                    if topicId?.objectId == findLecturerUser?.objectId{
                     commentCell.evaluateButton.hidden = false
                 
                     }
@@ -356,7 +365,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
 
     
             commentCell.commentLabel.text = comment.objectForKey("commentContent") as? String
-            commentCell.timeLabel.text = timeAgoSinceDate(comment.createdAt, true)
+            commentCell.timeLabel.text = timeAgoSinceDate(comment.createdAt!, true)
             
             //Initial Animation
             commentCell.commentLabel.alpha = 0
@@ -367,22 +376,22 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             commentCell.editedLabel.alpha = 0
             
             //Show upvote
-            var showTopicLikeNumber = PFUser.query()
-            showTopicLikeNumber.whereKey("liked", equalTo: comment.objectId)
+            var showCommentLikeNumber = PFUser.query()!
+            showCommentLikeNumber.whereKey("liked", equalTo: comment.objectId!)
             
-            showTopicLikeNumber.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+            showCommentLikeNumber.findObjectsInBackgroundWithBlock({
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil){
-                    self.likeCount = objects as NSArray
+                    self.likeCount = objects! as NSArray
                     commentCell.upvoteButton.setTitle("\(self.likeCount.count)", forState: UIControlState.Normal)
                 }
                 
             })
             
             //likeCommentButton = commentCell.upvoteButton
-            var objectTo = comment.objectForKey("whoLiked") as [String]
-            if contains(objectTo, PFUser.currentUser().objectId){
+            var objectTo = comment.objectForKey("whoLiked") as! [String]
+            if contains(objectTo, PFUser.currentUser()!.objectId!){
                 
                 commentCell.upvoteButton.setImage(UIImage(named:"icon-upvote-active"), forState: UIControlState.Normal)
             }
@@ -393,7 +402,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             // MARK: evaluateComment
             
             
-            var rating = comment.objectForKey("rating") as String?
+            var rating = comment.objectForKey("rating") as! String?
             if rating == "poorRating" {
                 
                 commentCell.evaluateButton.setImage(UIImage(named:"rating1"), forState: UIControlState.Normal)
@@ -432,16 +441,17 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             commentCell.upvoteButton.tag = (indexPath.row - 1)
             commentCell.evaluateButton.tag = (indexPath.row - 1)
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: comment.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let commentSer = comment["userer"] as? PFObject
+            findUsererData.whereKey("objectId", equalTo: commentSer!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
                     
-                    let user:PFUser! = (objects as NSArray).lastObject as? PFUser!
+                    let user:PFUser! = (objects! as NSArray).lastObject as? PFUser!
                     
                     commentCell.authorLabel.text = user.username
                     
@@ -461,17 +471,17 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 }
             
             })
-            
-            var post = comment["parent"] as PFObject
+            /*
+            var post = comment["parent"] as! PFObject
             
             post.fetchIfNeededInBackgroundWithBlock {
-                (post: PFObject!, error: NSError!) -> Void in
+                (post: PFObject!, error: NSError?) -> Void in
                 if error == nil{
-                    let title = post["title"] as NSString
+                    let title = post["title"] as! NSString
                     println("\(title)")
                     }
                 }
-
+*/
             
         commentCell.delegate = self
         
@@ -498,12 +508,12 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
     
     func topicTableViewCellDidTouchTimer2(cell: TopicTableViewCell, sender: AnyObject) {
-        let senderButton:UIButton = sender as UIButton
-        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        let senderButton:UIButton = sender as! UIButton
+        var dateInfo:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as! PFObject
         println(dateInfo.objectId)
         
-        var startDate = dateInfo.objectForKey("startingDate") as String!
-        var endDate = dateInfo.objectForKey("endingDate") as String!
+        var startDate = dateInfo.objectForKey("startingDate") as! String!
+        var endDate = dateInfo.objectForKey("endingDate") as! String!
         
         if startDate == nil && endDate == nil{
             let alert = UIAlertView()
@@ -532,16 +542,16 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
     
     func topicTableViewCellDidTouchUpvote2(cell: TopicTableViewCell, sender: AnyObject) {
-        let senderButton:UIButton = sender as UIButton
+        let senderButton:UIButton = sender as! UIButton
    
-        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as PFObject
+        var topicLiked:PFObject = timelineTopicData.objectAtIndex(senderButton.tag) as! PFObject
         println(topicLiked.objectId)
         
-        var objectTo = topicLiked.objectForKey("whoLiked") as [String]
-        if !contains(objectTo, PFUser.currentUser().objectId){
+        var objectTo = topicLiked.objectForKey("whoLiked") as! [String]
+        if !contains(objectTo, PFUser.currentUser()!.objectId!){
             
-            PFUser.currentUser().addUniqueObject(topicLiked.objectId, forKey: "liked")
-            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            PFUser.currentUser()!.addUniqueObject(topicLiked.objectId!, forKey: "liked")
+            PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -550,8 +560,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
             }
             
-            topicLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            topicLiked.addUniqueObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+            topicLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -567,8 +577,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             
         }
         else{
-            PFUser.currentUser().removeObject(topicLiked.objectId, forKey: "liked")
-            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            PFUser.currentUser()!.removeObject(topicLiked.objectId!, forKey: "liked")
+            PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("like removed")
                 } else {
@@ -577,8 +587,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
             }
             
-            topicLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            topicLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            topicLiked.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+            topicLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("like removed")
                 } else {
@@ -596,16 +606,16 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     }
     
     func commentsTableViewCellDidTouchUpvote(cell: CommentsTableViewCell, sender: AnyObject) {
-        let senderButton:SpringButton = sender as SpringButton
+        let senderButton:SpringButton = sender as! SpringButton
         //   senderButton.addTarget(self, action: "syncLabel:", forControlEvents: UIControlEvents.TouchUpInside)
-        var commentLiked:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as PFObject
+        var commentLiked:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as! PFObject
         println(commentLiked.objectId)
         
-        var objectTo = commentLiked.objectForKey("whoLiked") as [String]
-        if !contains(objectTo, PFUser.currentUser().objectId){
+        var objectTo = commentLiked.objectForKey("whoLiked") as! [String]
+        if !contains(objectTo, PFUser.currentUser()!.objectId!){
             
-            PFUser.currentUser().addUniqueObject(commentLiked.objectId, forKey: "liked")
-            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            PFUser.currentUser()!.addUniqueObject(commentLiked.objectId!, forKey: "liked")
+            PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -614,8 +624,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
             }
 
-            commentLiked.addUniqueObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            commentLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            commentLiked.addUniqueObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+            commentLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked")
                 } else {
@@ -631,8 +641,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             
         }
         else{
-            PFUser.currentUser().removeObject(commentLiked.objectId, forKey: "liked")
-            PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            PFUser.currentUser()!.removeObject(commentLiked.objectId!, forKey: "liked")
+            PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked removed")
                 } else {
@@ -641,8 +651,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
             }
 
-            commentLiked.removeObject(PFUser.currentUser().objectId, forKey: "whoLiked")
-            commentLiked.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+            commentLiked.removeObject(PFUser.currentUser()!.objectId!, forKey: "whoLiked")
+            commentLiked.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                 if success == true {
                     println("liked removed")
                 } else {
@@ -662,9 +672,9 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
    
     func commentsTableViewCellDidTouchEvaluate(cell: CommentsTableViewCell, sender: AnyObject ){
-        let senderButton:SpringButton = sender as SpringButton
-        var commentEvaluated:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as PFObject
-        var rating = commentEvaluated.objectForKey("rating") as String?
+        let senderButton:SpringButton = sender as! SpringButton
+        var commentEvaluated:PFObject = timelineCommentData.objectAtIndex(senderButton.tag) as! PFObject
+        var rating = commentEvaluated.objectForKey("rating") as! String?
         let rateMenu = UIAlertController(title: nil, message: "Rate this comment", preferredStyle: .ActionSheet)
         
         //var excellentRating: UIAlertAction!
@@ -679,8 +689,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 {
                     action -> Void in
 
-                    PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -690,7 +700,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = ""
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -710,8 +720,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         else{
                 let excellentRating = UIAlertAction(title: "Excellent", style: .Default)
                 { action -> Void in
-                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.addUniqueObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -721,7 +731,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = "excellentRating"
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -749,8 +759,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 {
                     action -> Void in
                     
-                    PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -760,7 +770,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = ""
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -780,8 +790,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         else{
             let goodRating = UIAlertAction(title: "Good", style: .Default)
                 { action -> Void in
-                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.addUniqueObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -791,7 +801,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = "goodRating"
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -820,8 +830,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 {
                     action -> Void in
                     
-                    PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -831,7 +841,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = ""
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -851,8 +861,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         else{
             let averageRating = UIAlertAction(title: "Average", style: .Default)
                 { action -> Void in
-                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.addUniqueObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -862,7 +872,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = "averageRating"
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -892,8 +902,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 {
                     action -> Void in
                     
-                    PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -903,7 +913,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = ""
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -923,8 +933,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         else{
             let fairRating = UIAlertAction(title: "Fair", style: .Default)
                 { action -> Void in
-                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.addUniqueObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -934,7 +944,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = "fairRating"
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -963,8 +973,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 {
                     action -> Void in
                     
-                    PFUser.currentUser().removeObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.removeObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -974,7 +984,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = ""
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("remove rating")
                         } else {
@@ -994,8 +1004,8 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         else{
             let poorRating = UIAlertAction(title: "Poor", style: .Default)
                 { action -> Void in
-                    PFUser.currentUser().addUniqueObject(commentEvaluated.objectId, forKey: "evaluated")
-                    PFUser.currentUser().saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    PFUser.currentUser()!.addUniqueObject(commentEvaluated.objectId!, forKey: "evaluated")
+                    PFUser.currentUser()!.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -1005,7 +1015,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                     }
                     
                     commentEvaluated["rating"] = "poorRating"
-                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                    commentEvaluated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                         if success == true {
                             println("evaluated")
                         } else {
@@ -1046,7 +1056,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "replySegue" {
-            let toView = segue.destinationViewController as ReplyViewController
+            let toView = segue.destinationViewController as! ReplyViewController
             if let cell = sender as? CommentsTableViewCell {
                let indexPath = tableView.indexPathForCell(cell)!
                let comments: AnyObject = timelineCommentData[indexPath.row - 1]
@@ -1063,7 +1073,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
 
 
         if segue.identifier == "webSegue"{
-            let toView = segue.destinationViewController as WebViewController
+            let toView = segue.destinationViewController as! WebViewController
 
             if let data = urlTest {
                 let escapedString = data.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
@@ -1079,13 +1089,13 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         }
         
         if segue.identifier == "evaluateSegue"{
-            let toView = segue.destinationViewController as EvaluationTableViewController
+            let toView = segue.destinationViewController as! EvaluationTableViewController
             toView.topic = topic as PFObject?
             toView.timelineTopicData = timelineTopicData as NSMutableArray!
         }
         
         if (segue.identifier == "editTopicSegue"){
-            let toView = segue.destinationViewController as EditTopicViewController
+            let toView = segue.destinationViewController as! EditTopicViewController
             toView.objectTo = topic as PFObject?
             toView.delegate = self
             }
@@ -1094,7 +1104,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         
         
         if segue.identifier == "editCommentSegue"{
-            let toView = segue.destinationViewController as EditCommentViewController
+            let toView = segue.destinationViewController as! EditCommentViewController
             if let indexPath:AnyObject = sender{
             let row:AnyObject = timelineCommentData[indexPath.row - 1]
             toView.objectTo = row as? PFObject
@@ -1103,7 +1113,7 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
         }
 }
     
-    func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         println("Link Selected!")
         
         println(URL)
@@ -1184,10 +1194,10 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
                 
                 let deleteIt = UIAlertAction(title: "Yes", style: UIAlertActionStyle.Destructive)
                     { action -> Void in
-                        var commentDisplay:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
+                        var commentDisplay:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as! PFObject
                         commentDisplay.deleteInBackground()
                         self.timelineCommentData.removeObjectAtIndex(indexPath.row - 1)
-                        commentDisplay.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                        commentDisplay.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                             if success == true {
                                 println("deleted")
                             } else {
@@ -1208,12 +1218,14 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
        
        
         if indexPath.row >= 1 {
-            var commentDisplay:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
-            if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId {
+            var commentDisplay:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as! PFObject
+         //   let commentSerial = commentDisplay["userer"] as? String
+            
+            if topic?.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId {
             return [deleteAction]
             }
             
-            else if commentDisplay.objectForKey("userer").objectId == PFUser.currentUser().objectId {
+            else if commentDisplay.objectForKey("userer")?.objectId == PFUser.currentUser()!.objectId {
                 return [deleteAction,editAction]
             }
 
@@ -1222,8 +1234,11 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
             }
             }
         
+        
+        
         else if indexPath.row == 0 {
-            if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId {
+  
+            if topic?.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId {
             return[editAction]
         }
             else{
@@ -1238,19 +1253,19 @@ class CommentsTableViewController: PFQueryTableViewController, CommentsTableView
     
 
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        
-        if indexPath.row == 0 && topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+        let topicSerial = topic?["userer"] as? PFObject
+        if indexPath.row == 0 && topic?.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId{
             return true
         }
         
         if indexPath.row >= 1{
-            var comment:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as PFObject
+            var comment:PFObject = self.timelineCommentData.objectAtIndex(indexPath.row - 1) as! PFObject
 
-            if comment.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+            if comment.objectForKey("userer")!.objectId == PFUser.currentUser()!.objectId{
                 return true
             }
             
-            else if topic?.objectForKey("userer").objectId == PFUser.currentUser().objectId{
+            else if topicSerial?.objectId == PFUser.currentUser()!.objectId{
                 return true
             }
             return false

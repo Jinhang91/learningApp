@@ -21,9 +21,14 @@ class LoginViewController: UIViewController
     @IBOutlet weak var matricTextField: DesignableTextField!
     @IBOutlet weak var passwordTextField: DesignableTextField!
     
-    @IBOutlet weak var titleSecondLabel: DesignableLabel!
+    @IBOutlet weak var logoLabel: DesignableImageView!
+
     
     @IBOutlet weak var loginDialogView: DesignableView!
+    
+    @IBOutlet weak var loginButton: DesignableButton!
+    
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     @IBAction func loginButtonDidPress(sender: AnyObject)
     {
@@ -32,15 +37,16 @@ class LoginViewController: UIViewController
         {
             //view.showLoading()
             var matricEntr = matricTextField.text
-        
+            self.loginButton.setTitle("", forState: UIControlState.Normal)
+            self.loadingIndicator.hidden = false
             reachabbilityStatus == kReachableWithWifi
             
             PFUser.logInWithUsernameInBackground(matricTextField.text, password:passwordTextField.text) {
-                (user: PFUser!, error: NSError!) -> Void in
+                (user: PFUser?, error: NSError?) -> Void in
                 if user != nil
                 {
                     println("\(matricEntr), you're successfully logged in")
-                   
+       
                     self.dismissViewControllerAnimated(true, completion: nil)
                     let alert = UIAlertView()
                     alert.title = "Successful"
@@ -58,6 +64,10 @@ class LoginViewController: UIViewController
                     alert.message = "Network is not found"
                     alert.addButtonWithTitle("OK")
                     alert.show()
+                    
+                    self.loginButton.setTitle("LOGIN", forState: UIControlState.Normal)
+                    self.loadingIndicator.hidden = true
+                    
                     self.view.hideLoading()
                 }
                     
@@ -67,6 +77,10 @@ class LoginViewController: UIViewController
                     self.loginDialogView.animation = "shake"
                     self.loginDialogView.force = 3
                     self.loginDialogView.animate()
+                    
+                    self.loginButton.setTitle("LOGIN", forState: UIControlState.Normal)
+                    self.loadingIndicator.hidden = true
+                    
                     self.view.hideLoading()
                     let alert = UIAlertView()
                     alert.title = "Try again."
@@ -84,20 +98,21 @@ class LoginViewController: UIViewController
             self.titleLabel.text = "Please fill in all the fields"
             self.titleLabel.textAlignment = NSTextAlignment.Center
             self.titleLabel.textColor = UIColor.redColor()
-            
+            self.titleLabel.hidden = false
             self.titleLabel.alpha = 1
-            self.titleSecondLabel.alpha = 0
+            self.logoLabel.alpha = 0
             
+            self.loginButton.setTitle("LOGIN", forState: UIControlState.Normal)
+            self.loadingIndicator.hidden = true
             
             loginDialogView.animation = "shake"
             loginDialogView.force = 3
             loginDialogView.animate()
             
             springWithDelay(1, 1, {
-                self.titleSecondLabel.animation = "pop"
-                self.titleSecondLabel.animate()
-                self.titleSecondLabel.alpha = 1
-                self.titleSecondLabel.hidden = false
+
+                self.logoLabel.alpha = 1
+
                 
                 self.titleLabel.alpha = 0
             })
@@ -126,12 +141,15 @@ class LoginViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         PFUser.logOut()
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityStatusChanged", name: "ReachStatusChanged", object: nil)
+  NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityStatusChanged", name: "ReachStatusChanged", object: nil)
     
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         view.endEditing(true)
     }
 

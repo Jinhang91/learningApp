@@ -32,6 +32,12 @@ class FavouriteTableViewCell: UITableViewCell {
     @IBOutlet weak var memberLabel: DesignableButton!
  
     
+    @IBAction func topicDidTouch(sender: AnyObject) {
+    topicLabel.animation = "pop"
+    topicLabel.force = 3.0
+    topicLabel.animate()
+    }
+    
     
     @IBAction func memberDidTouch(sender: AnyObject) {
     memberLabel.animation = "pop"

@@ -63,9 +63,9 @@ class CreateGroupViewController: UIViewController, UIImagePickerControllerDelega
     
 
     
- func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
+func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         
-        let pickedImage:UIImage = info.objectForKey(UIImagePickerControllerOriginalImage) as UIImage
+        let pickedImage: UIImage = (info as NSDictionary).objectForKey(UIImagePickerControllerOriginalImage) as! UIImage
     
         scaledImage = self.scaleImageWith(pickedImage, and: CGSizeMake(70, 70))
                //Scale down image

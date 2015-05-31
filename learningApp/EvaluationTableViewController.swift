@@ -27,7 +27,7 @@ class EvaluationTableViewController: UITableViewController{
         var fittedSize:CGSize = self.tableView.sizeThatFits(CGSizeMake(priorBounds.size.width, self.tableView.contentSize.height))
         self.tableView.bounds = CGRectMake(0, 0, fittedSize.width, fittedSize.height);
         
-        var pdfPageBounds:CGRect = CGRectMake(0, 0, 320, 568); // Change this as your need
+        var pdfPageBounds:CGRect = CGRectMake(0, 0, 768, 1024); // Change this as your need
         var pdfData = NSMutableData()
         
         
@@ -49,7 +49,7 @@ class EvaluationTableViewController: UITableViewController{
         self.tableView.bounds = priorBounds; // Reset the tableView
         
         
-        let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
+        let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! NSString
         var pdfFileName = path.stringByAppendingPathComponent("Evaluation.pdf")
         
         pdfData.writeToFile(pdfFileName, atomically: true)
@@ -79,7 +79,7 @@ class EvaluationTableViewController: UITableViewController{
         
         //the following lines are used in iPad
         if let alertPopver = exportMenu.popoverPresentationController{
-            alertPopver.barButtonItem = sender as UIBarButtonItem
+            alertPopver.barButtonItem = sender as! UIBarButtonItem
             alertPopver.permittedArrowDirections = UIPopoverArrowDirection.Up
           //  alertPopver.sourceView = sender.view
           //  alertPopver.sourceRect = sender.bounds
@@ -97,7 +97,7 @@ class EvaluationTableViewController: UITableViewController{
 
         self.navigationItem.hidesBackButton = true
         tableView.tableFooterView = UIView(frame: CGRectZero)
-        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var myBackButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         myBackButton.addTarget(self, action: "popToRoot:", forControlEvents: UIControlEvents.TouchUpInside)
         
         myBackButton.setImage(UIImage(named: "perfect"), forState: UIControlState.Normal)
@@ -184,16 +184,16 @@ class EvaluationTableViewController: UITableViewController{
         findEvaluatedData.orderByDescending("createdAt")
         
         findEvaluatedData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelineEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelineEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -218,16 +218,16 @@ class EvaluationTableViewController: UITableViewController{
         findExcellentEvaluatedData.orderByDescending("createdAt")
         
         findExcellentEvaluatedData .findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineExcellentEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineExcellentEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelineExcellentEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelineExcellentEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -252,16 +252,16 @@ class EvaluationTableViewController: UITableViewController{
         findGoodEvaluatedData.orderByDescending("createdAt")
         
         findGoodEvaluatedData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineGoodEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineGoodEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelineGoodEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelineGoodEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -286,16 +286,16 @@ class EvaluationTableViewController: UITableViewController{
         findAveEvaluatedData.orderByDescending("createdAt")
         
         findAveEvaluatedData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineAveEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineAveEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelineAveEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelineAveEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -320,16 +320,16 @@ class EvaluationTableViewController: UITableViewController{
         findFairEvaluatedData.orderByDescending("createdAt")
         
         findFairEvaluatedData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelineFairEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelineFairEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelineFairEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelineFairEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -354,16 +354,16 @@ class EvaluationTableViewController: UITableViewController{
         findPoorEvaluatedData.orderByDescending("createdAt")
         
         findPoorEvaluatedData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
-                for object in objects {
+                for object in objects! {
                     self.timelinePoorEvaluatedData.addObject(object)
                 }
                 
                 
                 let array:NSArray = self.timelinePoorEvaluatedData.reverseObjectEnumerator().allObjects
-                self.timelinePoorEvaluatedData = array.mutableCopy() as NSMutableArray
+                self.timelinePoorEvaluatedData = array.mutableCopy() as! NSMutableArray
                 
                 self.tableView.reloadData()
                 self.view.hideLoading()
@@ -417,7 +417,7 @@ class EvaluationTableViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let identifier = indexPath.row == 0 ? "topicCell" : "evaluateCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
         
         if let topicCell = cell as? TopicTableViewCell{
     
@@ -434,16 +434,18 @@ class EvaluationTableViewController: UITableViewController{
             topicCell.endingLabel.alpha = 0
             
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: topic?.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = topic?["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
                     
-                    let user:PFUser! = (objects as NSArray).lastObject as? PFUser!
+                    let user:PFUser! = (objects! as NSArray).lastObject as? PFUser!
                     
                     topicCell.usernameLabel.text = user.username
                     
@@ -464,19 +466,19 @@ class EvaluationTableViewController: UITableViewController{
                 }
                 
             })
-
+            
 
             
         }
         if let evaluateCell = cell as? EvaluationTableViewCell{
         if segmentedRating.selectedSegmentIndex == 0 {
        
-        let evaluatedData:PFObject = self.timelineEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+        let evaluatedData:PFObject = self.timelineEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
         evaluateCell.timeLabel.alpha = 0
         evaluateCell.studentMatric.alpha = 0
         evaluateCell.ratingDisplayed.alpha = 0
         
-        var rating = evaluatedData.objectForKey("rating") as String?
+        var rating = evaluatedData.objectForKey("rating") as! String?
         if rating == "poorRating" {
             
             evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating1"), forState: UIControlState.Normal)
@@ -513,15 +515,17 @@ class EvaluationTableViewController: UITableViewController{
             evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
         }
 
-        var findUsererData:PFQuery = PFUser.query()
-        findUsererData.whereKey("objectId", equalTo: evaluatedData.objectForKey("userer").objectId)
+        var findUsererData:PFQuery = PFUser.query()!
+        let objectSerial = evaluatedData["userer"] as? PFObject
+
+        findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
         
         findUsererData.findObjectsInBackgroundWithBlock({
-            (objects:[AnyObject]!,error:NSError!)->Void in
+            (objects:[AnyObject]?,error:NSError?)->Void in
             
             if (error == nil) {
                 
-                let user:PFUser = (objects as NSArray).lastObject as PFUser
+                let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                 evaluateCell.studentMatric.text = user.username
                 
                 //final animation
@@ -532,20 +536,20 @@ class EvaluationTableViewController: UITableViewController{
                 }
             }
         })
-
+            
         var dateFormat:NSDateFormatter = NSDateFormatter()
         dateFormat.dateFormat = "dd MMM, yy, HH:mm"
-        evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedData.createdAt)
+        evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedData.createdAt!)
         }
         
         if segmentedRating.selectedSegmentIndex == 1 {
             
-            let evaluatedExcellentData:PFObject = self.timelineExcellentEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            let evaluatedExcellentData:PFObject = self.timelineExcellentEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
             evaluateCell.timeLabel.alpha = 0
             evaluateCell.studentMatric.alpha = 0
             evaluateCell.ratingDisplayed.alpha = 0
             
-            var rating = evaluatedExcellentData.objectForKey("rating") as String?
+            var rating = evaluatedExcellentData.objectForKey("rating") as! String?
             if rating == "excellentRating" {
                 
                 evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating5"), forState: UIControlState.Normal)
@@ -557,15 +561,17 @@ class EvaluationTableViewController: UITableViewController{
                 evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: evaluatedExcellentData.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = evaluatedExcellentData["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     evaluateCell.studentMatric.text = user.username
                     
                     //final animation
@@ -579,17 +585,17 @@ class EvaluationTableViewController: UITableViewController{
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedExcellentData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedExcellentData.createdAt!)
         }
         
         if segmentedRating.selectedSegmentIndex == 2 {
             
-            let evaluatedGoodData:PFObject = self.timelineGoodEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            let evaluatedGoodData:PFObject = self.timelineGoodEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
             evaluateCell.timeLabel.alpha = 0
             evaluateCell.studentMatric.alpha = 0
             evaluateCell.ratingDisplayed.alpha = 0
             
-            var rating = evaluatedGoodData.objectForKey("rating") as String?
+            var rating = evaluatedGoodData.objectForKey("rating") as! String?
             if rating == "goodRating" {
                 
                 evaluateCell.ratingDisplayed.setImage(UIImage(named:"rating4"), forState: UIControlState.Normal)
@@ -601,15 +607,17 @@ class EvaluationTableViewController: UITableViewController{
                 evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: evaluatedGoodData.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = evaluatedGoodData["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     evaluateCell.studentMatric.text = user.username
                     
                     //final animation
@@ -623,17 +631,17 @@ class EvaluationTableViewController: UITableViewController{
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedGoodData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedGoodData.createdAt!)
         }
         
         if segmentedRating.selectedSegmentIndex == 3 {
             
-            let evaluatedAverageData:PFObject = self.timelineAveEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            let evaluatedAverageData:PFObject = self.timelineAveEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
             evaluateCell.timeLabel.alpha = 0
             evaluateCell.studentMatric.alpha = 0
             evaluateCell.ratingDisplayed.alpha = 0
             
-            var rating = evaluatedAverageData.objectForKey("rating") as String?
+            var rating = evaluatedAverageData.objectForKey("rating") as! String?
                 
             if rating == "averageRating" {
                 
@@ -646,15 +654,17 @@ class EvaluationTableViewController: UITableViewController{
                 evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: evaluatedAverageData.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = evaluatedAverageData["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     evaluateCell.studentMatric.text = user.username
                     
                     //final animation
@@ -668,17 +678,17 @@ class EvaluationTableViewController: UITableViewController{
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedAverageData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedAverageData.createdAt!)
         }
         
         if segmentedRating.selectedSegmentIndex == 4 {
             
-            let evaluatedFairData:PFObject = self.timelineFairEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            let evaluatedFairData:PFObject = self.timelineFairEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
             evaluateCell.timeLabel.alpha = 0
             evaluateCell.studentMatric.alpha = 0
             evaluateCell.ratingDisplayed.alpha = 0
             
-            var rating = evaluatedFairData.objectForKey("rating") as String?
+            var rating = evaluatedFairData.objectForKey("rating") as! String?
             
             if rating == "fairRating" {
                 
@@ -691,15 +701,17 @@ class EvaluationTableViewController: UITableViewController{
                 evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: evaluatedFairData.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = evaluatedFairData["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     evaluateCell.studentMatric.text = user.username
                     
                     //final animation
@@ -713,17 +725,17 @@ class EvaluationTableViewController: UITableViewController{
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedFairData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedFairData.createdAt!)
         }
         
         if segmentedRating.selectedSegmentIndex == 5 {
             
-            let evaluatedPoorData:PFObject = self.timelinePoorEvaluatedData.objectAtIndex(indexPath.row - 1) as PFObject
+            let evaluatedPoorData:PFObject = self.timelinePoorEvaluatedData.objectAtIndex(indexPath.row - 1) as! PFObject
             evaluateCell.timeLabel.alpha = 0
             evaluateCell.studentMatric.alpha = 0
             evaluateCell.ratingDisplayed.alpha = 0
             
-            var rating = evaluatedPoorData.objectForKey("rating") as String?
+            var rating = evaluatedPoorData.objectForKey("rating") as! String?
             
             if rating == "fairRating" {
                 
@@ -736,15 +748,17 @@ class EvaluationTableViewController: UITableViewController{
                 evaluateCell.ratingDisplayed.setImage(UIImage(named: "rating"), forState: UIControlState.Normal)
             }
             
-            var findUsererData:PFQuery = PFUser.query()
-            findUsererData.whereKey("objectId", equalTo: evaluatedPoorData.objectForKey("userer").objectId)
+            var findUsererData:PFQuery = PFUser.query()!
+            let objectSerial = evaluatedPoorData["userer"] as? PFObject
+
+            findUsererData.whereKey("objectId", equalTo: objectSerial!.objectId!)
             
             findUsererData.findObjectsInBackgroundWithBlock({
-                (objects:[AnyObject]!,error:NSError!)->Void in
+                (objects:[AnyObject]?,error:NSError?)->Void in
                 
                 if (error == nil) {
                     
-                    let user:PFUser = (objects as NSArray).lastObject as PFUser
+                    let user:PFUser = (objects! as NSArray).lastObject as! PFUser
                     evaluateCell.studentMatric.text = user.username
                     
                     //final animation
@@ -758,7 +772,7 @@ class EvaluationTableViewController: UITableViewController{
             
             var dateFormat:NSDateFormatter = NSDateFormatter()
             dateFormat.dateFormat = "MMM dd, yyyy, HH:mm"
-            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedPoorData.createdAt)
+            evaluateCell.timeLabel.text = dateFormat.stringFromDate(evaluatedPoorData.createdAt!)
         }
 
         }

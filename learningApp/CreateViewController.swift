@@ -62,10 +62,9 @@ class CreateViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: NSDictionary!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         
-        let pickedImage:UIImage = info.objectForKey(UIImagePickerControllerOriginalImage) as UIImage
-        
+        let pickedImage: UIImage = (info as NSDictionary).objectForKey(UIImagePickerControllerOriginalImage) as! UIImage
         scaledImage = self.scaleImageWith(pickedImage, and: CGSizeMake(70, 70))
         //Scale down image
         
@@ -95,16 +94,16 @@ class CreateViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func createGroupDidTouch(sender: AnyObject) {
         if groupNameTextField.text != "" && avatarGroup.image == scaledImage {
             if let data = imageData  {
-                let imageFile:PFFile = PFFile(data: imageData)
+                let imageFile:PFFile = PFFile(data: imageData!)
                 
                 var groupCreated:PFObject = PFObject(className: "Groups")
                 groupCreated.setObject(imageFile, forKey: "groupAvatar")
                 groupCreated["name"] = groupNameTextField.text
                 groupCreated["userer"] = PFUser.currentUser()
-                groupCreated["whoFavorited"] = [PFUser.currentUser().objectId]
+                groupCreated["whoFavorited"] = [PFUser.currentUser()!.objectId!]
                 
                 
-                groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                groupCreated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("\(self.groupNameTextField.text) group created")
                     } else {
@@ -142,15 +141,15 @@ class CreateViewController: UIViewController, UIImagePickerControllerDelegate, U
         else if (groupNameTextField.text != "" && avatarGroup.image != nil) {
             self.imageDefault()
             if let data = imageDefaultData  {
-                let imageFile:PFFile = PFFile(data: imageDefaultData)
+                let imageFile:PFFile = PFFile(data: imageDefaultData!)
                 
                 var groupCreated:PFObject = PFObject(className: "Groups")
                 groupCreated.setObject(imageFile, forKey: "groupAvatar")
                 groupCreated["name"] = groupNameTextField.text
                 groupCreated["userer"] = PFUser.currentUser()
-                groupCreated["whoFavorited"] = [PFUser.currentUser().objectId]
+                groupCreated["whoFavorited"] = [PFUser.currentUser()!.objectId!]
                 
-                groupCreated.saveInBackgroundWithBlock {(success: Bool!, error: NSError!) -> Void in
+                groupCreated.saveInBackgroundWithBlock {(success: Bool, error: NSError?) -> Void in
                     if success == true {
                         println("\(self.groupNameTextField.text) group created")
                     } else {

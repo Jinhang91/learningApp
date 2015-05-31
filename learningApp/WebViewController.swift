@@ -63,7 +63,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
     func addLeftNavItemOnView()
     {
         
-        backwardButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        backwardButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         backwardButton.frame = CGRectMake(-50, 0, 40, 40)
         backwardButton.tintColor = UIColorFromRGB(0x4FD7CE)
         backwardButton.setImage(UIImage(named:"perfect"), forState: UIControlState.Normal)
@@ -72,7 +72,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         var leftBarButtonItemBackward: UIBarButtonItem = UIBarButtonItem(customView: backwardButton)
         
         
-        forwardButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        forwardButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         forwardButton.frame = CGRectMake(0, 0, 40, 40)
         forwardButton.tintColor = UIColorFromRGB(0x4FD7CE)
         forwardButton.setImage(UIImage(named:"perfectForward"), forState: UIControlState.Normal)
@@ -83,7 +83,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
         self.navigationItem.setLeftBarButtonItems([leftBarButtonItemBackward, leftBarButtonItemForward],animated: true)
         
         
-        var closeButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var closeButton:UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         closeButton.frame = CGRectMake(0,0,40,40)
         closeButton.addTarget(self, action: "closeButton:", forControlEvents: UIControlEvents.TouchUpInside)
         closeButton.tintColor = UIColorFromRGB(0x4FD7CE)
@@ -94,7 +94,7 @@ class WebViewController: UIViewController,UIWebViewDelegate {
        
      
         
-        var refreshButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        var refreshButton: UIButton = UIButton.buttonWithType(UIButtonType.System) as! UIButton
         refreshButton.frame = CGRectMake(0,0,40,40)
         refreshButton.tintColor = UIColorFromRGB(0x4FD7CE)
         refreshButton.setImage(UIImage(named:"refresh"), forState: UIControlState.Normal)
